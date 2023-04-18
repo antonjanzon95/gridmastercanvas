@@ -15,8 +15,6 @@
 
 <!-- ### Väntrum
 
-
-
 - spelrum-array // spelrum = ["spelrum 1"]
 - gå med i spelrum // lägg till färg till user-objektet -->
 
@@ -55,3 +53,11 @@
 - räkna ut %
 - skriv ut %
 - tillbaka till väntrum-knapp
+
+## Uppgifter
+
+Anton & Max: målverktyget
+Jenny: chat
+Malin
+Robin: inlogg
+Simon: design
