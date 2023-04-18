@@ -2,22 +2,23 @@ import { grids } from "../main";
 
 export const createGridPage = () => {
   const mainContainer = document.querySelector("main");
-  const gridContainer = document.querySelector(".canvas-grid");
   const user = { name: "Anton", color: "blue" };
   sessionStorage.setItem("user", JSON.stringify(user));
   const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
-  
-  gridContainer.innerHTML = '';
-  //create the grid
-  
+
+  mainContainer.innerHTML = "";
+
   let idcounter = 0;
+
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add("canvas-grid", "rounded");
+  mainContainer.appendChild(gridContainer);
 
   let gameTry = [];
 
-  for (let i = 0; i < 20; i++) {
-    for (let j = 0; j < 20; j++) {
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
-      gridNode.id = 'cell-' + idcounter;
       gridNode.classList.add(
         "rounded",
         "border-2",
@@ -27,8 +28,8 @@ export const createGridPage = () => {
       gridNode.style.backgroundColor = "whitesmoke";
 
       let cell = {
-        color: 'whitesmoke'
-      }
+        color: "whitesmoke",
+      };
 
       gameTry.push(cell);
       let id = idcounter;
@@ -44,9 +45,7 @@ export const createGridPage = () => {
       });
       gridContainer.appendChild(gridNode);
       idcounter++;
-
     }
-    
   }
 
   console.log(gameTry);
@@ -79,33 +78,42 @@ export const createGridPage = () => {
 };
 
 export function createSolutionGrid() {
-  const gridContainer = document.querySelector(".canvas-grid");
+  const mainContainer = document.querySelector("main");
+  mainContainer.innerHTML = "";
+
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add(
+    "canvas-grid",
+    "rounded",
+    "w-[700px]",
+    "h-[700px]"
+  );
+  mainContainer.appendChild(gridContainer);
 
   let facit = [];
 
-  let colors = ['green', 'blue', 'red', 'yellow', 'whitesmoke'];
+  let colors = ["green", "blue", "red", "yellow", "whitesmoke"];
 
   let idcounter = 1;
 
-  for (let i = 0; i < 20; i++) {
-    for (let j = 0; j < 20; j++) {
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
-      gridNode.id = 'cellSolution-' + idcounter;
       gridNode.classList.add(
         "rounded",
         "border-2",
         "border-black",
         "hover:bg-gray-400"
       );
-      gridNode.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      gridNode.style.backgroundColor =
+        colors[Math.floor(Math.random() * colors.length)];
 
       gridContainer.appendChild(gridNode);
       idcounter++;
 
       let cell = {
-        id: gridNode.id,
         color: gridNode.style.backgroundColor,
-      }
+      };
 
       facit.push(cell);
     }
@@ -116,14 +124,16 @@ export function createSolutionGrid() {
   grids.solution = facit;
 }
 
+// button event to calculate score
 export function handleCompareClick() {
   let score = compareTryToSolution(grids.try, grids.solution);
-  console.log('score:', score + '%');
+  console.log("score:", score + "%");
 }
 
+// calculate score
 export function compareTryToSolution(gameTry, solution) {
-  console.log('gameTry', gameTry);
-  console.log('solution', solution);
+  console.log("gameTry", gameTry);
+  console.log("solution", solution);
 
   let correctChoice = 0;
 
