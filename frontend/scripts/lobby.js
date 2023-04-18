@@ -1,6 +1,7 @@
-import { createSolutionGrid, createGridPage } from "./canvas.js";
+import { createSolutionGrid } from "./canvas.js";
+import "../style.css";
 
-export const startGame = () => {};
+// export const startGame = () => {};
 
 export const createPracticeGridPage = () => {
   const mainContainer = document.querySelector("main");
@@ -19,25 +20,14 @@ export const createPracticeGridPage = () => {
   mainContainer.appendChild(gridContainer);
 
   const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add(
-    "flex",
-    "flex-col",
-    "justify-center",
-    "items-center",
-    "gap-2"
-  );
+  buttonContainer.classList.add("btn-container");
   mainContainer.appendChild(buttonContainer);
 
   //create the grid
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
-      gridNode.classList.add(
-        "rounded",
-        "border-2",
-        "border-black",
-        "hover:bg-gray-400"
-      );
+      gridNode.classList.add("cell");
       gridNode.style.backgroundColor = "whitesmoke";
 
       let cell = {
@@ -64,17 +54,7 @@ export const createPracticeGridPage = () => {
   // save practice image button
   const saveImageBtn = document.createElement("button");
   saveImageBtn.innerHTML = "Save Image";
-  saveImageBtn.classList.add(
-    "px-4",
-    "py-2",
-    "bg-gradient-to-r",
-    "from-orange-500",
-    "to-orange-800",
-    "rounded-lg",
-    "text-xl",
-    "font-bold",
-    "shadow-xl"
-  );
+  saveImageBtn.classList.add("btn");
 
   // save practice image
   saveImageBtn.addEventListener("click", () => {
@@ -86,17 +66,7 @@ export const createPracticeGridPage = () => {
   // view images button
   const viewImageBtn = document.createElement("button");
   viewImageBtn.innerHTML = "View Images";
-  viewImageBtn.classList.add(
-    "px-4",
-    "py-2",
-    "bg-gradient-to-r",
-    "from-orange-500",
-    "to-orange-800",
-    "rounded-lg",
-    "text-xl",
-    "font-bold",
-    "shadow-xl"
-  );
+  viewImageBtn.classList.add("btn");
 
   // view saved images
   const viewSavedImages = () => {
@@ -110,17 +80,7 @@ export const createPracticeGridPage = () => {
   // start game button
   const startBtn = document.createElement("button");
   startBtn.innerHTML = "Start Game";
-  startBtn.classList.add(
-    "px-4",
-    "py-2",
-    "bg-gradient-to-r",
-    "from-orange-500",
-    "to-orange-800",
-    "rounded-lg",
-    "text-xl",
-    "font-bold",
-    "shadow-xl"
-  );
+  startBtn.classList.add("btn");
 
   // set user is done on click
   startBtn.addEventListener("click", () => {
@@ -129,7 +89,7 @@ export const createPracticeGridPage = () => {
 
     // set to all 4 users ready later <--
     if (usertest.ready) {
-      hidePracticeGridPage();
+      hidePracticeGridPage(gridContainer);
       createSolutionGrid();
     }
   });
@@ -137,17 +97,7 @@ export const createPracticeGridPage = () => {
   // save practice image button
   const newGridBtn = document.createElement("button");
   newGridBtn.innerHTML = "New Canvas";
-  newGridBtn.classList.add(
-    "px-4",
-    "py-2",
-    "bg-gradient-to-r",
-    "from-orange-500",
-    "to-orange-800",
-    "rounded-lg",
-    "text-xl",
-    "font-bold",
-    "shadow-xl"
-  );
+  newGridBtn.classList.add("btn");
 
   // save practice image
   newGridBtn.addEventListener("click", createPracticeGridPage);
@@ -156,4 +106,8 @@ export const createPracticeGridPage = () => {
   buttonContainer.appendChild(viewImageBtn);
   buttonContainer.appendChild(saveImageBtn);
   buttonContainer.appendChild(newGridBtn);
+};
+
+const hidePracticeGridPage = (practiceGridContainer) => {
+  practiceGridContainer.innerHTML = "";
 };

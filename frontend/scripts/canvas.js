@@ -1,4 +1,5 @@
 import { grids } from "../main";
+import { showGameOverPage } from "./gameover";
 
 export const createGridPage = () => {
   const mainContainer = document.querySelector("main");
@@ -11,7 +12,7 @@ export const createGridPage = () => {
   let idcounter = 0;
 
   const gridContainer = document.createElement("div");
-  gridContainer.classList.add("canvas-grid", "rounded");
+  gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
 
   let gameTry = [];
@@ -19,12 +20,7 @@ export const createGridPage = () => {
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
-      gridNode.classList.add(
-        "rounded",
-        "border-2",
-        "border-black",
-        "hover:bg-gray-400"
-      );
+      gridNode.classList.add("cell");
       gridNode.style.backgroundColor = "whitesmoke";
 
       let cell = {
@@ -48,28 +44,22 @@ export const createGridPage = () => {
     }
   }
 
-  console.log(gameTry);
-
   // done button
   const doneBtn = document.createElement("button");
   doneBtn.innerHTML = "Done";
-  doneBtn.classList.add(
-    "px-4",
-    "py-2",
-    "bg-gradient-to-r",
-    "from-orange-500",
-    "to-orange-800",
-    "rounded-lg",
-    "text-xl",
-    "font-bold",
-    "shadow-xl"
-  );
+  doneBtn.classList.add("btn");
 
   // set user is done on click
   doneBtn.addEventListener("click", () => {
     sessionStorage.setItem("user", JSON.stringify({ ...user, done: true }));
     const usertest = JSON.parse(sessionStorage.getItem("user"));
-    console.log(usertest);
+
+    if (usertest.done) {
+      let finalScore = compareTryToSolution(grids.try, grids.solution);
+      showGameOverPage(finalScore);
+    } else {
+      return alert("inte klar");
+    }
   });
 
   mainContainer.appendChild(doneBtn);
@@ -82,12 +72,7 @@ export function createSolutionGrid() {
   mainContainer.innerHTML = "";
 
   const gridContainer = document.createElement("div");
-  gridContainer.classList.add(
-    "canvas-grid",
-    "rounded",
-    "w-[700px]",
-    "h-[700px]"
-  );
+  gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
 
   let facit = [];
@@ -99,12 +84,7 @@ export function createSolutionGrid() {
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
-      gridNode.classList.add(
-        "rounded",
-        "border-2",
-        "border-black",
-        "hover:bg-gray-400"
-      );
+      gridNode.classList.add("cell");
       gridNode.style.backgroundColor =
         colors[Math.floor(Math.random() * colors.length)];
 
@@ -119,22 +99,34 @@ export function createSolutionGrid() {
     }
   }
 
-  console.log(facit);
-
   grids.solution = facit;
+
+  const countdownDiv = document.createElement("div");
+  countdownDiv.classList.add("countdown");
+  document.querySelector("#app").appendChild(countdownDiv);
+
+  let cd = 5;
+  const countdownInterval = setInterval(() => {
+    countdownDiv.innerHTML = cd.toString();
+    cd--;
+
+    if (cd < 0) {
+      countdownDiv.innerHTML = "MÅLA!";
+      setTimeout(() => {
+        countdownDiv.innerHTML = "";
+      }, 2000);
+      startGame(countdownInterval);
+    }
+  }, 1000);
 }
 
-// button event to calculate score
-export function handleCompareClick() {
-  let score = compareTryToSolution(grids.try, grids.solution);
-  console.log("score:", score + "%");
-}
+const startGame = (countdownInterval) => {
+  createGridPage();
+  clearInterval(countdownInterval);
+};
 
 // calculate score
 export function compareTryToSolution(gameTry, solution) {
-  console.log("gameTry", gameTry);
-  console.log("solution", solution);
-
   let correctChoice = 0;
 
   for (let i = 0; i < solution.length; i++) {
