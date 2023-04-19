@@ -39,6 +39,6 @@
         ## Underskrivet av
         @Anton Janzon
         @Robin Sevelin
-        @
+        @Max Edlund
         @Simon Vindahl
         @Jenny Waller
