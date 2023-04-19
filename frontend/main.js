@@ -1,18 +1,19 @@
-import './styles/style.css';
-import { createPracticeGridPage } from './scripts/lobby.js';
-import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
+import "./styles/style.css";
+import { createPracticeGridPage } from "./scripts/lobby.js";
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 // import { initLog } from './scripts/log';
+import { renderChatHtml } from "./scripts/chatcomp";
 
 export let grids = {};
-export const socket = io('http://localhost:3000');
+export const socket = io("http://localhost:3000");
 
-document.querySelector('#app').innerHTML = `
+document.querySelector("#app").innerHTML = `
   <div class="h-screen bg-teal-900 parent">
     <header class="div1 w-full h-full">header</header>
       <section class="div5 w-full h-full">regler</section>
       <section class="div4 w-full h-full">sparade bilder</section>
       <main class="div3 w-full h-full p-4 flex justify-center items-center gap-4"></main>
-      <aside class="div2 w-full h-full">chat</aside>
+      <aside class="div2 w-full h-full" id="chat-div">chat</aside>
   </div>
 `;
 
@@ -29,6 +30,7 @@ document.querySelector('#app').innerHTML = `
 const init = () => {
   // initLog();
   createPracticeGridPage();
+  renderChatHtml();
 };
 
 init();

@@ -46,6 +46,10 @@ app.use("/users", usersRouter);
 app.use("/image", imageRouter);
 
 io.on("connection", (socket) => {
+  // console.log("Någonting");
+  // socket.emit("message", { message: "Hello from the server!" });
+
+  socket.emit("message", "Hello");
   socket.on("saveUser", (arg) => {
     socket.userName = arg;
     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -74,6 +78,13 @@ io.on("connection", (socket) => {
     };
 
     io.emit("chat", { chatMessage });
+  });
+
+  socket.on("hej", (arg) => {
+    console.log(arg);
+    io.emit("hej", arg + " Anton");
+
+    io.emit("hejhej", arg + " Anton");
   });
 });
 
