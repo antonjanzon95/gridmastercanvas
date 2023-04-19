@@ -1,7 +1,7 @@
 import './styles/style.css';
 import { createPracticeGridPage } from './scripts/lobby.js';
 import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-// import { initLog } from './scripts/log';
+import { initLog } from './scripts/log';
 
 export let grids = {};
 export const socket = io('http://localhost:3000');
@@ -27,7 +27,7 @@ document.querySelector('#app').innerHTML = `
 // });
 
 const init = () => {
-  // initLog();
+  initLog();
   createPracticeGridPage();
 };
 

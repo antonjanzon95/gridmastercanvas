@@ -1,100 +1,63 @@
-// // import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-// // const socket = io('http://localhost:3000');
-// import { socket } from '../main';
+// import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
+// const socket = io('http://localhost:3000');
+import { socket } from '../main';
 
-// export function initLog() {
-//   const result = document.getElementById('result');
-//   const user = document.getElementById('user');
+export function initLog() {
+  if (sessionStorage.getItem('user')) {
+    console.log('inloggad');
+    renderLogoutButton();
+  } else {
+    console.log('utloggad');
 
-//   const chatWindow = document.getElementById('chat');
-//   if (sessionStorage.getItem('user')) {
-//     console.log('inloggad');
-//     renderLogoutButton();
-//     printUser();
-//     renderChat();
-//   } else {
-//     console.log('utloggad');
-//     result.innerHTML = '';
-//     user.innerHTML = 'ingen är inloggad';
-//     chatWindow.innerHTML = '';
-//     renderLogForm();
-//   }
-// }
+    renderLogForm();
+  }
+}
 
-// function renderLogForm() {
-//   const logForm = document.getElementById('log-form');
-//   logForm.innerHTML = '';
-//   let logInput = document.createElement('input');
-//   let logUserButton = document.createElement('button');
+function renderLogForm() {
+  let header = document.querySelector('header');
+  let logForm = document.createElement('div');
 
-//   logInput.type = 'text';
-//   logInput.placeholder = 'namn';
-//   logUserButton.innerHTML = 'logga in';
+  let logInput = document.createElement('input');
+  let logUserButton = document.createElement('button');
 
-//   logForm.append(logInput, logUserButton);
+  logInput.type = 'text';
+  logInput.placeholder = 'namn';
+  logUserButton.innerHTML = 'logga in';
 
-//   logUserButton.addEventListener('click', (e) => {
-//     e.preventDefault();
+  header.appendChild(logForm);
+  logForm.append(logInput, logUserButton);
 
-//     if (logInput.value === '') {
-//       return;
-//     }
+  logUserButton.addEventListener('click', (e) => {
+    e.preventDefault();
 
-//     sessionStorage.setItem('user', logInput.value);
+    if (logInput.value === '') {
+      return;
+    }
 
-//     socket.emit('saveUser', sessionStorage.getItem('user'));
+    sessionStorage.setItem('user', logInput.value);
 
-//     logInput.value = '';
-//     initLog();
-//   });
-// }
+    socket.emit('saveUser', sessionStorage.getItem('user'));
 
-// function renderLogoutButton() {
-//   logForm.innerHTML = '';
-//   let logOutButton = document.createElement('button');
+    logInput.value = '';
+    logForm.innerHTML = '';
+    initLog();
+  });
+}
 
-//   logOutButton.innerHTML = 'logga ut';
+function renderLogoutButton() {
+  let header = document.querySelector('header');
+  let logForm = document.createElement('div');
 
-//   logForm.appendChild(logOutButton);
+  let logOutButton = document.createElement('button');
 
-//   logOutButton.addEventListener('click', () => {
-//     sessionStorage.removeItem('user');
-//     user.innerHTML = '';
-//     result.innerHTML = '';
-//     initLog();
-//   });
-// }
+  logOutButton.innerHTML = 'logga ut';
+  header.appendChild(logForm);
+  logForm.appendChild(logOutButton);
 
-// function printUser() {
-//   socket.on('saveUser', (arg) => {
-//     user.innerHTML = '';
-//     user.innerHTML = `du har loggat in som ${sessionStorage.getItem('user')} `;
-//   });
-// }
+  logOutButton.addEventListener('click', () => {
+    sessionStorage.removeItem('user');
+    logForm.innerHTML = '';
 
-// function renderChat() {
-//   let messageInput = document.createElement('input');
-//   let messageButton = document.createElement('button');
-
-//   messageInput.type = 'text';
-//   messageInput.placeholder = 'meddelande';
-//   messageButton.innerHTML = 'skicka';
-
-//   chatWindow.append(messageInput, messageButton);
-
-//   socket.off('chat');
-
-//   messageButton.addEventListener('click', (e) => {
-//     e.preventDefault();
-//     socket.emit('chat', messageInput.value);
-//     messageInput.value = '';
-//   });
-
-//   socket.on('chat', (arg) => {
-//     let chatMessage = arg.chatMessage;
-
-//     result.innerHTML += `<p style="color:${chatMessage.userColor};">${chatMessage.userName} skriver: ${chatMessage.userMessage}</p>`;
-//   });
-// }
-
-// // initLog();
+    initLog();
+  });
+}
