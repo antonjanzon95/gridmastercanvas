@@ -40,5 +40,5 @@
         @Anton Janzon
         @Robin Sevelin
         @
-        @
-        @
+        @Simon Vindahl
+        @Jenny Waller
