@@ -1,5 +1,6 @@
 import { createSolutionGrid } from "./canvas.js";
 import "../style.css";
+import { saveImagePost } from "./saveImg.js";
 
 // export const startGame = () => {};
 
@@ -60,7 +61,9 @@ export const createPracticeGridPage = () => {
   saveImageBtn.addEventListener("click", () => {
     // ändra till att alla 4 users sparas med bilden <--
     const saveImage = { user: user, image: practiceImageNode };
-    localStorage.setItem("images", JSON.stringify(saveImage));
+    // localStorage.setItem("images", JSON.stringify(saveImage));
+
+    saveImagePost(saveImage);
   });
 
   // view images button

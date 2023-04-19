@@ -2,9 +2,13 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const imageRouter = require("./routes/image");
+// const { MongoClient } = require("mongodb");
 
 const app = express();
 const server = require("http").Server(app);
@@ -16,6 +20,21 @@ const io = require("socket.io")(server, {
   },
 });
 
+mongoose.connect(
+  "mongodb+srv://antonjanzon123:antonjanzon123@test-cluster.cq7iazz.mongodb.net/test",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("Connected successfully");
+});
+
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,19 +43,20 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/image", imageRouter);
 
-io.on("connection", (socket) => {
-  console.log("user connected");
+// io.on("connection", (socket) => {
+//   console.log("user connected");
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
 
-  socket.on("hej", (arg) => {
-    console.log(arg);
-    io.emit("hej", arg + " Anton");
-    io.emit("hejhej", arg + " Anton");
-  });
-});
+//   socket.on("hej", (arg) => {
+//     console.log(arg);
+//     io.emit("hej", arg + " Anton");
+//     io.emit("hejhej", arg + " Anton");
+//   });
+// });
 
 module.exports = { app: app, server: server };
