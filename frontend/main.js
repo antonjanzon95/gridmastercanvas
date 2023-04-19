@@ -1,11 +1,12 @@
-import "./styles/style.css";
-import { createPracticeGridPage } from "./scripts/lobby.js";
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import './styles/style.css';
+import { createPracticeGridPage } from './scripts/lobby.js';
+import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
+// import { initLog } from './scripts/log';
 
 export let grids = {};
-// const socket = io("http://localhost:3000");
+export const socket = io('http://localhost:3000');
 
-document.querySelector("#app").innerHTML = `
+document.querySelector('#app').innerHTML = `
   <div class="h-screen bg-teal-900 parent">
     <header class="div1 w-full h-full">header</header>
       <section class="div5 w-full h-full">regler</section>
@@ -26,6 +27,7 @@ document.querySelector("#app").innerHTML = `
 // });
 
 const init = () => {
+  // initLog();
   createPracticeGridPage();
 };
 
