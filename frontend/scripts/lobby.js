@@ -1,5 +1,4 @@
 import { createSolutionGrid } from "./canvas.js";
-import "../style.css";
 import { saveImagePost } from "./saveImg.js";
 
 // export const startGame = () => {};
