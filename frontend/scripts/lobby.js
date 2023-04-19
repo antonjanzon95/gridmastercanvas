@@ -1,5 +1,6 @@
 import { createSolutionGrid } from "./canvas.js";
 import { saveImagePost } from "./saveImg.js";
+import { fetchImages, renderImages } from "./showimgs.js";
 
 // export const startGame = () => {};
 
@@ -60,24 +61,10 @@ export const createPracticeGridPage = () => {
   saveImageBtn.addEventListener("click", () => {
     // ändra till att alla 4 users sparas med bilden <--
     const saveImage = { user: user, image: practiceImageNode };
-    // localStorage.setItem("images", JSON.stringify(saveImage));
+    // localStorage.setItem("images", JSON.stringify(siaveImage));
 
     saveImagePost(saveImage);
   });
-
-  // view images button
-  const viewImageBtn = document.createElement("button");
-  viewImageBtn.innerHTML = "View Images";
-  viewImageBtn.classList.add("btn");
-
-  // view saved images
-  const viewSavedImages = () => {
-    const savedImages = JSON.parse(localStorage.getItem("images"));
-    console.log(savedImages);
-  };
-
-  // view saved images
-  viewImageBtn.addEventListener("click", viewSavedImages);
 
   // start game button
   const startBtn = document.createElement("button");
@@ -105,7 +92,6 @@ export const createPracticeGridPage = () => {
   newGridBtn.addEventListener("click", createPracticeGridPage);
 
   buttonContainer.appendChild(startBtn);
-  buttonContainer.appendChild(viewImageBtn);
   buttonContainer.appendChild(saveImageBtn);
   buttonContainer.appendChild(newGridBtn);
 };
