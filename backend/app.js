@@ -11,7 +11,6 @@ const usersRouter = require("./routes/users");
 const imageRouter = require("./routes/image");
 const roomsRouter = require("./routes/rooms");
 const { createEmptyGrid, rooms, updateGrid } = require("./modules/painting");
-// const { MongoClient } = require("mongodb");
 
 const app = express();
 const server = require("http").Server(app);
