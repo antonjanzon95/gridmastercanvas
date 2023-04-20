@@ -92,6 +92,16 @@ io.on("connection", (socket) => {
     io.emit("create room", room);
   });
 
+  socket.on("join room", (userAndRoomId) => {
+    const roomToJoin = rooms.find(
+      (room) => room.roomId == userAndRoomId.roomId
+    );
+
+    roomToJoin.users.push(userAndRoomId.user);
+
+    io.emit("join room", roomToJoin);
+  });
+
   socket.on("paint", (cellObject) => {
     // {roomId: room.roomId, cellId: e.target.id, color: user.color});
     const updatedCell = updateGrid(cellObject);

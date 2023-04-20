@@ -4,7 +4,7 @@ const GRID_CELL_COUNT = 225;
 function createEmptyGrid() {
   const grid = [];
   for (let i = 0; i < GRID_CELL_COUNT; i++) {
-    const cell = {color: "whitesmoke"};
+    const cell = { color: "whitesmoke" };
     grid.push(cell);
   }
   return grid;
@@ -12,16 +12,20 @@ function createEmptyGrid() {
 
 function updateGrid(cell) {
   const activeRoom = rooms.find((room) => room.roomId === cell.roomId);
-  console.log(activeRoom);
-  
-  let updatedCell = {id: cell.cellId};
-  if (activeRoom.grid[cell.cellId].color !== "whitesmoke") {
-    activeRoom.grid[cell.cellId].color = "whitesmoke";
+
+  const index = cell.cellId;
+
+  if (activeRoom.grid[index].color !== "whitesmoke") {
+    activeRoom.grid[index].color = "whitesmoke";
+  } else {
+    activeRoom.grid[index].color = cell.color;
   }
-  else {
-    activeRoom.grid[cell.cellId].color = cell.color;
-  }
-  updatedCell.color = activeRoom.grid[cell.cellId].color;
+
+  let updatedCell = {
+    id: index,
+    color: activeRoom.grid[index].color,
+  };
+
   return updatedCell;
 }
 

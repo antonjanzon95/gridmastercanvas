@@ -3,13 +3,14 @@ import { showGameOverPage } from "./gameover";
 
 export const createGridPage = (room) => {
   const mainContainer = document.querySelector("main");
-  const user = { name: "Anton", color: "blue" };
-  sessionStorage.setItem("user", JSON.stringify(user));
-  const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
+  // const user = { name: "Anton", color: "blue" };
+  const myColor = room.users.find((user) => user.id == socket.id).color;
+  // sessionStorage.setItem("user", JSON.stringify(user));
+  // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
 
   socket.on("paint", (cell) => {
     updateCellColor(cell);
-  })
+  });
 
   const usersInRoom = room.users;
 
@@ -29,7 +30,11 @@ export const createGridPage = (room) => {
       gridNode.style.backgroundColor = room.grid[idcounter].color;
 
       gridNode.addEventListener("click", (e) => {
-        socket.emit("paint", {roomId: room.roomId, cellId: e.target.id, color: user.color});
+        socket.emit("paint", {
+          roomId: room.roomId,
+          cellId: e.target.id,
+          color: myColor,
+        });
       });
       gridContainer.appendChild(gridNode);
       idcounter++;
@@ -55,7 +60,6 @@ export const createGridPage = (room) => {
   });
 
   mainContainer.appendChild(doneBtn);
-
 };
 
 function updateCellColor(cell) {

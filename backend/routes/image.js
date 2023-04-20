@@ -21,8 +21,6 @@ router.post("/save", async function (req, res) {
 
   const toSend = { user: user.name, image: image };
 
-  console.log(toSend);
-
   const saveImage = await ImageModel.create(toSend);
 
   res.status(201).json({ message: "Image saved!" });

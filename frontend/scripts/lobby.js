@@ -10,17 +10,17 @@ export function renderRoomsSection() {
   const createRoomBtn = document.createElement("button");
   const joinRoomBtn = document.createElement("button");
 
-  mainContainer.innerHTML = '';
+  mainContainer.innerHTML = "";
 
-  roomsContainer.classList.add('rooms-container');
+  roomsContainer.classList.add("rooms-container");
 
-  createRoomBtn.innerText = 'Create room';
-  createRoomBtn.classList.add('btn');
-  createRoomBtn.addEventListener('click', createNewRoom);
+  createRoomBtn.innerText = "Create room";
+  createRoomBtn.classList.add("btn");
+  createRoomBtn.addEventListener("click", createNewRoom);
 
-  joinRoomBtn.innerText = 'Join room';
-  joinRoomBtn.classList.add('btn');
-  joinRoomBtn.addEventListener('click', joinActiveRoom);
+  joinRoomBtn.innerText = "Join this room";
+  joinRoomBtn.classList.add("btn");
+  joinRoomBtn.addEventListener("click", joinActiveRoom);
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
@@ -28,47 +28,44 @@ export function renderRoomsSection() {
 }
 
 async function printRoomList() {
-  const roomsContainer = document.querySelector('.rooms-container');
+  const roomsContainer = document.querySelector(".rooms-container");
   const rooms = await fetchRooms();
   if (rooms.length === 0) {
     roomsContainer.innerHTML = "No active game rooms";
-  }
-  else {
+  } else {
     rooms.map((room, index) => {
       const roomContainer = document.createElement("div");
       const titleElement = document.createElement("h4");
       const joinBtn = document.createElement("button");
-  
+
       roomContainer.classList.add("room-container");
 
       titleElement.innerHTML = "Room " + (index + 1);
 
-      joinBtn.classList.add('btn');
+      joinBtn.classList.add("btn");
       joinBtn.id = room.roomId;
-      joinBtn.innerText = 'Join room';
+      joinBtn.innerText = "Join room";
+      joinBtn.addEventListener("click", joinActiveRoom);
 
       roomContainer.append(titleElement, joinBtn);
       roomsContainer.appendChild(roomContainer);
-    })
+    });
   }
-
 }
 
-
+// create room
 function createNewRoom() {
-  const user = { name: "Anton", color: "blue" }; // från session
+  const user = { id: socket.id, name: "Anton", color: "blue" }; // från session
   socket.emit("create room", user);
-  
+
   socket.on("create room", (createRoomResponse) => {
-    console.log(createRoomResponse);
     enterRoomLobby(createRoomResponse);
-  })
-  console.log('skapa rum');
+  });
 }
 
 function enterRoomLobby(room) {
   // enable chat
-  createGridPage(room)
+  createGridPage(room);
 }
 
 async function fetchRooms() {
@@ -77,8 +74,21 @@ async function fetchRooms() {
   return data.rooms;
 }
 
-function joinActiveRoom() {
-  createSolutionGrid();
+function joinActiveRoom(e) {
+  const user = { id: socket.id, name: "Max", color: "red" };
+  const roomId = e.target.id;
+
+  const toSend = {
+    user: user,
+    roomId: roomId,
+  };
+
+  socket.emit("join room", toSend);
+
+  socket.on("join room", (room) => {
+    console.log(room);
+    createGridPage(room);
+  });
 }
 
 export const createPracticeGridPage = () => {
@@ -94,18 +104,18 @@ export const createPracticeGridPage = () => {
 
   socket.on("roomJoin", (roomIsFull) => {
     if (roomIsFull) {
-      mainContainer.innerHTML = 'Du får inte va med :(';
+      mainContainer.innerHTML = "Du får inte va med :(";
       return;
     }
-  })
+  });
 
   socket.on("createGrid", (gameGrid) => {
     const gridContainer = document.createElement("div");
     gridContainer.classList.add("canvas-grid", "rounded");
     mainContainer.appendChild(gridContainer);
-  
+
     let idcounter = 0;
-    
+
     //create the grid
     for (let i = 0; i < 15; i++) {
       for (let j = 0; j < 15; j++) {
@@ -113,15 +123,12 @@ export const createPracticeGridPage = () => {
         gridNode.classList.add("cell");
         gridNode.id = idcounter;
         gridNode.style.backgroundColor = gameGrid[idcounter].color;
-        
-  
-        gridNode.addEventListener("click", (e) => {
 
-            socket.emit("paintEvent", {
-              cell: e.target.id,
-              user: user
-            }); 
-            
+        gridNode.addEventListener("click", (e) => {
+          socket.emit("paintEvent", {
+            cell: e.target.id,
+            user: user,
+          });
         });
         gridContainer.appendChild(gridNode);
         idcounter++;
@@ -129,53 +136,50 @@ export const createPracticeGridPage = () => {
     }
     buttonContainer.classList.add("btn-container");
     mainContainer.appendChild(buttonContainer);
-  
-  
+
     // save practice image button
     const saveImageBtn = document.createElement("button");
     saveImageBtn.innerHTML = "Save Image";
     saveImageBtn.classList.add("btn");
-  
+
     // save practice image
     saveImageBtn.addEventListener("click", () => {
       // ändra till att alla 4 users sparas med bilden <--
       const saveImage = { user: user, image: practiceImageNode };
       // localStorage.setItem("images", JSON.stringify(siaveImage));
-  
+
       saveImagePost(saveImage);
     });
-  
+
     // start game button
     const startBtn = document.createElement("button");
     startBtn.innerHTML = "Start Game";
     startBtn.classList.add("btn");
-  
+
     // set user is done on click
     startBtn.addEventListener("click", () => {
       sessionStorage.setItem("user", JSON.stringify({ ...user, ready: true }));
       const usertest = JSON.parse(sessionStorage.getItem("user"));
-  
+
       // set to all 4 users ready later <--
       if (usertest.ready) {
         hidePracticeGridPage(gridContainer);
         startGame();
       }
     });
-  
+
     // save practice image button
     const newGridBtn = document.createElement("button");
     newGridBtn.innerHTML = "New Canvas";
     newGridBtn.classList.add("btn");
-  
+
     // save practice image
     newGridBtn.addEventListener("click", createPracticeGridPage);
-  
+
     buttonContainer.appendChild(startBtn);
     buttonContainer.appendChild(saveImageBtn);
     buttonContainer.appendChild(newGridBtn);
-  })
-
-
+  });
 
   // let practiceImageNode = [];
 
@@ -214,12 +218,9 @@ export const createPracticeGridPage = () => {
   //     idcounter++;
   //   }
   // }
-
-
 };
 
 export const startGame = () => {
-  
   createSolutionGrid();
 };
 
