@@ -1,5 +1,6 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 const socket = io("http://localhost:3000");
+
 export function renderChatHtml() {
   // localStorage.setItem('userName', 'user1');
   // localStorage.setItem('userColor', 'blue');
@@ -8,8 +9,6 @@ export function renderChatHtml() {
   // localStorage.setItem('userColor', 'red');
 
   console.log("Hej från chat!");
-  localStorage.setItem("username", "user1");
-  localStorage.setItem("usercolor", "green");
 
   const chatDiv = document.querySelector("#chat-div");
 
@@ -25,38 +24,32 @@ export function renderChatHtml() {
   let sendButton = document.querySelector("#send-button");
   let sendMessage = document.querySelector("#send-message");
 
-  //   socket.on("message", (arg) => {
-  //     console.log("message", arg);
-  //     // messages.innerHTML = arg.user + " " + arg.chat;
-
   socket.on("message", (msg) => {
     console.log(msg);
     let chat = document.createElement("div");
+    chat.setAttribute("class", "message");
+
+    if (msg.user === localStorage.getItem("userName")) {
+      chat.setAttribute("class", "send-message");
+    } else {
+      chat.setAttribute("class", "receive-message");
+    }
+
     chat.style.backgroundColor = msg.color;
     chat.innerHTML = msg.user + ": " + msg.message;
-    messages.appendChild(chat);
+    messages.insertBefore(chat, messages.firstChild);
+    messages.scrollTop = messages.scrollHeight;
   });
-
-  //   socket.emit("hej", "Hej");
-
-  //   socket.on("hej", (arg) => {
-  //     console.log(arg);
-  //   });
-
-  //   socket.on("hejhej", (arg) => {
-  //     console.log(arg);
-  //   });
 
   sendButton.addEventListener("click", () => {
     console.log("Klick på knapp");
-    let user = localStorage.getItem("username");
-    let color = localStorage.getItem("usercolor");
+    let user = localStorage.getItem("userName");
+    let color = localStorage.getItem("userColor");
     socket.emit("message", {
       message: sendMessage.value,
       user: user,
       color: color,
     });
-    console.log(sendMessage.value);
     sendMessage.value = "";
   });
 }
