@@ -4,6 +4,7 @@
 
 @import "./general";
 @import "./components/header";
+@import "./components/roomlist";
 
 .parent {
   display: grid;
@@ -87,6 +88,7 @@
 }
 
 .btn {
+  margin: 1px;
   width: 100%;
   max-width: 300px;
   padding: 0.75rem 1.5rem;

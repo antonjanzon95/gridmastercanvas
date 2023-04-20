@@ -1,11 +1,17 @@
-import { grids } from "../main";
+import { grids, socket } from "../main";
 import { showGameOverPage } from "./gameover";
 
-export const createGridPage = () => {
+export const createGridPage = (room) => {
   const mainContainer = document.querySelector("main");
   const user = { name: "Anton", color: "blue" };
   sessionStorage.setItem("user", JSON.stringify(user));
   const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
+
+  socket.on("paint", (cell) => {
+    updateCellColor(cell);
+  })
+
+  const usersInRoom = room.users;
 
   mainContainer.innerHTML = "";
 
@@ -15,29 +21,15 @@ export const createGridPage = () => {
   gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
 
-  let gameTry = [];
-
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
       gridNode.classList.add("cell");
-      gridNode.style.backgroundColor = "whitesmoke";
-
-      let cell = {
-        color: "whitesmoke",
-      };
-
-      gameTry.push(cell);
-      let id = idcounter;
+      gridNode.id = idcounter;
+      gridNode.style.backgroundColor = room.grid[idcounter].color;
 
       gridNode.addEventListener("click", (e) => {
-        if (gridNode.style.backgroundColor == "whitesmoke") {
-          gridNode.style.backgroundColor = user.color;
-          gameTry[id].color = user.color;
-        } else {
-          gridNode.style.backgroundColor = "whitesmoke";
-          gameTry[id].color = "whitesmoke";
-        }
+        socket.emit("paint", {roomId: room.roomId, cellId: e.target.id, color: user.color});
       });
       gridContainer.appendChild(gridNode);
       idcounter++;
@@ -64,8 +56,12 @@ export const createGridPage = () => {
 
   mainContainer.appendChild(doneBtn);
 
-  grids.try = gameTry;
 };
+
+function updateCellColor(cell) {
+  const cellElement = document.getElementById(cell.id);
+  cellElement.style.backgroundColor = cell.color;
+}
 
 export function createSolutionGrid() {
   const mainContainer = document.querySelector("main");
@@ -126,11 +122,11 @@ const startGame = (countdownInterval) => {
 };
 
 // calculate score
-export function compareTryToSolution(gameTry, solution) {
+export function compareTryToSolution(currentGrid, solution) {
   let correctChoice = 0;
 
   for (let i = 0; i < solution.length; i++) {
-    if (gameTry[i].color === solution[i].color) {
+    if (currentGrid[i].color === solution[i].color) {
       correctChoice++;
     }
   }

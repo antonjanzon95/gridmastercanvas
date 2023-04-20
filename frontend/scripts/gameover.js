@@ -1,4 +1,4 @@
-import { createPracticeGridPage } from "./lobby";
+import { renderRoomsSection } from "./lobby";
 
 export const showGameOverPage = (finalScore) => {
   const mainContainer = document.querySelector("main");
@@ -12,7 +12,7 @@ export const showGameOverPage = (finalScore) => {
   playAgainBtn.classList.add("btn");
   playAgainBtn.innerHTML = "Play Again";
   playAgainBtn.addEventListener("click", () => {
-    createPracticeGridPage();
+    renderRoomsSection();
   });
 
   const highscoreBtn = document.createElement("button");
