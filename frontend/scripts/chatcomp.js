@@ -5,7 +5,7 @@ export function renderChatHtml() {
   // localStorage.setItem('userName', 'user1');
   // localStorage.setItem('userColor', 'blue');
 
-  //  localStorage.setItem('userName', 'User2');
+  // localStorage.setItem('userName', 'User2');
   // localStorage.setItem('userColor', 'red');
 
   console.log("Hej från chat!");
