@@ -94,3 +94,16 @@
   font-size: 72px;
   color: gold;
 }
+
+footer {
+  display: flex;
+  button {
+    height: 64px;
+    width: 250px;
+    background-color: whitesmoke;
+    border: 2px solid #2b2b2b;
+    box-shadow: 0.15rem 0.15rem #2b2b2b;
+    margin: 1rem;
+
+  }
+}
