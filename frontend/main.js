@@ -3,6 +3,7 @@ import { createPracticeGridPage } from "./scripts/lobby.js";
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 // import { initLog } from './scripts/log';
 import { renderChatHtml } from "./scripts/chatcomp";
+import { renderFooter } from "./scripts/footerComp";
 
 export let grids = {};
 export const socket = io("http://localhost:3000");
@@ -15,6 +16,7 @@ document.querySelector("#app").innerHTML = `
       <main class="div3 w-full h-full p-4 flex justify-center items-center gap-4"></main>
       <aside class="div2 w-full h-full" id="chat-div">chat</aside>
   </div>
+  <footer id="footer"></footer>
 `;
 
 // socket.emit("hej", "Hej");
@@ -29,8 +31,10 @@ document.querySelector("#app").innerHTML = `
 
 const init = () => {
   // initLog();
-  createPracticeGridPage();
   renderChatHtml();
+  createPracticeGridPage();
+  renderFooter();
+
 };
 
 init();
