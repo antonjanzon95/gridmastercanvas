@@ -47,52 +47,52 @@ app.use("/image", imageRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
-  // socket.emit("message", { message: "Hello from the server!" });
-
-  // socket.emit("message", "Hello");
-  // socket.on("saveUser", (arg) => {
-  //   socket.userName = arg;
-  //   socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-
-  //   let users = [];
-
-  //   let user = {
-  //     userName: socket.userName,
-  //     userId: socket.id,
-  //     userColor: socket.userColor,
-  //   };
-
-  //   users.push(user);
-  //   console.log(users);
-
-  //   io.emit("saveUser", { user });
-  // });
-
-  // socket.on("chat", (arg) => {
-  //   socket.userMessage = arg;
-
-  //   let chatMessage = {
-  //     userColor: socket.userColor,
-  //     userName: socket.userName,
-  //     userMessage: socket.userMessage,
-  //   };
-
-  //   io.emit("chat", { chatMessage });
-  // });
-
-
-
-/*****************************************************************************
- *************************** SOCKET CHAT ************************************
- *****************************************************************************/
-  console.log('someone is here');
-
-  socket.emit("message",{message: "Hello world", user: "Server says"})
+  socket.emit("message", {
+    message: "Hello from the server!",
+    user: "Servern säger",
+  });
 
   socket.on("message", (arg) => {
-    console.log("incoming chat:", arg);
-    io.emit("message", arg)
-  })
+    console.log("Incoming chat", arg);
+    io.emit("message", arg);
+  });
+
+  //   socket.on("saveUser", (arg) => {
+  //     socket.userName = arg;
+  //     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+  //     let users = [];
+
+  //     let user = {
+  //       userName: socket.userName,
+  //       userId: socket.id,
+  //       userColor: socket.userColor,
+  //     };
+
+  //     users.push(user);
+  //     console.log(users);
+
+  //     io.emit("saveUser", { user });
+  //   });
+
+  //   socket.on("chat", (arg) => {
+  //     socket.userMessage = arg;
+
+  //     let chatMessage = {
+  //       userColor: socket.userColor,
+  //       userName: socket.userName,
+  //       userMessage: socket.userMessage,
+  //     };
+
+  //     io.emit("chat", { chatMessage });
+  //   });
+
+  //   socket.on("hej", (arg) => {
+  //     console.log(arg);
+  //     io.emit("hej", arg + " Anton");
+
+  //     io.emit("hejhej", arg + " Anton");
+  //   });
 });
 
 module.exports = { app: app, server: server };
