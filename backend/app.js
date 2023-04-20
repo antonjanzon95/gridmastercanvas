@@ -50,17 +50,13 @@ io.on('connection', (socket) => {
     socket.userName = arg;
     socket.userColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
-    let users = [];
-
     let user = {
       userName: socket.userName,
       userId: socket.id,
       userColor: socket.userColor,
     };
 
-    users.push(user);
-    console.log(users);
-
+    console.log({ user });
     io.emit('saveUser', { user });
   });
 

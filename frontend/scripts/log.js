@@ -1,14 +1,11 @@
-// import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-// const socket = io('http://localhost:3000');
 import { socket } from '../main';
 
 export function initLog() {
   if (sessionStorage.getItem('user')) {
-    console.log('inloggad');
+    console.log('logged in');
     renderLogoutButton();
   } else {
-    console.log('utloggad');
-
+    console.log('not logged in');
     renderLogForm();
   }
 }
@@ -21,8 +18,8 @@ function renderLogForm() {
   let logUserButton = document.createElement('button');
 
   logInput.type = 'text';
-  logInput.placeholder = 'namn';
-  logUserButton.innerHTML = 'logga in';
+  logInput.placeholder = 'name';
+  logUserButton.innerHTML = 'log in';
 
   header.appendChild(logForm);
   logForm.append(logInput, logUserButton);
@@ -35,22 +32,26 @@ function renderLogForm() {
     }
 
     sessionStorage.setItem('user', logInput.value);
-
     socket.emit('saveUser', sessionStorage.getItem('user'));
 
-    logInput.value = '';
-    logForm.innerHTML = '';
-    initLog();
+    socket.on('saveUser', (arg) => {
+      let user = arg.user;
+
+      console.log(`${user.userName} has logged in`);
+
+      initLog();
+      logInput.value = '';
+      logForm.innerHTML = '';
+    });
   });
 }
 
 function renderLogoutButton() {
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
-
   let logOutButton = document.createElement('button');
 
-  logOutButton.innerHTML = 'logga ut';
+  logOutButton.innerHTML = 'log out';
   header.appendChild(logForm);
   logForm.appendChild(logOutButton);
 
