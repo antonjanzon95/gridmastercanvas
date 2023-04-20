@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -50,12 +50,9 @@ app.use("/image", imageRouter);
 app.use("/rooms", roomsRouter);
 
 io.on("connection", (socket) => {
-
   socket.on("saveUser", (arg) => {
     socket.userName = arg;
     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-
-    let users = [];
 
     let user = {
       userName: socket.userName,
@@ -63,9 +60,7 @@ io.on("connection", (socket) => {
       userColor: socket.userColor,
     };
 
-    users.push(user);
-    console.log(users);
-
+    console.log({ user });
     io.emit("saveUser", { user });
   });
 
@@ -90,19 +85,19 @@ io.on("connection", (socket) => {
     const room = {
       grid: startGrid,
       users: roomUsers,
-      roomId: uuidv4()
-    }
+      roomId: uuidv4(),
+    };
 
-    rooms.push(room)
-    
+    rooms.push(room);
+
     io.emit("create room", room);
-  })
+  });
 
-  socket.on("paint", (cellObject) => { // {roomId: room.roomId, cellId: e.target.id, color: user.color});
+  socket.on("paint", (cellObject) => {
+    // {roomId: room.roomId, cellId: e.target.id, color: user.color});
     const updatedCell = updateGrid(cellObject);
     io.emit("paint", updatedCell);
-  })
-
+  });
 });
 
 module.exports = { app: app, server: server };
