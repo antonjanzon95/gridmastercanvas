@@ -67,75 +67,60 @@ function updateCellColor(cell) {
   cellElement.style.backgroundColor = cell.color;
 }
 
-export function createSolutionGrid() {
-  const mainContainer = document.querySelector("main");
-  mainContainer.innerHTML = "";
+// export function createSolutionGrid() {
+//   const mainContainer = document.querySelector("main");
+//   mainContainer.innerHTML = "";
 
-  const gridContainer = document.createElement("div");
-  gridContainer.classList.add("canvas-grid");
-  mainContainer.appendChild(gridContainer);
+//   const gridContainer = document.createElement("div");
+//   gridContainer.classList.add("canvas-grid");
+//   mainContainer.appendChild(gridContainer);
 
-  let facit = [];
+//   let facit = [];
 
-  let colors = ["green", "blue", "red", "yellow", "whitesmoke"];
+//   let colors = ["green", "blue", "red", "yellow", "whitesmoke"];
 
-  let idcounter = 1;
+//   let idcounter = 1;
 
-  for (let i = 0; i < 15; i++) {
-    for (let j = 0; j < 15; j++) {
-      const gridNode = document.createElement("div");
-      gridNode.classList.add("cell");
-      gridNode.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
+//   for (let i = 0; i < 15; i++) {
+//     for (let j = 0; j < 15; j++) {
+//       const gridNode = document.createElement("div");
+//       gridNode.classList.add("cell");
+//       gridNode.style.backgroundColor =
+//         colors[Math.floor(Math.random() * colors.length)];
 
-      gridContainer.appendChild(gridNode);
-      idcounter++;
+//       gridContainer.appendChild(gridNode);
+//       idcounter++;
 
-      let cell = {
-        color: gridNode.style.backgroundColor,
-      };
+//       let cell = {
+//         color: gridNode.style.backgroundColor,
+//       };
 
-      facit.push(cell);
-    }
-  }
+//       facit.push(cell);
+//     }
+//   }
 
-  grids.solution = facit;
+//   grids.solution = facit;
 
-  const countdownDiv = document.createElement("div");
-  countdownDiv.classList.add("countdown");
-  document.querySelector("#app").appendChild(countdownDiv);
+//   const countdownDiv = document.createElement("div");
+//   countdownDiv.classList.add("countdown");
+//   document.querySelector("#app").appendChild(countdownDiv);
 
-  let cd = 5;
-  const countdownInterval = setInterval(() => {
-    countdownDiv.innerHTML = cd.toString();
-    cd--;
+//   let cd = 5;
+//   const countdownInterval = setInterval(() => {
+//     countdownDiv.innerHTML = cd.toString();
+//     cd--;
 
-    if (cd < 0) {
-      countdownDiv.innerHTML = "MÅLA!";
-      setTimeout(() => {
-        countdownDiv.innerHTML = "";
-      }, 2000);
-      startGame(countdownInterval);
-    }
-  }, 1000);
-}
+//     if (cd < 0) {
+//       countdownDiv.innerHTML = "MÅLA!";
+//       setTimeout(() => {
+//         countdownDiv.innerHTML = "";
+//       }, 2000);
+//       startGame(countdownInterval);
+//     }
+//   }, 1000);
+// }
 
 const startGame = (countdownInterval) => {
   createGridPage();
   clearInterval(countdownInterval);
 };
-
-// calculate score
-export function compareTryToSolution(currentGrid, solution) {
-  let correctChoice = 0;
-
-  for (let i = 0; i < solution.length; i++) {
-    if (currentGrid[i].color === solution[i].color) {
-      correctChoice++;
-    }
-  }
-
-  let correctAmountInPercentage = (correctChoice / solution.length) * 100;
-
-  return correctAmountInPercentage;
-}

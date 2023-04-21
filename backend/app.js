@@ -97,6 +97,10 @@ io.on("connection", (socket) => {
       (room) => room.roomId == userAndRoomId.roomId
     );
 
+    if (roomToJoin.users.length % 2 == 0) {
+      userAndRoomId.user.color = "green";
+    }
+
     roomToJoin.users.push(userAndRoomId.user);
 
     io.emit("join room", roomToJoin);

@@ -1,9 +1,11 @@
 import "./styles/style.css";
-import { createPracticeGridPage, renderRoomsSection } from "./scripts/lobby.js";
+
+import { createPracticeGridPage } from "./scripts/lobby.js";
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { fetchImages, renderImages } from "./scripts/showimgs";
 import { viewSavedImages } from "./scripts/saveImg";
 import { initLog } from "./scripts/log";
+import { renderRoomsSection } from "./scripts/roomLobby";
 
 export let grids = {};
 export const socket = io("http://localhost:3000");

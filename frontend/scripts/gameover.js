@@ -1,4 +1,4 @@
-import { renderRoomsSection } from "./lobby";
+// import { renderRoomsSection } from "./lobby";
 
 export const showGameOverPage = (finalScore) => {
   const mainContainer = document.querySelector("main");
@@ -24,3 +24,18 @@ export const showGameOverPage = (finalScore) => {
   mainContainer.appendChild(playAgainBtn);
   mainContainer.appendChild(score);
 };
+
+// calculate score
+export function compareTryToSolution(currentGrid, solution) {
+  let correctChoice = 0;
+
+  for (let i = 0; i < solution.length; i++) {
+    if (currentGrid[i].color === solution[i].color) {
+      correctChoice++;
+    }
+  }
+
+  let correctAmountInPercentage = (correctChoice / solution.length) * 100;
+
+  return correctAmountInPercentage;
+}
