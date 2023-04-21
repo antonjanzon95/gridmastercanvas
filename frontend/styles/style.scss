@@ -9,11 +9,9 @@
 
 body {
   font-family: $font-primary;
-
 }
 
 @import "./components/roomlist";
-
 
 .parent {
   display: grid;
@@ -31,7 +29,7 @@ body {
 }
 .div2 {
   grid-area: 2 / 5 / 6 / 6;
-  background-color: #D64A8B;
+  background-color: #d64a8b;
 }
 .div3 {
   grid-area: 2 / 2 / 6 / 5;
@@ -129,7 +127,6 @@ body {
 footer {
   display: flex;
   button {
-
     width: 300px;
     background-color: whitesmoke;
     border: 2px solid #2b2b2b;
@@ -189,4 +186,3 @@ footer {
     background-color: red;
   }
 }
-
