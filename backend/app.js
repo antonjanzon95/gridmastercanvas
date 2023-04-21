@@ -47,6 +47,23 @@ app.use("/image", imageRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
+  socket.on("saveUser", (arg) => {
+    socket.userName = arg;
+    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+    let user = {
+      userName: socket.userName,
+      userId: socket.id,
+      userColor: socket.userColor,
+    };
+
+    console.log({ user });
+    io.emit("saveUser", { user });
+  });
+
+
+
+
   // socket.emit("message", { message: "Hello from the server!" });
 
   // socket.emit("message", "Hello");
