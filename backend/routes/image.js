@@ -1,11 +1,19 @@
 var express = require("express");
 const ImageModel = require("../models/ImageModel");
-const StringModel = require("../models/StringModel");
 var router = express.Router();
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+router.get("/", async function (req, res) {
+  const imgs = await ImageModel.find();
+
+  res.status(200).json(imgs);
+});
+
+router.get("/:id", async function (req, res) {
+  const id = req.params.id;
+  // const objectId = new
+  const img = await ImageModel.findOne({ _id: id });
+
+  res.status(200).json(img);
 });
 
 router.post("/save", async function (req, res) {
@@ -13,19 +21,9 @@ router.post("/save", async function (req, res) {
 
   const toSend = { user: user.name, image: image };
 
-  const saveImage = new ImageModel(toSend);
-
-  await saveImage.save();
+  const saveImage = await ImageModel.create(toSend);
 
   res.status(201).json({ message: "Image saved!" });
-});
-
-router.post("/savestr", async function (req, res) {
-  const saveStr = await StringModel.create(req.body);
-
-  console.log(saveStr);
-
-  res.status(201).json(saveStr);
 });
 
 module.exports = router;

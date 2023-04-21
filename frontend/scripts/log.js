@@ -71,6 +71,7 @@ function renderLogoutButton(color) {
   logForm.appendChild(logOutButton);
 
   logOutButton.addEventListener('click', () => {
+
     sessionStorage.removeItem('user');
 
     removeColor(color);
