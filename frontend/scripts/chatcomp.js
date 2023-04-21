@@ -39,7 +39,7 @@ export function renderChatHtml() {
       chat.style.backgroundColor = msg.color;
       const luminance = calculateLuminance(msg.color);
       if (luminance > 0.5) {
-        chat.style.color = "black";
+        chat.style.color = "#2b2b2b";
       } else {
         chat.style.color = "whitesmoke";
       }
@@ -63,25 +63,25 @@ export function renderChatHtml() {
   });
 
   function calculateLuminance(color) {
-    console.log(color)
+    console.log(color);
     const rgb = hexToRgb(color);
+    //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
     const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 
     return luminance;
   }
-  
-  function hexToRgb(hex) {
-    console.log(hex)
-    hex = hex.replace("#", "");
-    console.log(hex)
 
-  
+  function hexToRgb(hex) {
+    console.log(hex);
+    hex = hex.replace("#", "");
+    console.log(hex);
+
+    //konvertering hex till heltag,
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
-    console.log({r,g,b})
-  
+    console.log({ r, g, b });
+
     return { r, g, b };
   }
-  
 }
