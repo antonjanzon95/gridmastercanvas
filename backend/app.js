@@ -111,13 +111,20 @@ io.on("connection", (socket) => {
     const startGrid = createEmptyGrid();
     const roomUsers = [];
 
-    roomUsers.push(user);
-
     const room = {
       grid: startGrid,
       users: roomUsers,
       roomId: uuidv4(),
+      colors: ["red", "blue", "green", "yellow"],
     };
+
+    const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
+
+    const assignedColor = room.colors.splice(colorIndex, 1)[0];
+
+    user.color = assignedColor;
+
+    roomUsers.push(user);
 
     rooms.push(room);
 
@@ -129,11 +136,17 @@ io.on("connection", (socket) => {
       (room) => room.roomId == userAndRoomId.roomId
     );
 
-    if (roomToJoin.users.length % 2 == 0) {
-      userAndRoomId.user.color = "green";
-    }
+    const colorIndex = Math.floor(Math.random() * roomToJoin.colors.length - 1);
+
+    const assignedColor = roomToJoin.colors.splice(colorIndex, 1)[0];
+
+    userAndRoomId.user.color = assignedColor;
 
     roomToJoin.users.push(userAndRoomId.user);
+
+    if (roomToJoin.users.length > 3) {
+      io.emit("roomIsFull", roomToJoin.roomId);
+    }
 
     io.emit("join room", roomToJoin);
   });

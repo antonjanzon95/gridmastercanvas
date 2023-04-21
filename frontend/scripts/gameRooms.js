@@ -27,7 +27,6 @@ export function renderRoomsSection() {
   roomsContainer.classList.add("rooms-container");
 
   const createRoomBtn = createButton("Create Room", createNewRoom);
-
   const joinRoomBtn = createButton("Join This Room", joinActiveRoom);
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
@@ -38,22 +37,26 @@ export function renderRoomsSection() {
 async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
   const rooms = await fetchRooms();
+
+  socket.on("roomIsFull", (roomId) => {
+    const buttonToDisable = document.getElementById(roomId);
+    buttonToDisable.setAttribute("disabled", "");
+    buttonToDisable.innerHTML = "FULL";
+  });
+
   if (rooms.length === 0) {
     roomsContainer.innerHTML = "No active game rooms";
   } else {
     rooms.map((room, index) => {
       const roomContainer = document.createElement("div");
       const titleElement = document.createElement("h4");
-      const joinBtn = document.createElement("button");
 
       roomContainer.classList.add("room-container");
 
       titleElement.innerHTML = "Room " + (index + 1);
 
-      joinBtn.classList.add("btn");
+      const joinBtn = createButton("Join Room", joinActiveRoom);
       joinBtn.id = room.roomId;
-      joinBtn.innerText = "Join room";
-      joinBtn.addEventListener("click", joinActiveRoom);
 
       roomContainer.append(titleElement, joinBtn);
       roomsContainer.appendChild(roomContainer);
@@ -83,3 +86,6 @@ function joinActiveRoom(e) {
     createGridPage(room);
   });
 }
+
+// testing purposes users
+// function testingUsers() {}
