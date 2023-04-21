@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./general";
+@import "./components/general";
 @import "./components/header";
+
+@import "./components/chatAside";
+
+body {
+  font-family: $font-primary;
+
+}
+
 @import "./components/roomlist";
+
 
 .parent {
   display: grid;
@@ -17,11 +26,12 @@
 
 .div1 {
   grid-area: 1 / 1 / 2 / 6;
-  background-color: white;
+  background-color: $lightOrangeColor;
+  padding: 1rem;
 }
 .div2 {
   grid-area: 2 / 5 / 6 / 6;
-  background-color: red;
+  background-color: #D64A8B;
 }
 .div3 {
   grid-area: 2 / 2 / 6 / 5;
@@ -88,7 +98,7 @@
 }
 
 .btn {
-  margin: 1px;
+  margin-bottom: 1rem;
   width: 100%;
   max-width: 300px;
   padding: 0.75rem 1.5rem;
@@ -114,6 +124,18 @@
 .score-text {
   font-size: 72px;
   color: gold;
+}
+
+footer {
+  display: flex;
+  button {
+
+    width: 300px;
+    background-color: whitesmoke;
+    border: 2px solid #2b2b2b;
+    box-shadow: 0.15rem 0.15rem #2b2b2b;
+    margin: 1rem;
+  }
 }
 
 .modal-container {
@@ -167,3 +189,4 @@
     background-color: red;
   }
 }
+

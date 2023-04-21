@@ -56,7 +56,9 @@ function renderLogoutButton() {
   logForm.appendChild(logOutButton);
 
   logOutButton.addEventListener('click', () => {
+
     sessionStorage.removeItem('user');
+
     logForm.innerHTML = '';
 
     initLog();
