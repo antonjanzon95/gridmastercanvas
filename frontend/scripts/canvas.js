@@ -1,9 +1,11 @@
 import { grids, socket } from "../main";
 import { showGameOverPage } from "./gameover";
+import { createButton, readyCheck } from "./lobby";
+import { saveImagePost } from "./saveImg";
 
 export const createGridPage = (room) => {
   const mainContainer = document.querySelector("main");
-  // const user = { name: "Anton", color: "blue" };
+  const user = { name: "Anton", color: "blue" };
   const myColor = room.users.find((user) => user.id == socket.id).color;
   // sessionStorage.setItem("user", JSON.stringify(user));
   // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
@@ -41,26 +43,35 @@ export const createGridPage = (room) => {
     }
   }
 
-  // done button
-  const doneBtn = document.createElement("button");
-  doneBtn.innerHTML = "Done";
-  doneBtn.classList.add("btn");
-
-  // set user is done on click
-  doneBtn.addEventListener("click", () => {
-    sessionStorage.setItem("user", JSON.stringify({ ...user, done: true }));
-    const usertest = JSON.parse(sessionStorage.getItem("user"));
-
-    if (usertest.done) {
-      let finalScore = compareTryToSolution(grids.try, grids.solution);
-      showGameOverPage(finalScore);
-    } else {
-      return alert("inte klar");
-    }
-  });
-
-  mainContainer.appendChild(doneBtn);
+  createButtons(room.roomId);
 };
+
+const createButtons = (roomId) => {
+  const mainContainer = document.querySelector("main");
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("btn-container");
+  mainContainer.appendChild(buttonContainer);
+
+  // save practice image button
+  const saveImageBtn = createButton("Save Image");
+  saveImageBtn.id = roomId;
+  saveImageBtn.addEventListener("click", mellanFunktion);
+
+  // start game button
+  const startBtn = createButton("Start Game");
+  startBtn.addEventListener("click", readyCheck);
+
+  // save practice image button
+  const newGridBtn = createButton("New Canvas");
+  // newGridBtn.addEventListener("click", createPracticeGridPage);
+
+  buttonContainer.append(startBtn, saveImageBtn, newGridBtn);
+};
+
+function mellanFunktion(e) {
+  const roomId = e.target.id;
+  saveImagePost(roomId);
+}
 
 function updateCellColor(cell) {
   const cellElement = document.getElementById(cell.id);

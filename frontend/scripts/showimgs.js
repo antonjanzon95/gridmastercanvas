@@ -7,6 +7,7 @@ export async function fetchImages() {
 export async function fetchImageById(id) {
   const response = await fetch("http://localhost:3000/image/" + id);
   const data = await response.json();
+  console.log(data);
   return data;
 }
 
@@ -16,22 +17,22 @@ export function renderImages(images) {
 
   images.forEach((image) => {
     let counter = 0;
-    const container = document.createElement("div");
-    container.classList.add("canvas-grid-mini");
-    container.id = image._id;
+    const imageContainer = document.createElement("div");
+    imageContainer.classList.add("canvas-grid-mini");
+    imageContainer.id = image._id;
 
     for (let i = 0; i < 15; i++) {
       for (let j = 0; j < 15; j++) {
         const imgCell = document.createElement("div");
         imgCell.classList.add("view-cell");
         imgCell.style.backgroundColor = image.image[counter].color;
-        container.appendChild(imgCell);
+        imageContainer.appendChild(imgCell);
         counter++;
       }
     }
-    container.addEventListener("click", renderImage);
+    imageContainer.addEventListener("click", renderImage);
 
-    sideBarContainer.appendChild(container);
+    sideBarContainer.appendChild(imageContainer);
   });
 }
 
@@ -46,7 +47,7 @@ export async function renderImage(event) {
 
   const credit = document.createElement("h1");
   credit.classList.add("credit");
-  credit.innerHTML = `Made by: ${image.user}`;
+  credit.innerHTML = `Made by: ${image.users.map((user) => " " + user.name)}`;
 
   //button
   const closeWindow = document.createElement("button");
