@@ -17,7 +17,7 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.CLIENT,
+    origin: process.env.CLIENT_URI,
 
     methods: ["GET", "POST"],
   },

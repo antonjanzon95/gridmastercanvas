@@ -4,8 +4,6 @@ import { saveImagePost } from "./saveImg.js";
 import { fetchImages, renderImages } from "./showimgs.js";
 
 export const createPracticeGridPage = () => {
-  const mainContainer = document.querySelector("main");
-  const buttonContainer = document.createElement("div");
   // const user = { name: "Anton", color: "blue" };
   sessionStorage.setItem("user", JSON.stringify(user));
   // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
@@ -46,6 +44,8 @@ export const createPracticeGridPage = () => {
         idcounter++;
       }
     }
+    const mainContainer = document.querySelector("main");
+    const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("btn-container");
     mainContainer.appendChild(buttonContainer);
 
