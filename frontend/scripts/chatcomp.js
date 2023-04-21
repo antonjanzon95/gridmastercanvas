@@ -14,7 +14,7 @@ export function renderChatHtml() {
 
   chatDiv.innerHTML = `
     <div class="chat-container">
-        <div id="messages"></div>
+        <div class="messages" id="messages"></div>
       <input type='text' id='send-message' placeholder='Lets chat'/>
         <button id='send-button' class="send-button">Send</button>
     </div>
