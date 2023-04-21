@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
   console.log("Någonting");
   socket.on("saveUser", (arg) => {
     socket.userName = arg;
-    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
 
     let user = {
       userName: socket.userName,

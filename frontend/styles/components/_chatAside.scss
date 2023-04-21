@@ -54,15 +54,17 @@
     flex-direction: column-reverse;   
 }
 .message {
+    color: $white;
     align-self: flex-end; 
-  }
+    position: relative;
+}
 
 .send-message {
     padding: 5px;
     margin-bottom: 10px;
     border-radius: 5px;
     text-align: right;
-    color: whitesmoke;
+    // color: whitesmoke;
     align-self: flex-end;
     max-width: 80%; 
 }
@@ -72,7 +74,7 @@
     margin-bottom: 10px;
     border-radius: 5px;
     text-align: left;
-    color: whitesmoke;
+    // color: whitesmoke;
     align-self: flex-start;
     max-width: 80%; 
 }

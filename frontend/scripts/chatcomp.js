@@ -29,13 +29,22 @@ export function renderChatHtml() {
     let chat = document.createElement("div");
     chat.setAttribute("class", "message");
 
-    if (msg.user === localStorage.getItem("userName")) {
+    if (msg.user === sessionStorage.getItem("user")) {
       chat.setAttribute("class", "send-message");
     } else {
       chat.setAttribute("class", "receive-message");
     }
 
-    chat.style.backgroundColor = msg.color;
+    if (msg.color) {
+      chat.style.backgroundColor = msg.color;
+      const luminance = calculateLuminance(msg.color);
+      if (luminance > 0.5) {
+        chat.style.color = "black";
+      } else {
+        chat.style.color = "whitesmoke";
+      }
+    }
+
     chat.innerHTML = msg.user + ": " + msg.message;
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
@@ -43,8 +52,8 @@ export function renderChatHtml() {
 
   sendButton.addEventListener("click", () => {
     console.log("Klick på knapp");
-    let user = localStorage.getItem("userName");
-    let color = localStorage.getItem("userColor");
+    let user = sessionStorage.getItem("user");
+    let color = sessionStorage.getItem("userColor");
     socket.emit("message", {
       message: sendMessage.value,
       user: user,
@@ -52,4 +61,27 @@ export function renderChatHtml() {
     });
     sendMessage.value = "";
   });
+
+  function calculateLuminance(color) {
+    console.log(color)
+    const rgb = hexToRgb(color);
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+
+    return luminance;
+  }
+  
+  function hexToRgb(hex) {
+    console.log(hex)
+    hex = hex.replace("#", "");
+    console.log(hex)
+
+  
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    console.log({r,g,b})
+  
+    return { r, g, b };
+  }
+  
 }

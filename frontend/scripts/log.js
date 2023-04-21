@@ -1,4 +1,5 @@
 import { socket } from '../main';
+export { socket }; 
 
 export function initLog(color) {
   if (sessionStorage.getItem('user')) {
@@ -48,10 +49,12 @@ function renderLogForm() {
     socket.emit('saveUser', sessionStorage.getItem('user'));
 
     socket.on('saveUser', (arg) => {
+      console.log(arg)
       let user = arg.user;
 
       console.log(`${user.userName} has logged in`);
       addColor(user.userColor);
+      sessionStorage.setItem('userColor', user.userColor);
 
       initLog(user.userColor);
     });
