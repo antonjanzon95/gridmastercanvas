@@ -71,6 +71,25 @@ io.on('connection', (socket) => {
 
     io.emit('chat', { chatMessage });
   });
+
+  let colors = [];
+
+  socket.on('addColor', (arg) => {
+    socket.color = arg;
+
+    colors.push(socket.color);
+
+    console.log(colors);
+    io.emit('updateColors', colors);
+  });
+
+  socket.on('removeColor', (arg) => {
+    socket.color = arg;
+
+    colors.pop(socket.color);
+
+    io.emit('updateColors', colors);
+  });
 });
 
 module.exports = { app: app, server: server };

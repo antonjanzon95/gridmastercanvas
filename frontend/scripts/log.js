@@ -1,13 +1,25 @@
 import { socket } from '../main';
 
-export function initLog() {
+export function initLog(color) {
   if (sessionStorage.getItem('user')) {
     console.log('logged in');
-    renderLogoutButton();
+    renderLogoutButton(color);
   } else {
+    socket.off('addColor');
+    socket.off('removeColor');
+    socket.off('saveUser');
+
     console.log('not logged in');
     renderLogForm();
   }
+
+  socket.off('updateColors');
+
+  socket.on('updateColors', (arg) => {
+    for (let i = 0; i < arg.length; i++) {
+      console.log(arg[i]);
+    }
+  });
 }
 
 function renderLogForm() {
@@ -32,21 +44,24 @@ function renderLogForm() {
     }
 
     sessionStorage.setItem('user', logInput.value);
+
     socket.emit('saveUser', sessionStorage.getItem('user'));
 
     socket.on('saveUser', (arg) => {
       let user = arg.user;
 
       console.log(`${user.userName} has logged in`);
+      addColor(user.userColor);
 
-      initLog();
-      logInput.value = '';
-      logForm.innerHTML = '';
+      initLog(user.userColor);
     });
+
+    logInput.value = '';
+    logForm.innerHTML = '';
   });
 }
 
-function renderLogoutButton() {
+function renderLogoutButton(color) {
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
   let logOutButton = document.createElement('button');
@@ -57,8 +72,18 @@ function renderLogoutButton() {
 
   logOutButton.addEventListener('click', () => {
     sessionStorage.removeItem('user');
-    logForm.innerHTML = '';
+
+    removeColor(color);
 
     initLog();
+    logForm.innerHTML = '';
   });
+}
+
+function addColor(color) {
+  socket.emit('addColor', color);
+}
+
+function removeColor(color) {
+  socket.emit('removeColor', color);
 }
