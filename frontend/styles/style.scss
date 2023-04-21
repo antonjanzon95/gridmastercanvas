@@ -2,8 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./general";
+@import "./components/general";
 @import "./components/header";
+
+@import "./components/chatAside";
+
+body {
+  font-family: $font-primary;
+}
+
+@import "./components/roomlist";
 
 .parent {
   display: grid;
@@ -16,11 +24,12 @@
 
 .div1 {
   grid-area: 1 / 1 / 2 / 6;
-  background-color: white;
+  background-color: $lightOrangeColor;
+  padding: 1rem;
 }
 .div2 {
   grid-area: 2 / 5 / 6 / 6;
-  background-color: red;
+  background-color: #d64a8b;
 }
 .div3 {
   grid-area: 2 / 2 / 6 / 5;
@@ -29,6 +38,12 @@
 .div4 {
   grid-area: 2 / 1 / 4 / 2;
   background-color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  overflow-y: auto;
 }
 .div5 {
   grid-area: 4 / 1 / 6 / 2;
@@ -43,6 +58,21 @@
   border: black 3px solid;
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(15, 1fr);
+}
+
+.canvas-grid-mini {
+  display: grid;
+  width: 100px;
+  height: 100px;
+  // max-width: 45px;
+  // max-height: 45px;
+  border: black 1px solid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+}
+
+.view-cell {
+  pointer-events: none;
 }
 
 .cell {
@@ -66,6 +96,7 @@
 }
 
 .btn {
+  margin-bottom: 1rem;
   width: 100%;
   max-width: 300px;
   padding: 0.75rem 1.5rem;
@@ -91,4 +122,67 @@
 .score-text {
   font-size: 72px;
   color: gold;
+}
+
+footer {
+  display: flex;
+  button {
+    width: 300px;
+    background-color: whitesmoke;
+    border: 2px solid #2b2b2b;
+    box-shadow: 0.15rem 0.15rem #2b2b2b;
+    margin: 1rem;
+  }
+}
+
+.modal-container {
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.display-cell {
+  border-radius: 2px;
+  border: 2px solid #000;
+}
+
+.credit {
+  font-size: 48px;
+  font-weight: 800;
+  color: whitesmoke;
+}
+
+.close-modal {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  font-weight: 900;
+  color: black;
+  background-color: rgb(197, 0, 0);
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    background-color: red;
+  }
 }
