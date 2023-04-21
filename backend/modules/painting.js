@@ -14,12 +14,8 @@ function updateGrid(cell) {
   const activeRoom = rooms.find((room) => room.roomId === cell.roomId);
 
   const index = cell.cellId;
-
-  if (activeRoom.grid[index].color !== "whitesmoke") {
-    activeRoom.grid[index].color = "whitesmoke";
-  } else {
-    activeRoom.grid[index].color = cell.color;
-  }
+  
+  activeRoom.grid[index].color = (activeRoom.grid[index].color !== "whitesmoke") ? "whitesmoke" : cell.color;
 
   let updatedCell = {
     id: index,
