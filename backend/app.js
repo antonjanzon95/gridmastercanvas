@@ -5,6 +5,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
+require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -16,19 +17,16 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT,
 
     methods: ["GET", "POST"],
   },
 });
 
-mongoose.connect(
-  "mongodb+srv://antonjanzon123:antonjanzon123@test-cluster.cq7iazz.mongodb.net/gridmastercanvas",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.DATABASE_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
@@ -64,9 +62,6 @@ io.on("connection", (socket) => {
     io.emit("saveUser", { user });
   });
 
-
-
-
   // socket.emit("message", { message: "Hello from the server!" });
 
   // socket.emit("message", "Hello");
@@ -100,14 +95,12 @@ io.on("connection", (socket) => {
   //   io.emit("chat", { chatMessage });
   // });
 
+  /*****************************************************************************
+   *************************** SOCKET CHAT ************************************
+   *****************************************************************************/
+  console.log("someone is here");
 
-
-/*****************************************************************************
- *************************** SOCKET CHAT ************************************
- *****************************************************************************/
-  console.log('someone is here');
-
-  socket.emit("message",{message: "Hello world", user: "Server says"})
+  socket.emit("message", { message: "Hello world", user: "Server says" });
 
   socket.on("message", (arg) => {
     console.log("Incoming chat", arg);
@@ -153,21 +146,21 @@ io.on("connection", (socket) => {
 
   let colors = [];
 
-  socket.on('addColor', (arg) => {
+  socket.on("addColor", (arg) => {
     socket.color = arg;
 
     colors.push(socket.color);
 
     console.log(colors);
-    io.emit('updateColors', colors);
+    io.emit("updateColors", colors);
   });
 
-  socket.on('removeColor', (arg) => {
+  socket.on("removeColor", (arg) => {
     socket.color = arg;
 
     colors.pop(socket.color);
 
-    io.emit('updateColors', colors);
+    io.emit("updateColors", colors);
   });
 });
 
