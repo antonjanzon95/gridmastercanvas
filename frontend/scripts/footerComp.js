@@ -5,11 +5,10 @@ export function renderFooter() {
 
     let footer = document.querySelector('#footer');
     footer.innerHTML = `
-    FOOTER<br>
-    <button id="user1">user1 localstorage</button><br>
-    <button id="user2">user2 localstorage</button><br>
-    <button id="user3">user3 localstorage</button><br>
-    <button id="user4">user4 localstorage</button><br>
+    <button id="user1">user1 blue</button><br>
+    <button id="user2">user2 red</button><br>
+    <button id="user3">user3 green</button><br>
+    <button id="user4">user4 black</button><br>
     `;
 
     const user1 = document.querySelector('#user1');

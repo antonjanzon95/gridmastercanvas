@@ -47,10 +47,64 @@ app.use("/image", imageRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
-  socket.emit("message", {
-    message: "Hello from the server!",
-    user: "Servern säger",
+  socket.on("saveUser", (arg) => {
+    socket.userName = arg;
+    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+    let user = {
+      userName: socket.userName,
+      userId: socket.id,
+      userColor: socket.userColor,
+    };
+
+    console.log({ user });
+    io.emit("saveUser", { user });
   });
+
+
+
+
+  // socket.emit("message", { message: "Hello from the server!" });
+
+  // socket.emit("message", "Hello");
+  // socket.on("saveUser", (arg) => {
+  //   socket.userName = arg;
+  //   socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+  //   let users = [];
+
+  //   let user = {
+  //     userName: socket.userName,
+  //     userId: socket.id,
+  //     userColor: socket.userColor,
+  //   };
+
+  //   users.push(user);
+  //   console.log(users);
+
+  //   io.emit("saveUser", { user });
+  // });
+
+  // socket.on("chat", (arg) => {
+  //   socket.userMessage = arg;
+
+  //   let chatMessage = {
+  //     userColor: socket.userColor,
+  //     userName: socket.userName,
+  //     userMessage: socket.userMessage,
+  //   };
+
+  //   io.emit("chat", { chatMessage });
+  // });
+
+
+
+/*****************************************************************************
+ *************************** SOCKET CHAT ************************************
+ *****************************************************************************/
+  console.log('someone is here');
+
+  socket.emit("message",{message: "Hello world", user: "Server says"})
 
   socket.on("message", (arg) => {
     console.log("Incoming chat", arg);

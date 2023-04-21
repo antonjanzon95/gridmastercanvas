@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./general";
+@import "./components/general";
 @import "./components/header";
 @import "./components/chatAside";
+
+body {
+  font-family: $font-primary;
+
+}
 
 .parent {
   display: grid;
@@ -17,7 +22,8 @@
 
 .div1 {
   grid-area: 1 / 1 / 2 / 6;
-  background-color: white;
+  background-color: $lightOrangeColor;
+  padding: 1rem;
 }
 .div2 {
   grid-area: 2 / 5 / 6 / 6;
@@ -67,6 +73,7 @@
 }
 
 .btn {
+  margin-bottom: 1rem;
   width: 100%;
   max-width: 300px;
   padding: 0.75rem 1.5rem;
@@ -97,8 +104,8 @@
 footer {
   display: flex;
   button {
-    height: 64px;
-    width: 250px;
+
+    width: 300px;
     background-color: whitesmoke;
     border: 2px solid #2b2b2b;
     box-shadow: 0.15rem 0.15rem #2b2b2b;
@@ -106,3 +113,4 @@ footer {
 
   }
 }
+

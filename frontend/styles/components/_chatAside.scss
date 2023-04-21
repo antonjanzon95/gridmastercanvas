@@ -1,3 +1,4 @@
+@import "./general";
 
 input {
     height: 36px;
@@ -5,7 +6,7 @@ input {
     box-shadow: 0.15rem 0.15rem #2b2b2b;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
-    width: 100%;
+    width: 300px;
 }
 
 .send-button {
@@ -15,6 +16,7 @@ input {
     border: 2px solid #2b2b2b;
     box-shadow: 0.15rem 0.15rem #2b2b2b;
     transition: 0.3s ease-in-out;
+    color: $black;
 
     &:hover {
         background-color: rgb(214, 214, 214);
