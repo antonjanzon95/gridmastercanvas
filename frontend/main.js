@@ -1,9 +1,8 @@
 import "./styles/style.css";
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-import { fetchImages, renderImages } from "./scripts/showimgs";
 import { viewSavedImages } from "./scripts/saveImg";
 import { initLog } from "./scripts/log";
-import { renderRoomsSection } from "./scripts/roomLobby";
+import { renderRoomsSection } from "./scripts/gameRooms";
 import { renderChatHtml } from "./scripts/chatcomp";
 import { renderFooter } from "./scripts/footerComp";
 

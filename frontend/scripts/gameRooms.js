@@ -1,5 +1,6 @@
 import { socket } from "../main";
-import { createGridPage } from "./canvas";
+import { createButton } from "./buttons";
+import { createGridPage } from "./gameLobby";
 
 // create room
 function createNewRoom() {
@@ -20,20 +21,14 @@ export function renderRoomsSection() {
   const mainContainer = document.querySelector("main");
   const roomsContainer = document.createElement("div");
   const roomsBtnContainer = document.createElement("div");
-  const createRoomBtn = document.createElement("button");
-  const joinRoomBtn = document.createElement("button");
 
   mainContainer.innerHTML = "";
 
   roomsContainer.classList.add("rooms-container");
 
-  createRoomBtn.innerText = "Create room";
-  createRoomBtn.classList.add("btn");
-  createRoomBtn.addEventListener("click", createNewRoom);
+  const createRoomBtn = createButton("Create Room", createNewRoom);
 
-  joinRoomBtn.innerText = "Join this room";
-  joinRoomBtn.classList.add("btn");
-  joinRoomBtn.addEventListener("click", joinActiveRoom);
+  const joinRoomBtn = createButton("Join This Room", joinActiveRoom);
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);

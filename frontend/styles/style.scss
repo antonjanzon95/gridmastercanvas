@@ -13,6 +13,10 @@ body {
 
 @import "./components/roomlist";
 
+main {
+  position: relative;
+}
+
 .parent {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -52,8 +56,8 @@ body {
 
 .canvas-grid {
   display: grid;
-  min-width: 450px;
-  min-height: 450px;
+  width: 450px;
+  height: 450px;
   border-radius: 10px;
   border: black 3px solid;
   grid-template-columns: repeat(15, 1fr);
@@ -185,4 +189,10 @@ footer {
   &:hover {
     background-color: red;
   }
+}
+
+.lobby-names {
+  position: absolute;
+  top: 10px;
+  left: 50%;
 }

@@ -63,15 +63,15 @@ export async function renderImage(event) {
   const gridContainer = document.createElement("div");
   gridContainer.classList.add("canvas-grid", "rounded");
 
-  let counter = 0;
+  let cellIndex = 0;
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
       gridNode.classList.add("display-cell");
-      gridNode.style.backgroundColor = image.image[counter].color;
-      console.log(image.image[counter].color);
+      gridNode.style.backgroundColor = image.image[cellIndex].color;
+      console.log(image.image[cellIndex].color);
       gridContainer.appendChild(gridNode);
-      counter++;
+      cellIndex++;
     }
   }
 
