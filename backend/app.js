@@ -4,11 +4,13 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const imageRouter = require("./routes/image");
-// const { MongoClient } = require("mongodb");
+const roomsRouter = require("./routes/rooms");
+const { createEmptyGrid, rooms, updateGrid } = require("./modules/painting");
 
 const app = express();
 const server = require("http").Server(app);
@@ -44,6 +46,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/image", imageRouter);
+app.use("/rooms", roomsRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
@@ -111,42 +114,42 @@ io.on("connection", (socket) => {
     io.emit("message", arg);
   });
 
-  //   socket.on("saveUser", (arg) => {
-  //     socket.userName = arg;
-  //     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  socket.on("create room", (user) => {
+    const startGrid = createEmptyGrid();
+    const roomUsers = [];
 
-  //     let users = [];
+    roomUsers.push(user);
 
-  //     let user = {
-  //       userName: socket.userName,
-  //       userId: socket.id,
-  //       userColor: socket.userColor,
-  //     };
+    const room = {
+      grid: startGrid,
+      users: roomUsers,
+      roomId: uuidv4(),
+    };
 
-  //     users.push(user);
-  //     console.log(users);
+    rooms.push(room);
 
-  //     io.emit("saveUser", { user });
-  //   });
+    io.emit("create room", room);
+  });
 
-  //   socket.on("chat", (arg) => {
-  //     socket.userMessage = arg;
+  socket.on("join room", (userAndRoomId) => {
+    const roomToJoin = rooms.find(
+      (room) => room.roomId == userAndRoomId.roomId
+    );
 
-  //     let chatMessage = {
-  //       userColor: socket.userColor,
-  //       userName: socket.userName,
-  //       userMessage: socket.userMessage,
-  //     };
+    if (roomToJoin.users.length % 2 == 0) {
+      userAndRoomId.user.color = "green";
+    }
 
-  //     io.emit("chat", { chatMessage });
-  //   });
+    roomToJoin.users.push(userAndRoomId.user);
 
-  //   socket.on("hej", (arg) => {
-  //     console.log(arg);
-  //     io.emit("hej", arg + " Anton");
+    io.emit("join room", roomToJoin);
+  });
 
-  //     io.emit("hejhej", arg + " Anton");
-  //   });
+  socket.on("paint", (cellObject) => {
+    // {roomId: room.roomId, cellId: e.target.id, color: user.color});
+    const updatedCell = updateGrid(cellObject);
+    io.emit("paint", updatedCell);
+  });
 });
 
 module.exports = { app: app, server: server };

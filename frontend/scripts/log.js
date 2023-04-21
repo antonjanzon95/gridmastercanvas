@@ -31,8 +31,8 @@ function renderLogForm() {
       return;
     }
 
-    localStorage.setItem('user', logInput.value);
-    socket.emit('saveUser', localStorage.getItem('user'));
+    sessionStorage.setItem('user', logInput.value);
+    socket.emit('saveUser', sessionStorage.getItem('user'));
 
     socket.on('saveUser', (arg) => {
       let user = arg.user;
@@ -56,7 +56,9 @@ function renderLogoutButton() {
   logForm.appendChild(logOutButton);
 
   logOutButton.addEventListener('click', () => {
-    localStorage.removeItem('user');
+
+    sessionStorage.removeItem('user');
+
     logForm.innerHTML = '';
 
     initLog();
