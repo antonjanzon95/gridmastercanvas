@@ -11,25 +11,46 @@ export const createGridPage = (room) => {
 
   mainContainer.innerHTML = "";
 
+  socket.on("readyCheck", (user) => {
+    // lägg till checkmark
+
+    user.name.innerHTML = "&#x2713;";
+  });
+
   socket.on("paint", (cell) => {
     updateCellColor(cell);
   });
 
   createGrid(room);
-  const names = renderRoomUsers(room.users);
+  const usersInLobby = renderRoomUsers(room.users);
   createLobbyButtons(room.roomId);
 
-  mainContainer.appendChild(names);
+  mainContainer.appendChild(usersInLobby);
 };
 
 const renderRoomUsers = (users) => {
-  const nameHeader = document.createElement("h2");
-  const names = users.map((user) => " " + user.name);
-  nameHeader.classList.add("lobby-names");
-  nameHeader.innerHTML = names;
+  const usersWrapper = document.createElement("div");
 
-  return nameHeader;
+  users.forEach((user) => {
+    const userContainer = createUserContainer(user);
+    usersWrapper.appendChild(userContainer);
+  });
+
+  return usersWrapper;
 };
+
+function createUserContainer(user) {
+  const userContainer = document.createElement("div");
+  userContainer.classList.add("user-container");
+  const colorCircle = document.createElement("div");
+  colorCircle.classList.add("color-circle");
+  colorCircle.style.backgroundColor = user.color;
+  const nameHeading = document.createElement("h2");
+  nameHeading.innerHTML = user.name;
+
+  userContainer.append(colorCircle, nameHeading);
+  return userContainer;
+}
 
 export const startGame = () => {
   createSolutionGrid();
@@ -39,13 +60,20 @@ const hidePracticeGridPage = (practiceGridContainer) => {
   practiceGridContainer.innerHTML = "";
 };
 
-export const readyCheck = () => {
-  sessionStorage.setItem("user", JSON.stringify({ ...user, ready: true }));
-  const usertest = JSON.parse(sessionStorage.getItem("user"));
+export const readyCheck = (e) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const roomId = e.target.id; // room id is same as btn id
 
-  // set to all 4 users ready later <--
-  if (usertest.ready) {
-    hidePracticeGridPage(gridContainer);
-    startGame();
-  }
+  const roomAndUser = {
+    room: roomId,
+    user: user,
+  };
+
+  socket.emit("readyCheck", roomAndUser);
+
+  // // set to all 4 users ready later <--
+  // if (usertest.ready) {
+  //   hidePracticeGridPage(gridContainer);
+  //   startGame();
+  // }
 };

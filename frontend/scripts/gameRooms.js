@@ -71,7 +71,8 @@ async function fetchRooms() {
 }
 
 function joinActiveRoom(e) {
-  const user = { id: socket.id, name: "Max", color: "red" };
+  const user = { id: socket.id, name: "Max" };
+  localStorage.setItem("user", JSON.stringify(user));
   const roomId = e.target.id;
 
   const toSend = {

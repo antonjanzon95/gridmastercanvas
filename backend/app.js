@@ -11,7 +11,12 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const imageRouter = require("./routes/image");
 const roomsRouter = require("./routes/rooms");
-const { createEmptyGrid, rooms, updateGrid } = require("./modules/painting");
+const {
+  createEmptyGrid,
+  rooms,
+  updateGrid,
+  createFacitGrid,
+} = require("./modules/painting");
 
 const app = express();
 const server = require("http").Server(app);
@@ -174,6 +179,31 @@ io.on("connection", (socket) => {
     colors.pop(socket.color);
 
     io.emit("updateColors", colors);
+  });
+
+  socket.on("readyCheck", (roomAndUser) => {
+    const room = rooms.find((room) => room.id == roomAndUser.room.id);
+    const user = room.users.find((user) => user.id == user.id);
+
+    user.ready = true;
+
+    const allAreReady = room.users.every((user) => user.ready === true);
+
+    if (allAreReady) {
+      return io.emit("startGame", room);
+    }
+
+    io.emit("readyCheck", user);
+  });
+
+  socket.on("startGame", (currentRoom) => {
+    const facitGrid = createFacitGrid(currentRoom.users);
+
+    const roomToStart = rooms.find((room) => room.id == currentRoom.id);
+
+    roomToStart.facitGrid = facitGrid;
+
+    io.emit("startGame", facitGrid);
   });
 });
 

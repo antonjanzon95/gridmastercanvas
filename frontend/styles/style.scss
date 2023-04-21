@@ -196,3 +196,16 @@ footer {
   top: 10px;
   left: 50%;
 }
+
+.color-circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+  width: 75px;
+  padding: 0.5rem;
+}

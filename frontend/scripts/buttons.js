@@ -22,6 +22,7 @@ export const createLobbyButtons = (roomId) => {
 
   // start game button
   const startBtn = createButton("Start Game", readyCheck);
+  startBtn.id = roomId;
 
   buttonContainer.append(startBtn, saveImageBtn);
 };

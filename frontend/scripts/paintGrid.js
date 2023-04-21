@@ -34,60 +34,56 @@ export const createGrid = (room) => {
   }
 };
 
-// export function createSolutionGrid() {
-//   const mainContainer = document.querySelector("main");
-//   mainContainer.innerHTML = "";
+export function createFacitGrid() {
+  const mainContainer = document.querySelector("main");
+  mainContainer.innerHTML = "";
 
-//   const gridContainer = document.createElement("div");
-//   gridContainer.classList.add("canvas-grid");
-//   mainContainer.appendChild(gridContainer);
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add("canvas-grid");
+  mainContainer.appendChild(gridContainer);
 
-//   let facit = [];
+  let idcounter = 0;
 
-//   let colors = ["green", "blue", "red", "yellow", "whitesmoke"];
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 15; j++) {
+      const gridNode = document.createElement("div");
+      gridNode.classList.add("cell");
+      gridNode.style.backgroundColor =
+        colors[Math.floor(Math.random() * colors.length)];
 
-//   let idcounter = 1;
+      gridContainer.appendChild(gridNode);
+      idcounter++;
 
-//   for (let i = 0; i < 15; i++) {
-//     for (let j = 0; j < 15; j++) {
-//       const gridNode = document.createElement("div");
-//       gridNode.classList.add("cell");
-//       gridNode.style.backgroundColor =
-//         colors[Math.floor(Math.random() * colors.length)];
+      let cell = {
+        color: gridNode.style.backgroundColor,
+      };
 
-//       gridContainer.appendChild(gridNode);
-//       idcounter++;
+      facit.push(cell);
+    }
+  }
 
-//       let cell = {
-//         color: gridNode.style.backgroundColor,
-//       };
+  grids.solution = facit;
 
-//       facit.push(cell);
-//     }
-//   }
+  const countdownDiv = document.createElement("div");
+  countdownDiv.classList.add("countdown");
+  document.querySelector("#app").appendChild(countdownDiv);
 
-//   grids.solution = facit;
+  let cd = 5;
+  const countdownInterval = setInterval(() => {
+    countdownDiv.innerHTML = cd.toString();
+    cd--;
 
-//   const countdownDiv = document.createElement("div");
-//   countdownDiv.classList.add("countdown");
-//   document.querySelector("#app").appendChild(countdownDiv);
+    if (cd < 0) {
+      countdownDiv.innerHTML = "MÅLA!";
+      setTimeout(() => {
+        countdownDiv.innerHTML = "";
+      }, 2000);
+      startGame(countdownInterval);
+    }
+  }, 1000);
+}
 
-//   let cd = 5;
-//   const countdownInterval = setInterval(() => {
-//     countdownDiv.innerHTML = cd.toString();
-//     cd--;
-
-//     if (cd < 0) {
-//       countdownDiv.innerHTML = "MÅLA!";
-//       setTimeout(() => {
-//         countdownDiv.innerHTML = "";
-//       }, 2000);
-//       startGame(countdownInterval);
-//     }
-//   }, 1000);
-// }
-
-// const startGame = (countdownInterval) => {
-//   createGridPage();
-//   clearInterval(countdownInterval);
-// };
+const startGame = (countdownInterval) => {
+  createGridPage();
+  clearInterval(countdownInterval);
+};
