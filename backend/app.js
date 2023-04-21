@@ -150,6 +150,25 @@ io.on("connection", (socket) => {
     const updatedCell = updateGrid(cellObject);
     io.emit("paint", updatedCell);
   });
+
+  let colors = [];
+
+  socket.on('addColor', (arg) => {
+    socket.color = arg;
+
+    colors.push(socket.color);
+
+    console.log(colors);
+    io.emit('updateColors', colors);
+  });
+
+  socket.on('removeColor', (arg) => {
+    socket.color = arg;
+
+    colors.pop(socket.color);
+
+    io.emit('updateColors', colors);
+  });
 });
 
 module.exports = { app: app, server: server };
