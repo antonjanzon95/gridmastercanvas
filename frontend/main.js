@@ -8,7 +8,6 @@ import { renderRoomsSection } from "./scripts/roomLobby";
 import { renderChatHtml } from "./scripts/chatcomp";
 import { renderFooter } from "./scripts/footerComp";
 
-
 export let grids = {};
 export const socket = io("http://localhost:3000");
 
@@ -22,17 +21,6 @@ document.querySelector("#app").innerHTML = `
   </div>
   <footer id="footer"></footer>
 `;
-
-// socket.emit("hej", "Hej");
-
-// socket.on("hej", (arg) => {
-//   console.log(arg);
-// });
-
-// socket.on("hejhej", (arg) => {
-//   console.log(arg);
-// });
-
 
 const init = () => {
   initLog();
