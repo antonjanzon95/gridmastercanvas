@@ -19,8 +19,10 @@ export const createGameLobbyPage = (room) => {
     playerReady.innerHTML = "&#x2713;" + user.name;
   });
 
-  socket.on("paint", (cell) => {
-    updateCellColor(cell);
+  socket.on("paint", (roomIdAndUpdatedCell) => {
+    if (roomIdAndUpdatedCell.roomId == room.roomId) {
+      updateCellColor(roomIdAndUpdatedCell.updatedCell);
+    }
   });
 
   createGrid(room);

@@ -164,7 +164,13 @@ io.on("connection", (socket) => {
 
   socket.on("paint", (cellObject) => {
     const updatedCell = updateGrid(cellObject);
-    io.emit("paint", updatedCell);
+
+    const roomIdAndUpdatedCell = {
+      roomId: cellObject.roomId,
+      updatedCell: updatedCell,
+    };
+
+    io.emit("paint", roomIdAndUpdatedCell);
   });
 
   let colors = [];
