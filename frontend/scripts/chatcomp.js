@@ -48,13 +48,23 @@ export function renderChatHtml() {
 
   });
 
+  sendMessage.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+      e.preventDefault();
+      sendButton.click();
+    }
+  })
+
   sendButton.addEventListener("click", () => {
     console.log("Klick på knapp");
-      let user = JSON.parse(sessionStorage.user);
-  
-    console.log(user)
-    console.log (user.color)
-    // let color = sessionStorage.getItem("userColor");
+      sendChat();
+  });
+
+  function sendChat() {
+    let user = JSON.parse(sessionStorage.user);
+
+    console.log(user);
+    console.log(user.color);
 
     socket.emit("message", {
       message: sendMessage.value,
@@ -62,7 +72,7 @@ export function renderChatHtml() {
       color: user.color,
     });
     sendMessage.value = "";
-  });
+  }
 
   function calculateLuminance(color) {
     console.log(color);

@@ -65,6 +65,7 @@ function renderLogForm() {
 
     logInput.value = '';
     logForm.innerHTML = '';
+
   });
 }
 
@@ -85,6 +86,8 @@ function renderLogoutButton(color) {
 
     initLog();
     logForm.innerHTML = '';
+    const chatDiv = document.querySelector("#chat-div");
+    chatDiv.innerHTML ='';
   });
 }
 
