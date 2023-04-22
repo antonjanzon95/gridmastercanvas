@@ -2,13 +2,9 @@ import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 const socket = io("http://localhost:3000");
 
 export function renderChatHtml() {
-  // localStorage.setItem('userName', 'user1');
-  // localStorage.setItem('userColor', 'blue');
-
-  // localStorage.setItem('userName', 'User2');
-  // localStorage.setItem('userColor', 'red');
-
+  let user = JSON.parse(sessionStorage.getItem('user'));
   console.log("Hej från chat!");
+  console.log(user)
 
   const chatDiv = document.querySelector("#chat-div");
 
@@ -25,11 +21,12 @@ export function renderChatHtml() {
   let sendMessage = document.querySelector("#send-message");
 
   socket.on("message", (msg) => {
+    let user = JSON.parse(sessionStorage.user);
     console.log(msg);
     let chat = document.createElement("div");
     chat.setAttribute("class", "message");
 
-    if (msg.user === sessionStorage.getItem("user")) {
+    if (msg.user === user.name) {
       chat.setAttribute("class", "send-message");
     } else {
       chat.setAttribute("class", "receive-message");
@@ -39,7 +36,7 @@ export function renderChatHtml() {
       chat.style.backgroundColor = msg.color;
       const luminance = calculateLuminance(msg.color);
       if (luminance > 0.5) {
-        chat.style.color = "#2b2b2b";
+        chat.style.color = "#1b1b1b";
       } else {
         chat.style.color = "whitesmoke";
       }
@@ -48,16 +45,21 @@ export function renderChatHtml() {
     chat.innerHTML = msg.user + ": " + msg.message;
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
+
   });
 
   sendButton.addEventListener("click", () => {
     console.log("Klick på knapp");
-    let user = sessionStorage.getItem("user");
-    let color = sessionStorage.getItem("userColor");
+      let user = JSON.parse(sessionStorage.user);
+  
+    console.log(user)
+    console.log (user.color)
+    // let color = sessionStorage.getItem("userColor");
+
     socket.emit("message", {
       message: sendMessage.value,
-      user: user,
-      color: color,
+      user: user.name,
+      color: user.color,
     });
     sendMessage.value = "";
   });

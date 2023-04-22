@@ -1,5 +1,6 @@
 import { socket } from '../main';
 export { socket }; 
+import { renderChatHtml } from './chatcomp';
 
 export function initLog(color) {
   if (sessionStorage.getItem('user')) {
@@ -51,12 +52,15 @@ function renderLogForm() {
     socket.on('saveUser', (arg) => {
       console.log(arg)
       let user = arg.user;
+      sessionStorage.setItem('user', JSON.stringify(user))
 
-      console.log(`${user.userName} has logged in`);
-      addColor(user.userColor);
-      sessionStorage.setItem('userColor', user.userColor);
+      console.log(`${user.name} has logged in`);
+      console.log(user.color)
+      addColor(user.color);
+      // sessionStorage.setItem('userColor', user.color);
+      renderChatHtml();
+      initLog(user.color);
 
-      initLog(user.userColor);
     });
 
     logInput.value = '';

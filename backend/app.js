@@ -53,9 +53,9 @@ io.on("connection", (socket) => {
     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
 
     let user = {
-      userName: socket.userName,
-      userId: socket.id,
-      userColor: socket.userColor,
+      name: socket.userName,
+      id: socket.id,
+      color: socket.userColor,
     };
 
     console.log({ user });
