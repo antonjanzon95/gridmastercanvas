@@ -2,9 +2,9 @@ import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 const socket = io("http://localhost:3000");
 
 export function renderChatHtml() {
-  let user = JSON.parse(sessionStorage.getItem('user'));
+  let user = JSON.parse(sessionStorage.user);
   console.log("Hej från chat!");
-  console.log(user)
+  console.log(user);
 
   const chatDiv = document.querySelector("#chat-div");
 
@@ -45,19 +45,6 @@ export function renderChatHtml() {
     chat.innerHTML = msg.user + ": " + msg.message;
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
-
-  });
-
-  sendMessage.addEventListener("keypress", function(e) {
-    if(e.key === "Enter") {
-      e.preventDefault();
-      sendButton.click();
-    }
-  })
-
-  sendButton.addEventListener("click", () => {
-    console.log("Klick på knapp");
-      sendChat();
   });
 
   function sendChat() {
@@ -79,6 +66,7 @@ export function renderChatHtml() {
     const rgb = hexToRgb(color);
     //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
     const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+    console.log(luminance)
 
     return luminance;
   }
@@ -96,4 +84,16 @@ export function renderChatHtml() {
 
     return { r, g, b };
   }
+
+  sendMessage.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendButton.click();
+    }
+  });
+
+  sendButton.addEventListener("click", () => {
+    console.log("Klick på knapp");
+    sendChat();
+  });
 }
