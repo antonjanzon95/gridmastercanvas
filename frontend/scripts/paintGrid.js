@@ -1,4 +1,7 @@
 import { socket } from "../main";
+import { createGameLobbyPage } from "./gameLobby";
+import { createGamePage } from "./startGame";
+
 // import { showGameOverPage } from "./gameover";
 
 export function updateCellColor(cell) {
@@ -9,6 +12,9 @@ export function updateCellColor(cell) {
 export const createGrid = (room) => {
   const mainContainer = document.querySelector("main");
   const gridContainer = document.createElement("div");
+
+  mainContainer.innerHTML = "";
+
   gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
   const myColor = room.users.find((user) => user.id == socket.id).color;
@@ -34,7 +40,7 @@ export const createGrid = (room) => {
   }
 };
 
-export function createFacitGrid() {
+export function createSolutionGrid(room) {
   const mainContainer = document.querySelector("main");
   mainContainer.innerHTML = "";
 
@@ -42,48 +48,39 @@ export function createFacitGrid() {
   gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
 
+  socket.on("startGame", (room) => {
+    createGamePage(room);
+  });
+
   let idcounter = 0;
 
   for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
       const gridNode = document.createElement("div");
       gridNode.classList.add("cell");
-      gridNode.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
-
+      gridNode.style.backgroundColor = room.solutionGrid[idcounter].color;
       gridContainer.appendChild(gridNode);
       idcounter++;
-
-      let cell = {
-        color: gridNode.style.backgroundColor,
-      };
-
-      facit.push(cell);
     }
   }
-
-  grids.solution = facit;
 
   const countdownDiv = document.createElement("div");
   countdownDiv.classList.add("countdown");
   document.querySelector("#app").appendChild(countdownDiv);
 
+  // timer for showing solution grid
   let cd = 5;
   const countdownInterval = setInterval(() => {
     countdownDiv.innerHTML = cd.toString();
     cd--;
 
     if (cd < 0) {
-      countdownDiv.innerHTML = "MÅLA!";
+      countdownDiv.innerHTML = "PAINT!";
       setTimeout(() => {
         countdownDiv.innerHTML = "";
       }, 2000);
-      startGame(countdownInterval);
+      socket.emit("startGame", room);
+      clearInterval(countdownInterval);
     }
   }, 1000);
 }
-
-const startGame = (countdownInterval) => {
-  createGridPage();
-  clearInterval(countdownInterval);
-};

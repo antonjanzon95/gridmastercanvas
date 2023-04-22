@@ -15,7 +15,7 @@ const {
   createEmptyGrid,
   rooms,
   updateGrid,
-  createFacitGrid,
+  createSolutionGrid,
 } = require("./modules/painting");
 
 const app = express();
@@ -196,20 +196,39 @@ io.on("connection", (socket) => {
     const allAreReady = room.users.every((user) => user.ready === true);
 
     if (allAreReady) {
-      return io.emit("startGame", room);
+      const solutionGrid = createSolutionGrid(room.users);
+
+      room.solutionGrid = solutionGrid;
+      room.grid = createEmptyGrid();
+
+      return io.emit("showSolutionGrid", room);
     }
 
     io.emit("readyCheck", user);
   });
 
-  socket.on("startGame", (currentRoom) => {
-    const facitGrid = createFacitGrid(currentRoom.users);
+  socket.on("startGame", (room) => {
+    io.emit("startGame", room);
+  });
 
-    const roomToStart = rooms.find((room) => room.id == currentRoom.id);
+  socket.on("gameOver", (room) => {
+    const currentRoom = rooms.find(
+      (currentRoom) => currentRoom.roomId == room.roomId
+    );
+    let score = 0;
+    const gridLength = currentRoom.grid.length;
 
-    roomToStart.facitGrid = facitGrid;
+    console.log(currentRoom);
 
-    io.emit("startGame", facitGrid);
+    for (let i = 0; i < gridLength; i++) {
+      if (currentRoom.grid[i].color == currentRoom.solutionGrid[i].color) {
+        score++;
+      }
+    }
+
+    const scoreInPercent = (score / gridLength) * 100;
+
+    socket.emit("gameOver", scoreInPercent);
   });
 });
 

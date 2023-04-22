@@ -1,9 +1,12 @@
 import { socket } from "../main.js";
 import { createLobbyButtons } from "./buttons.js";
-// import { createGridPage, createSolutionGrid } from "./canvas.js";
-import { createGrid, updateCellColor } from "./paintGrid.js";
+import {
+  createSolutionGrid,
+  createGrid,
+  updateCellColor,
+} from "./paintGrid.js";
 
-export const createGridPage = (room) => {
+export const createGameLobbyPage = (room) => {
   const mainContainer = document.querySelector("main");
   const user = { name: "Anton", color: "blue" };
   // sessionStorage.setItem("user", JSON.stringify(user));
@@ -27,7 +30,7 @@ export const createGridPage = (room) => {
   mainContainer.appendChild(usersInLobby);
 };
 
-const renderRoomUsers = (users) => {
+export const renderRoomUsers = (users) => {
   const usersWrapper = document.createElement("div");
 
   users.forEach((user) => {
@@ -56,9 +59,9 @@ function createUserContainer(user) {
   return userContainer;
 }
 
-export const startGame = () => {
-  createSolutionGrid();
-};
+// export const startGame = () => {
+//   createSolutionGrid();
+// };
 
 const hidePracticeGridPage = (practiceGridContainer) => {
   practiceGridContainer.innerHTML = "";
@@ -73,11 +76,9 @@ export const readyCheck = (e) => {
     user: user,
   };
 
-  socket.emit("readyCheck", roomAndUser);
+  socket.on("showSolutionGrid", (room) => {
+    createSolutionGrid(room);
+  });
 
-  // // set to all 4 users ready later <--
-  // if (usertest.ready) {
-  //   hidePracticeGridPage(gridContainer);
-  //   startGame();
-  // }
+  socket.emit("readyCheck", roomAndUser);
 };

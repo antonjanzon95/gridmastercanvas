@@ -1,4 +1,4 @@
-// import { renderRoomsSection } from "./lobby";
+import { renderRoomsSection } from "./gameRooms";
 
 export const showGameOverPage = (finalScore) => {
   const mainContainer = document.querySelector("main");

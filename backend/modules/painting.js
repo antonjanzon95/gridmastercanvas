@@ -10,16 +10,16 @@ function createEmptyGrid() {
   return emptyGrid;
 }
 
-function createFacitGrid(roomUsers) {
-  const facitGrid = [];
+function createSolutionGrid(roomUsers) {
+  const solutionGrid = [];
   for (let i = 0; i < GRID_CELL_COUNT; i++) {
     const randomColorArray = roomUsers.map((user) => user.color);
     randomColorArray.push("whitesmoke");
-    const randomIndex = Math.floor(Math.random() * randomColorArray);
-    const cell = { color: randomColor[randomIndex] };
-    facitGrid.push(cell);
+    const randomIndex = Math.floor(Math.random() * randomColorArray.length);
+    const cell = { color: randomColorArray[randomIndex] };
+    solutionGrid.push(cell);
   }
-  return facitGrid;
+  return solutionGrid;
 }
 
 function updateGrid(cell) {
@@ -38,4 +38,4 @@ function updateGrid(cell) {
   return updatedCell;
 }
 
-module.exports = { rooms, createEmptyGrid, updateGrid, createFacitGrid };
+module.exports = { rooms, createEmptyGrid, updateGrid, createSolutionGrid };

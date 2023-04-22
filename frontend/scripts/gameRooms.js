@@ -1,6 +1,6 @@
 import { socket } from "../main";
 import { createButton } from "./buttons";
-import { createGridPage } from "./gameLobby";
+import { createGameLobbyPage } from "./gameLobby";
 
 // create room
 function createNewRoom() {
@@ -13,14 +13,13 @@ function createNewRoom() {
   });
 
   socket.on("joinRoom", (room) => {
-    createGridPage(room);
+    createGameLobbyPage(room);
   });
 }
 
-
 function enterRoomLobby(room) {
   // enable chat
-  createGridPage(room);
+  createGameLobbyPage(room);
 }
 
 export function renderRoomsSection() {
@@ -45,16 +44,17 @@ function monitorRoomList() {
   socket.on("monitorRooms", () => {
     console.log("socket on monitorRooms");
     printRoomList();
-  })
+  });
 
-  socket.on("fullRooms", () => {    // var och när?
+  socket.on("fullRooms", () => {
+    // var och när?
     printRoomList();
   });
 }
 
 async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
-  roomsContainer.innerHTML = '';
+  roomsContainer.innerHTML = "";
   const rooms = await fetchRooms();
 
   if (rooms.length === 0) {
@@ -76,12 +76,10 @@ async function printRoomList() {
         joinBtn.innerHTML = "FULL";
       }
 
-
       roomContainer.append(titleElement, joinBtn);
       roomsContainer.appendChild(roomContainer);
     });
   }
-
 }
 
 async function fetchRooms() {
@@ -106,7 +104,7 @@ function joinActiveRoom(e) {
   socket.emit("monitorRooms");
 
   socket.on("joinRoom", (room) => {
-    createGridPage(room);
+    createGameLobbyPage(room);
   });
 }
 
