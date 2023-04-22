@@ -15,7 +15,7 @@ export const createGameLobbyPage = (room) => {
   mainContainer.innerHTML = "";
 
   socket.on("readyCheck", (user) => {
-    const playerReady = document.getElementById(socket.id);
+    const playerReady = document.getElementById(user.id);
     playerReady.innerHTML = "&#x2713;" + user.name;
   });
 
@@ -48,7 +48,7 @@ function createUserContainer(user) {
   colorCircle.classList.add("color-circle");
   colorCircle.style.backgroundColor = user.color;
   const nameHeading = document.createElement("h2");
-  nameHeading.id = socket.id;
+  nameHeading.id = user.id;
   // if (user.ready) {
   //   nameHeading.innerHTML = "&#x2713;" + user.name;
   // } else {
@@ -68,7 +68,7 @@ const hidePracticeGridPage = (practiceGridContainer) => {
 };
 
 export const readyCheck = (e) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = socket.id;
   const roomId = e.target.id; // room id is same as btn id
 
   const roomAndUser = {

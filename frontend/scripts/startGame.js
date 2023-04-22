@@ -17,15 +17,16 @@ export function createGamePage(room) {
     showGameOverPage(scoreInPercent);
   });
 
-  let gameTimer = 1;
+  let gameTimer = 5;
   const gameTimerHeading = document.createElement("h2");
   gameTimerHeading.classList.add("game-timer");
   gameTimerHeading.innerHTML = gameTimer;
+  mainContainer.appendChild(gameTimerHeading);
 
   const gameTimerInterval = setInterval(() => {
     gameTimerHeading.innerHTML = gameTimer.toString();
     gameTimer--;
-    if (gameTimer < 1) {
+    if (gameTimer < 0) {
       clearInterval(gameTimerInterval);
       socket.emit("gameOver", room);
     }

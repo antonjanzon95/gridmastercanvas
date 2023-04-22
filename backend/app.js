@@ -163,7 +163,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("paint", (cellObject) => {
-    // {roomId: room.roomId, cellId: e.target.id, color: user.color});
     const updatedCell = updateGrid(cellObject);
     io.emit("paint", updatedCell);
   });
@@ -189,9 +188,13 @@ io.on("connection", (socket) => {
 
   socket.on("readyCheck", (roomAndUser) => {
     const room = rooms.find((room) => room.id == roomAndUser.room.id);
-    const user = room.users.find((user) => user.id == user.id);
+    const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    user.ready = true;
+    if (user.ready) {
+      user.ready = false;
+    } else {
+      user.ready = true;
+    }
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
@@ -217,8 +220,6 @@ io.on("connection", (socket) => {
     );
     let score = 0;
     const gridLength = currentRoom.grid.length;
-
-    console.log(currentRoom);
 
     for (let i = 0; i < gridLength; i++) {
       if (currentRoom.grid[i].color == currentRoom.solutionGrid[i].color) {
