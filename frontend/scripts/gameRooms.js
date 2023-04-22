@@ -45,11 +45,6 @@ function monitorRoomList() {
     console.log("socket on monitorRooms");
     printRoomList();
   });
-
-  socket.on("fullRooms", () => {
-    // var och när?
-    printRoomList();
-  });
 }
 
 async function printRoomList() {
