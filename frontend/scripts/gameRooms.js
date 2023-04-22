@@ -10,16 +10,21 @@ function createNewRoom() {
   socket.on("create room", (createRoomResponse) => {
     enterRoomLobby(createRoomResponse);
     socket.off("monitorRooms");
+
+    socket.on("joinRoom", (room) => {
+      if (room.roomId === createRoomResponse.roomId) {
+        createGameLobbyPage(room);
+      }
+    });
   });
 
-  socket.on("joinRoom", (room) => {
-    createGameLobbyPage(room);
-  });
+
 }
 
 function enterRoomLobby(room) {
   // enable chat
   createGameLobbyPage(room);
+  socket.off("create room");
 }
 
 export function renderRoomsSection() {
@@ -98,7 +103,10 @@ function joinActiveRoom(e) {
   socket.emit("monitorRooms");
 
   socket.on("joinRoom", (room) => {
-    createGameLobbyPage(room);
+    if (room.roomId == roomId) {
+      createGameLobbyPage(room);
+      console.log("funkar jag?");
+    }
   });
 }
 
