@@ -85,7 +85,6 @@ async function fetchRooms() {
 
 function joinActiveRoom(e) {
   socket.off("monitorRooms");
-  socket.off("fullRooms");
   const user = { id: socket.id, name: "Max" };
   localStorage.setItem("user", JSON.stringify(user));
   const roomId = e.target.id;
