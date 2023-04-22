@@ -9,6 +9,7 @@ function createNewRoom() {
 
   socket.on("create room", (createRoomResponse) => {
     enterRoomLobby(createRoomResponse);
+    socket.off("monitorRooms");
   });
 
   socket.on("joinRoom", (room) => {
@@ -36,11 +37,24 @@ export function renderRoomsSection() {
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
+  monitorRoomList();
   printRoomList();
+}
+
+function monitorRoomList() {
+  socket.on("monitorRooms", () => {
+    console.log("socket on monitorRooms");
+    printRoomList();
+  })
+
+  socket.on("fullRooms", () => {    // var och när?
+    printRoomList();
+  });
 }
 
 async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
+  roomsContainer.innerHTML = '';
   const rooms = await fetchRooms();
 
   if (rooms.length === 0) {
@@ -57,19 +71,17 @@ async function printRoomList() {
       const joinBtn = createButton("Join Room", joinActiveRoom);
       joinBtn.id = room.roomId;
 
+      if (room.isFull) {
+        joinBtn.setAttribute("disabled", "");
+        joinBtn.innerHTML = "FULL";
+      }
+
+
       roomContainer.append(titleElement, joinBtn);
       roomsContainer.appendChild(roomContainer);
     });
   }
-  // socket.on("fullRooms", (rooms) => {    // var och när?
-  //   rooms.forEach((room) => {
-  //     const buttonToDisable = document.getElementById(room.id);
-  //     buttonToDisable.setAttribute("disabled", "");
-  //     buttonToDisable.innerHTML = "FULL";
-  //   })
 
-  // });
-  // socket.emit("areRoomsFull");
 }
 
 async function fetchRooms() {
@@ -79,6 +91,8 @@ async function fetchRooms() {
 }
 
 function joinActiveRoom(e) {
+  socket.off("monitorRooms");
+  socket.off("fullRooms");
   const user = { id: socket.id, name: "Max" };
   localStorage.setItem("user", JSON.stringify(user));
   const roomId = e.target.id;
@@ -89,6 +103,7 @@ function joinActiveRoom(e) {
   };
 
   socket.emit("joinRoom", toSend);
+  socket.emit("monitorRooms");
 
   socket.on("joinRoom", (room) => {
     createGridPage(room);

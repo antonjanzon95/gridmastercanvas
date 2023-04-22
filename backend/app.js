@@ -134,6 +134,7 @@ io.on("connection", (socket) => {
     rooms.push(room);
 
     io.emit("create room", room);
+    io.emit("monitorRooms");
   });
 
   socket.on("joinRoom", (userAndRoomId) => {
@@ -155,14 +156,11 @@ io.on("connection", (socket) => {
       roomToJoin.isFull = true; // ej färdig!!
     }
 
+    console.log(roomToJoin);
+
     io.emit("joinRoom", roomToJoin);
+    io.emit("monitorRooms");
   });
-
-  // socket.on("areRoomsFull", () => {
-  //   const fullRooms = rooms.filter((room) => room.isFull == true);
-
-  //   io.emit("fullRooms", fullRooms);
-  // })
 
   socket.on("paint", (cellObject) => {
     // {roomId: room.roomId, cellId: e.target.id, color: user.color});
