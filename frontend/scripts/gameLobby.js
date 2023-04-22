@@ -55,7 +55,12 @@ function createUserContainer(user) {
   // name
   const nameHeading = document.createElement("h2");
   nameHeading.id = user.id;
-  nameHeading.innerHTML = user.name;
+
+  if (user.ready == true) {
+    nameHeading.innerHTML = "&#x2713;" + user.name;
+  } else {
+    nameHeading.innerHTML = user.name;
+  }
 
   userContainer.append(colorCircle, nameHeading);
 
@@ -72,7 +77,9 @@ export const readyCheck = (e) => {
   };
 
   socket.on("showSolutionGrid", (room) => {
-    createSolutionGrid(room);
+    if (room.roomId == roomId) {
+      createSolutionGrid(room);
+    }
   });
 
   socket.emit("readyCheck", roomAndUser);

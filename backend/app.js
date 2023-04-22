@@ -196,11 +196,14 @@ io.on("connection", (socket) => {
     const room = rooms.find((room) => room.id == roomAndUser.room.id);
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    if (user.ready) {
-      user.ready = false;
-    } else {
-      user.ready = true;
-    }
+    // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
+    // if (user.ready) {
+    //   user.ready = false;
+    // } else {
+    //   user.ready = true;
+    // }
+
+    user.ready = true;
 
     const allAreReady = room.users.every((user) => user.ready === true);
 

@@ -48,8 +48,10 @@ export function createSolutionGrid(room) {
   gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
 
-  socket.on("startGame", (room) => {
-    createGamePage(room);
+  socket.on("startGame", (roomToStart) => {
+    if (room.roomId == roomToStart.roomId) {
+      createGamePage(roomToStart);
+    }
   });
 
   let idcounter = 0;

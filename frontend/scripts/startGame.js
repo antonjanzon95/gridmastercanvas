@@ -4,6 +4,8 @@ import { showGameOverPage } from "./gameover";
 import { createGrid } from "./paintGrid";
 
 export function createGamePage(room) {
+  socket.off("readyCheck");
+
   const mainContainer = document.querySelector("main");
   const user = { name: "Anton", color: "blue" };
 
