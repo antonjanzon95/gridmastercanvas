@@ -44,28 +44,21 @@ export const renderRoomUsers = (users) => {
 function createUserContainer(user) {
   const userContainer = document.createElement("div");
   userContainer.classList.add("user-container");
+
+  // color indicator
   const colorCircle = document.createElement("div");
   colorCircle.classList.add("color-circle");
   colorCircle.style.backgroundColor = user.color;
+
+  // name
   const nameHeading = document.createElement("h2");
   nameHeading.id = user.id;
-  // if (user.ready) {
-  //   nameHeading.innerHTML = "&#x2713;" + user.name;
-  // } else {
-  //
-  // }
   nameHeading.innerHTML = user.name;
+
   userContainer.append(colorCircle, nameHeading);
+
   return userContainer;
 }
-
-// export const startGame = () => {
-//   createSolutionGrid();
-// };
-
-const hidePracticeGridPage = (practiceGridContainer) => {
-  practiceGridContainer.innerHTML = "";
-};
 
 export const readyCheck = (e) => {
   const user = socket.id;
