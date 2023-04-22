@@ -205,7 +205,12 @@ footer {
 
 .user-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   width: 75px;
   padding: 0.5rem;
+  gap: 2px;
+
+  div {
+    margin-right: 2px;
+  }
 }

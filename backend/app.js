@@ -136,7 +136,7 @@ io.on("connection", (socket) => {
     io.emit("create room", room);
   });
 
-  socket.on("join room", (userAndRoomId) => {
+  socket.on("joinRoom", (userAndRoomId) => {
     const roomToJoin = rooms.find(
       (room) => room.roomId == userAndRoomId.roomId
     );
@@ -149,12 +149,20 @@ io.on("connection", (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
+    console.log(roomToJoin.users.length);
+
     if (roomToJoin.users.length > 3) {
-      io.emit("roomIsFull", roomToJoin.roomId);
+      roomToJoin.isFull = true; // ej färdig!!
     }
 
-    io.emit("join room", roomToJoin);
+    io.emit("joinRoom", roomToJoin);
   });
+
+  // socket.on("areRoomsFull", () => {
+  //   const fullRooms = rooms.filter((room) => room.isFull == true);
+
+  //   io.emit("fullRooms", fullRooms);
+  // })
 
   socket.on("paint", (cellObject) => {
     // {roomId: room.roomId, cellId: e.target.id, color: user.color});

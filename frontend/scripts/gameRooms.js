@@ -10,7 +10,12 @@ function createNewRoom() {
   socket.on("create room", (createRoomResponse) => {
     enterRoomLobby(createRoomResponse);
   });
+
+  socket.on("joinRoom", (room) => {
+    createGridPage(room);
+  });
 }
+
 
 function enterRoomLobby(room) {
   // enable chat
@@ -38,12 +43,6 @@ async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
   const rooms = await fetchRooms();
 
-  socket.on("roomIsFull", (roomId) => {
-    const buttonToDisable = document.getElementById(roomId);
-    buttonToDisable.setAttribute("disabled", "");
-    buttonToDisable.innerHTML = "FULL";
-  });
-
   if (rooms.length === 0) {
     roomsContainer.innerHTML = "No active game rooms";
   } else {
@@ -62,6 +61,15 @@ async function printRoomList() {
       roomsContainer.appendChild(roomContainer);
     });
   }
+  // socket.on("fullRooms", (rooms) => {    // var och när?
+  //   rooms.forEach((room) => {
+  //     const buttonToDisable = document.getElementById(room.id);
+  //     buttonToDisable.setAttribute("disabled", "");
+  //     buttonToDisable.innerHTML = "FULL";
+  //   })
+
+  // });
+  // socket.emit("areRoomsFull");
 }
 
 async function fetchRooms() {
@@ -80,10 +88,9 @@ function joinActiveRoom(e) {
     roomId: roomId,
   };
 
-  socket.emit("join room", toSend);
+  socket.emit("joinRoom", toSend);
 
-  socket.on("join room", (room) => {
-    console.log(room);
+  socket.on("joinRoom", (room) => {
     createGridPage(room);
   });
 }
