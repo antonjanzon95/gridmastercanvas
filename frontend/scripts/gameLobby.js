@@ -12,9 +12,8 @@ export const createGridPage = (room) => {
   mainContainer.innerHTML = "";
 
   socket.on("readyCheck", (user) => {
-    // lägg till checkmark
-
-    user.name.innerHTML = "&#x2713;";
+    const playerReady = document.getElementById(socket.id);
+    playerReady.innerHTML = "&#x2713;" + user.name;
   });
 
   socket.on("paint", (cell) => {
@@ -22,7 +21,7 @@ export const createGridPage = (room) => {
   });
 
   createGrid(room);
-  const usersInLobby = renderRoomUsers(room.users);
+  let usersInLobby = renderRoomUsers(room.users);
   createLobbyButtons(room.roomId);
 
   mainContainer.appendChild(usersInLobby);
@@ -46,8 +45,13 @@ function createUserContainer(user) {
   colorCircle.classList.add("color-circle");
   colorCircle.style.backgroundColor = user.color;
   const nameHeading = document.createElement("h2");
+  nameHeading.id = socket.id;
+  // if (user.ready) {
+  //   nameHeading.innerHTML = "&#x2713;" + user.name;
+  // } else {
+  //
+  // }
   nameHeading.innerHTML = user.name;
-
   userContainer.append(colorCircle, nameHeading);
   return userContainer;
 }
