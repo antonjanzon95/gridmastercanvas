@@ -23,9 +23,9 @@ export const showGameOverPage = (finalScore) => {
   mainContainer.appendChild(score);
 };
 
-async function showHighScorePage() {
+export async function showHighScorePage() {
   const mainContainer = document.querySelector("main");
-
+  mainContainer.innerHTML = "";
   const highScoresContainer = document.createElement("div");
   highScoresContainer.classList.add("highscores-container");
 
@@ -58,17 +58,13 @@ async function fetchHighscores() {
   return data;
 }
 
-// calculate score
-export function compareTryToSolution(currentGrid, solution) {
-  let correctChoice = 0;
-
-  for (let i = 0; i < solution.length; i++) {
-    if (currentGrid[i].color === solution[i].color) {
-      correctChoice++;
-    }
-  }
-
-  let correctAmountInPercentage = (correctChoice / solution.length) * 100;
-
-  return correctAmountInPercentage;
+export async function saveScore(usersAndScore) {
+  const response = await fetch("http://localhost:3000/highscores/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(usersAndScore),
+  });
+  const data = await response.json();
 }

@@ -1,13 +1,13 @@
 import { socket } from "../main";
 import { renderRoomUsers } from "./gameLobby";
-import { showGameOverPage } from "./gameover";
+import { saveScore, showGameOverPage } from "./gameover";
 import { createGrid } from "./paintGrid";
 
 export function createGamePage(room) {
   socket.off("readyCheck");
 
   const mainContainer = document.querySelector("main");
-  const user = { name: "Anton", color: "blue" };
+  const user = { id: socket.id, name: "Anton", color: "blue" };
 
   mainContainer.innerHTML = "";
 
@@ -16,6 +16,12 @@ export function createGamePage(room) {
   mainContainer.appendChild(usersInLobby);
 
   socket.on("gameOver", (scoreInPercent) => {
+    // WORK IN PROGRESS
+    if (user.id === room.users[0].id) {
+      console.log(user.id);
+      saveScore({ users: room.users, score: scoreInPercent });
+    }
+
     showGameOverPage(scoreInPercent);
   });
 

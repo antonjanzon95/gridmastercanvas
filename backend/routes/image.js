@@ -22,8 +22,6 @@ router.post("/save", async function (req, res) {
 
   const currentRoom = rooms.find((room) => room.id == id);
 
-  console.log(currentRoom);
-
   const toSave = { users: currentRoom.users, image: currentRoom.grid };
 
   const saveImage = await ImageModel.create(toSave);

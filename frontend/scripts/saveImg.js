@@ -9,7 +9,6 @@ const saveImagePost = async (roomId) => {
     body: JSON.stringify({ roomId }),
   });
   const data = await response.json();
-  console.log(data);
   viewSavedImages();
 };
 

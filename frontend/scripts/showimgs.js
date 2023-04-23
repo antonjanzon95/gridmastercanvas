@@ -69,7 +69,6 @@ export async function renderImage(event) {
       const gridNode = document.createElement("div");
       gridNode.classList.add("display-cell");
       gridNode.style.backgroundColor = image.image[cellIndex].color;
-      console.log(image.image[cellIndex].color);
       gridContainer.appendChild(gridNode);
       cellIndex++;
     }

@@ -19,6 +19,7 @@ const {
   updateGrid,
   createSolutionGrid,
 } = require("./modules/painting");
+const { calculateScore } = require("./modules/score");
 
 const app = express();
 const server = require("http").Server(app);
@@ -153,13 +154,9 @@ io.on("connection", (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    console.log(roomToJoin.users.length);
-
     if (roomToJoin.users.length > 3) {
       roomToJoin.isFull = true; // ej färdig!!
     }
-
-    console.log(roomToJoin);
 
     io.emit("joinRoom", roomToJoin);
     io.emit("monitorRooms");

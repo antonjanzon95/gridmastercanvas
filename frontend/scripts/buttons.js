@@ -1,7 +1,8 @@
 import { readyCheck } from "./gameLobby";
+import { showHighScorePage } from "./gameover";
 import { handleSaveImage } from "./saveImg";
 
-export const createButton = (text, clickFunction) => {
+export const createButton = (text, clickFunction, id) => {
   const button = document.createElement("button");
   button.innerHTML = text;
   button.classList.add("btn");
@@ -20,9 +21,11 @@ export const createLobbyButtons = (roomId) => {
   const saveImageBtn = createButton("Save Image", handleSaveImage);
   saveImageBtn.id = roomId;
 
+  const highScoreBtn = createButton("Highscores", showHighScorePage);
+
   // start game button
   const startBtn = createButton("Start Game", readyCheck);
   startBtn.id = roomId;
 
-  buttonContainer.append(startBtn, saveImageBtn);
+  buttonContainer.append(startBtn, saveImageBtn, highScoreBtn);
 };
