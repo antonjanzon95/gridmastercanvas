@@ -76,7 +76,7 @@ export function renderChatHtml() {
     hex = hex.replace("#", "");
     console.log(hex);
 
-    //konvertering hex till heltag,
+    //convert hex to integer,
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
@@ -85,10 +85,10 @@ export function renderChatHtml() {
     return { r, g, b };
   }
 
-  sendMessage.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
+  sendMessage.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
       e.preventDefault();
-      sendButton.click();
+      sendChat();
     }
   });
 
