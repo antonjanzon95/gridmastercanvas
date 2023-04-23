@@ -11,6 +11,8 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const imageRouter = require("./routes/image");
 const roomsRouter = require("./routes/rooms");
+const highScoresRouter = require("./routes/highscores");
+
 const {
   createEmptyGrid,
   rooms,
@@ -50,6 +52,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/image", imageRouter);
 app.use("/rooms", roomsRouter);
+app.use("/highscores", highScoresRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
@@ -224,19 +227,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("gameOver", (room) => {
-    const currentRoom = rooms.find(
-      (currentRoom) => currentRoom.roomId == room.roomId
-    );
-    let score = 0;
-    const gridLength = currentRoom.grid.length;
-
-    for (let i = 0; i < gridLength; i++) {
-      if (currentRoom.grid[i].color == currentRoom.solutionGrid[i].color) {
-        score++;
-      }
-    }
-
-    const scoreInPercent = (score / gridLength) * 100;
+    const scoreInPercent = calculateScore(room);
 
     socket.emit("gameOver", scoreInPercent);
   });
