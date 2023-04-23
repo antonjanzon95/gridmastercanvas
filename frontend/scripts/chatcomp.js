@@ -9,6 +9,7 @@ export function renderChatHtml() {
   const chatDiv = document.querySelector("#chat-div");
 
   chatDiv.innerHTML = `
+  <div>Show users online + darkmode Btn</div>
     <div class="chat-container">
         <div class="messages" id="messages"></div>
       <input type='text' id='send-message' placeholder='Lets chat'/>
