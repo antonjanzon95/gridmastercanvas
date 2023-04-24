@@ -13,9 +13,8 @@ export function renderChatHtml() {
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
-  <section class="story-highlights">
+      <p>Users online:</p>
         <div class="scroll-container">
-        <p>Users online:</p>
         <div class="item">
             <div class="user-color-circle"></div>
             <p>username</p>
@@ -36,6 +35,11 @@ export function renderChatHtml() {
         <div class="user-color-circle"></div>
             <p>username</p>
         </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        
       </div>
     </section>
   <div class="chat-btn-wrapper">
