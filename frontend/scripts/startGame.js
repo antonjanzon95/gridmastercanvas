@@ -7,7 +7,7 @@ export function createGamePage(room) {
   socket.off("readyCheck");
 
   const mainContainer = document.querySelector("main");
-  const user = { id: socket.id, name: "Anton", color: "blue" };
+  // const user = { id: socket.id, name: "Anton", color: "blue" };
 
   mainContainer.innerHTML = "";
 
@@ -15,14 +15,13 @@ export function createGamePage(room) {
   let usersInLobby = renderRoomUsers(room.users);
   mainContainer.appendChild(usersInLobby);
 
-  socket.on("gameOver", (scoreInPercent) => {
-    // WORK IN PROGRESS
-    if (user.id === room.users[0].id) {
-      console.log(user.id);
-      saveScore({ users: room.users, score: scoreInPercent });
+  socket.on("gameOver", (roomWithScore) => {
+    if (roomWithScore.id != room.id) {
+      return;
     }
+    socket.off("gameOver");
 
-    showGameOverPage(scoreInPercent);
+    showGameOverPage(roomWithScore.score);
   });
 
   let gameTimer = 5;
@@ -36,7 +35,6 @@ export function createGamePage(room) {
     gameTimer--;
     if (gameTimer < 0) {
       clearInterval(gameTimerInterval);
-      socket.emit("gameOver", room);
     }
   }, 1000);
 }

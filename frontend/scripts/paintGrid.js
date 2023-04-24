@@ -49,6 +49,7 @@ export function createSolutionGrid(room) {
   mainContainer.appendChild(gridContainer);
 
   socket.on("startGame", (roomToStart) => {
+    socket.off("startGame");
     if (room.roomId == roomToStart.roomId) {
       createGamePage(roomToStart);
     }

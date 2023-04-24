@@ -19,7 +19,7 @@ const {
   updateGrid,
   createSolutionGrid,
 } = require("./modules/painting");
-const { calculateScore } = require("./modules/score");
+const { calculateScore, saveScoreInDb } = require("./modules/score");
 
 const app = express();
 const server = require("http").Server(app);
@@ -196,6 +196,11 @@ io.on("connection", (socket) => {
     const room = rooms.find((room) => room.id == roomAndUser.room.id);
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
+    console.log(room);
+
+    console.log(user);
+
+    console.log(roomAndUser.user);
     // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
     // if (user.ready) {
     //   user.ready = false;
@@ -221,12 +226,18 @@ io.on("connection", (socket) => {
 
   socket.on("startGame", (room) => {
     io.emit("startGame", room);
-  });
-
-  socket.on("gameOver", (room) => {
-    const scoreInPercent = calculateScore(room);
-
-    socket.emit("gameOver", scoreInPercent);
+    let cd = 5;
+    const gameInterval = setInterval(() => {
+      if (cd < 0) {
+        clearInterval(gameInterval);
+        const scoreInPercent = calculateScore(room);
+        room.score = scoreInPercent;
+        room.isDone = true;
+        saveScoreInDb(room.users, room.score);
+        io.emit("gameOver", room);
+      }
+      cd--;
+    }, 1000);
   });
 });
 

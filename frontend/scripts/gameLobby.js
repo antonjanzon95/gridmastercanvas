@@ -77,9 +77,10 @@ export const readyCheck = (e) => {
   };
 
   socket.on("showSolutionGrid", (room) => {
-    if (room.roomId == roomId) {
-      createSolutionGrid(room);
+    if (room.roomId != roomId) {
+      return;
     }
+    createSolutionGrid(room);
   });
 
   socket.emit("readyCheck", roomAndUser);

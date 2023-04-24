@@ -1,4 +1,5 @@
 const { rooms } = require("../modules/painting");
+const ScoreModel = require("../models/ScoreModel");
 
 function calculateScore(room) {
   const currentRoom = rooms.find(
@@ -18,4 +19,11 @@ function calculateScore(room) {
   return scoreInPercent;
 }
 
-module.exports = { calculateScore };
+async function saveScoreInDb(users, score) {
+  const userNames = users.map((user) => user.name);
+  const toSave = { users: userNames, score: score, date: new Date() };
+
+  const save = await ScoreModel.create(toSave);
+}
+
+module.exports = { calculateScore, saveScoreInDb };
