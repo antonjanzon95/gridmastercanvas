@@ -20,8 +20,7 @@ export const createGrid = (room) => {
   let myColor;
   if (!room.isStarted) {
     myColor = room.users.find((user) => user.id == socket.id).lobbyColor;
-  }
-  else {
+  } else {
     myColor = room.users.find((user) => user.id == socket.id).gameColor;
   }
 
@@ -88,7 +87,7 @@ export function createSolutionGrid(room) {
       setTimeout(() => {
         countdownDiv.innerHTML = "";
       }, 2000);
-      socket.emit("startGame", room);
+      socket.emit("startGame", room); // sköt i back-end istället
       clearInterval(countdownInterval);
     }
   }, 1000);

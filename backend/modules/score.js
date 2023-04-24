@@ -16,7 +16,7 @@ function calculateScore(room) {
 
   const scoreInPercent = (score / gridLength) * 100;
 
-  return scoreInPercent;
+  return Math.floor(scoreInPercent);
 }
 
 async function saveScoreInDb(users, score) {

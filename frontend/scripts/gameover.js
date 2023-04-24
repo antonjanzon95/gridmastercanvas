@@ -7,7 +7,7 @@ export const showGameOverPage = (finalScore) => {
 
   const score = document.createElement("h1");
   score.classList.add("score-text");
-  score.innerHTML = `Good Job! You got ${Math.floor(finalScore)}% correct!`;
+  score.innerHTML = `Good Job! You got ${finalScore}% correct!`;
 
   const playAgainBtn = document.createElement("button");
   playAgainBtn.classList.add("btn");
@@ -56,15 +56,4 @@ async function fetchHighscores() {
   const data = await response.json();
 
   return data;
-}
-
-export async function saveScore(usersAndScore) {
-  const response = await fetch("http://localhost:3000/highscores/save", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(usersAndScore),
-  });
-  const data = await response.json();
 }
