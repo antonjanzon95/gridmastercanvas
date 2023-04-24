@@ -22,11 +22,12 @@ main {
 
 .main {
   grid-area: 3 / 1 / 10 / 4;
-  background-color: #d64a8b;
+  background-color: rgb(177, 176, 176);
 }
 
 .parent {
   display: grid;
+  background-color: lightgrey;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 0px;
