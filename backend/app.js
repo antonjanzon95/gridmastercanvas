@@ -58,23 +58,26 @@ app.use("/highscores", highScoresRouter);
 io.on("connection", (socket) => {
   console.log("Någonting");
 
-  socket.on('saveUser', (data) => {
+  socket.on("saveUser", (data) => {
     let name = data.name;
     console.log(data);
-  
-    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
-  
+
+    socket.userColor =
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, "0");
+
     let user = {
       name: name,
       id: socket.id,
       color: socket.userColor,
     };
-  
+
     console.log({ user });
 
-    io.to(socket.id).emit('userLoggedIn', { user });
+    io.to(socket.id).emit("userLoggedIn", { user });
     // io.emit('userLoggedIn', {user})
-
   });
 
   // socket.emit("message", { message: "Hello from the server!" });
@@ -115,7 +118,7 @@ io.on("connection", (socket) => {
    *****************************************************************************/
   console.log("someone is here");
 
-  let message = {message: "Hello world", user: "Server says"};
+  let message = { message: "Hello world", user: "Server says" };
   socket.emit("message", message);
 
   socket.on("message", (arg) => {
@@ -145,7 +148,7 @@ io.on("connection", (socket) => {
 
     rooms.push(room);
 
-    io.emit("create room", room);
+    io.to(user.id).emit("create room", room);
     io.emit("monitorRooms");
   });
 
@@ -167,11 +170,14 @@ io.on("connection", (socket) => {
       roomToJoin.isFull = true; // ej färdig!!
     }
 
-    io.emit("joinRoom", roomToJoin);
+    const usersInRoom = roomToJoin.users.map((user) => user);
+    usersInRoom.forEach((user) => io.to(user.id).emit("joinRoom", roomToJoin));
+
     io.emit("monitorRooms");
   });
 
   socket.on("paint", (cellObject) => {
+    const currentRoom = rooms.find((room) => room.roomId == cellObject.roomId);
     const updatedCell = updateGrid(cellObject);
 
     const roomIdAndUpdatedCell = {
@@ -179,7 +185,10 @@ io.on("connection", (socket) => {
       updatedCell: updatedCell,
     };
 
-    io.emit("paint", roomIdAndUpdatedCell);
+    const usersInRoom = currentRoom.users.map((user) => user);
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit("paint", roomIdAndUpdatedCell)
+    );
   });
 
   // let colors = [];
@@ -202,14 +211,9 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("readyCheck", (roomAndUser) => {
-
     const room = rooms.find((room) => room.roomId == roomAndUser.room);
 
     const user = room.users.find((user) => user.id == roomAndUser.user);
-
-    // console.log(rooms);
-
-    // console.log(user);
 
     // console.log(roomAndUser.user);
     // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
@@ -223,6 +227,8 @@ io.on("connection", (socket) => {
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
+    const usersInRoom = room.users.map((user) => user);
+
     if (allAreReady) {
       room.isStarted = true;
       const solutionGrid = createSolutionGrid(room.users);
@@ -230,32 +236,57 @@ io.on("connection", (socket) => {
       room.solutionGrid = solutionGrid;
       room.grid = createEmptyGrid();
 
-      return io.emit("showSolutionGrid", room);
+      let solutionGridCd = 5;
+      const solutionGridInterval = setInterval(() => {
+        if (solutionGridCd < 0) {
+          clearInterval(solutionGridInterval);
+          startGame(room);
+        }
+        solutionGridCd--;
+      }, 1000);
+
+      return usersInRoom.forEach((user) => {
+        io.to(user.id).emit("showSolutionGrid", room);
+      });
     }
 
     const userAndRoom = {
       user: user,
       room: room,
-    }
+    };
 
-    io.emit("readyCheck", userAndRoom);
-  });
-
-  socket.on("startGame", (room) => {
-    io.emit("startGame", room);
-    let cd = 5;
-    const gameInterval = setInterval(() => {
-      if (cd < 0) {
-        clearInterval(gameInterval);
-        const scoreInPercent = calculateScore(room);
-        room.score = scoreInPercent;
-        room.isDone = true;
-        saveScoreInDb(room.users, room.score);
-        io.emit("gameOver", room);
-      }
-      cd--;
-    }, 1000);
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit("readyCheck", userAndRoom)
+    );
+    // io.emit("readyCheck", userAndRoom);
   });
 });
+
+function startGame(room) {
+  const usersInRoom = room.users.map((user) => user);
+
+  usersInRoom.forEach((user) => io.to(user.id).emit("startGame", room));
+
+  let cd = 5;
+  const gameInterval = setInterval(() => {
+    if (cd < 0) {
+      clearInterval(gameInterval);
+      const scoreInPercent = calculateScore(room);
+      room.score = scoreInPercent;
+      saveScoreInDb(room.users, room.score);
+      const usersInRoom = room.users.map((user) => user);
+      usersInRoom.forEach((user) => io.to(user.id).emit("gameOver", room));
+
+      const roomToRemove = rooms.find(
+        (roomToFind) => roomToFind.roomId == room.roomId
+      );
+      const roomIndex = rooms.indexOf(roomToRemove);
+
+      rooms.splice(roomIndex, 1);
+      io.emit("monitorRooms");
+    }
+    cd--;
+  }, 1000);
+}
 
 module.exports = { app: app, server: server };
