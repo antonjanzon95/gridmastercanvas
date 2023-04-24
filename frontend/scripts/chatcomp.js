@@ -7,7 +7,6 @@ export function renderChatHtml() {
   console.log("Hej från chat!");
   // let user = sessionStorage.getItem('user');
 
-
 // console.log(user, name, color);
 
   const chatDiv = document.querySelector("#chat-div");

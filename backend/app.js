@@ -106,8 +106,8 @@ io.on("connection", (socket) => {
    *****************************************************************************/
   console.log("someone is here");
 
-  socket.emit("message", { message: "Hello world", user: "Server says" });
-
+  let message = {message: "Hello world", user: "Server says"};
+  socket.emit("message", message);
 
   socket.on("message", (arg) => {
     console.log("Incoming chat", arg);

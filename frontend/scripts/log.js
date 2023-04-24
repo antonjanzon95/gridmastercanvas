@@ -5,6 +5,7 @@ export function initLog() {
   if (sessionStorage.getItem('user')) {
     console.log('logged in');
     renderLogoutButton();
+    renderChatHtml();
   } else {
     socket.off('saveUser');
 
