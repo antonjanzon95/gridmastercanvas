@@ -1,0 +1,25 @@
+
+
+.lobby-names {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+  }
+  
+  .color-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+  
+  .user-container {
+    display: flex;
+    align-items: center;
+    width: 75px;
+    padding: 0.5rem;
+    gap: 2px;
+  
+    div {
+      margin-right: 2px;
+    }
+  }
