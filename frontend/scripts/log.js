@@ -75,12 +75,14 @@ function renderLogForm() {
 function renderLogo() {
   let header = document.querySelector('#header');
   let div = document.createElement('div');
-  let h1 = document.createElement('h1');
+  let logo = document.createElement('img');
 
-  h1.innerHTML = 'Gridmaster';
+  logo.setAttribute('src', '/gridmastercanvas_logo.png');
+  logo.setAttribute('alt', 'Grid Master Canvas Logo');
+  logo.setAttribute('width', '400');
 
   header.appendChild(div);
-  div.appendChild(h1);
+  div.appendChild(logo);
 }
 
 function renderSiteNav() {
