@@ -24,7 +24,7 @@ document.querySelector("#app").innerHTML = `
 
 const init = () => {
   initLog();
-  // renderChatHtml();
+  renderChatHtml();
   renderFooter();
   renderRoomsSection();
   viewSavedImages();

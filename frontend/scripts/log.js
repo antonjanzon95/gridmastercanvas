@@ -1,5 +1,4 @@
 import { socket } from '../main';
-export { socket }; 
 import { renderChatHtml } from './chatcomp';
 
 export function initLog(color) {
@@ -49,23 +48,30 @@ function renderLogForm() {
 
     socket.emit('saveUser', sessionStorage.getItem('user'));
 
-    socket.on('saveUser', (arg) => {
-      console.log(arg)
-      let user = arg.user;
-      sessionStorage.setItem('user', JSON.stringify(user))
+    // socket.on('userLoggedIn', (arg) => {
+    //   console.log(arg)
+    //   let user = arg.user;
 
-      console.log(`${user.name} has logged in`);
-      console.log(user.color)
-      addColor(user.color);
-      // sessionStorage.setItem('userColor', user.color);
-      renderChatHtml();
-      initLog(user.color);
+    //   console.log(`${user.name} has logged in with color ${user.color}`);
+    //   sessionStorage.setItem('color', user.color);
 
-    });
+    //   addColor(user.color);
+    //   // sessionStorage.setItem('color', user.color);
 
+    //   initLog(user.color);
+  
+    // });
     logInput.value = '';
     logForm.innerHTML = '';
-
+  });
+  socket.on('userLoggedIn', (data) => {
+    const user = data.user;
+    
+    console.log(`${user.name} has logged in with color ${user.color}`);
+    const color = user.color;
+    console.log(color);
+    sessionStorage.setItem('color', color)
+    
   });
 }
 
@@ -79,15 +85,14 @@ function renderLogoutButton(color) {
   logForm.appendChild(logOutButton);
 
   logOutButton.addEventListener('click', () => {
-
+    // let user = JSON.parse(sessionStorage.getItem('user'));
+    sessionStorage.removeItem('user');
     sessionStorage.removeItem('user');
 
     removeColor(color);
 
     initLog();
     logForm.innerHTML = '';
-    const chatDiv = document.querySelector("#chat-div");
-    chatDiv.innerHTML ='';
   });
 }
 

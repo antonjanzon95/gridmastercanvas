@@ -2,9 +2,13 @@ import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 const socket = io("http://localhost:3000");
 
 export function renderChatHtml() {
-  let user = JSON.parse(sessionStorage.user);
+  // let user = JSON.parse(sessionStorage.user);
+    // addColor(user.userColor);
   console.log("Hej från chat!");
-  console.log(user);
+  // let user = sessionStorage.getItem('user');
+
+
+// console.log(user, name, color);
 
   const chatDiv = document.querySelector("#chat-div");
 
@@ -22,13 +26,31 @@ export function renderChatHtml() {
   let sendButton = document.querySelector("#send-button");
   let sendMessage = document.querySelector("#send-message");
 
+  // socket.on('userObject', (user) => {
+  //   console.log(`${user.name} has logged in with color ${user.color}`);
+  //   console.log(user)
+
+  //   // let userObject = {
+  //   //   name: user.name,
+  //   //   id: user.id,
+  //   //   color: user.color
+  //   // };
+  //   sessionStorage.setItem('user', JSON.stringify(user))
+  //   // console.log(userObject)
+  // });
+
   socket.on("message", (msg) => {
-    let user = JSON.parse(sessionStorage.user);
     console.log(msg);
+    console.log(msg.user)
+
+    // let user = JSON.parse(sessionStorage.user);
+    // console.log(user)
+    // let name = user.name;
+  
     let chat = document.createElement("div");
     chat.setAttribute("class", "message");
-
-    if (msg.user === user.name) {
+  
+    if (msg.user === sessionStorage.getItem("user")) {
       chat.setAttribute("class", "send-message");
     } else {
       chat.setAttribute("class", "receive-message");
@@ -50,15 +72,19 @@ export function renderChatHtml() {
   });
 
   function sendChat() {
-    let user = JSON.parse(sessionStorage.user);
+    // let user = JSON.parse(sessionStorage.user);
 
-    console.log(user);
-    console.log(user.color);
+    // console.log(user);
+    // console.log(user.color);
+
+    // let user = JSON.parse(sessionStorage.user);
+    let user = sessionStorage.getItem("user");
+    let color = sessionStorage.getItem("color");
 
     socket.emit("message", {
       message: sendMessage.value,
-      user: user.name,
-      color: user.color,
+      user: user,
+      color: color,
     });
     sendMessage.value = "";
   }

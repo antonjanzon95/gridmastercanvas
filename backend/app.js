@@ -48,18 +48,22 @@ app.use("/rooms", roomsRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
-  socket.on("saveUser", (arg) => {
-    socket.userName = arg;
-    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
 
+  socket.on('saveUser', (userName) => {
+    console.log(userName);
+    socket.userName = userName;
+    socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
+  
     let user = {
       name: socket.userName,
       id: socket.id,
       color: socket.userColor,
     };
-
+  
     console.log({ user });
-    io.emit("saveUser", { user });
+
+    io.to(socket.id).emit('userLoggedIn', { user });
+
   });
 
   // socket.emit("message", { message: "Hello from the server!" });
@@ -101,6 +105,7 @@ io.on("connection", (socket) => {
   console.log("someone is here");
 
   socket.emit("message", { message: "Hello world", user: "Server says" });
+
 
   socket.on("message", (arg) => {
     console.log("Incoming chat", arg);
@@ -144,24 +149,24 @@ io.on("connection", (socket) => {
     io.emit("paint", updatedCell);
   });
 
-  let colors = [];
+  // let colors = [];
 
-  socket.on("addColor", (arg) => {
-    socket.color = arg;
+  // socket.on("addColor", (arg) => {
+  //   socket.color = arg;
 
-    colors.push(socket.color);
+  //   colors.push(socket.color);
 
-    console.log(colors);
-    io.emit("updateColors", colors);
-  });
+  //   console.log(colors);
+  //   io.emit("updateColors", colors);
+  // });
 
-  socket.on("removeColor", (arg) => {
-    socket.color = arg;
+  // socket.on("removeColor", (arg) => {
+  //   socket.color = arg;
 
-    colors.pop(socket.color);
+  //   colors.pop(socket.color);
 
-    io.emit("updateColors", colors);
-  });
+  //   io.emit("updateColors", colors);
+  // });
 });
 
 module.exports = { app: app, server: server };
