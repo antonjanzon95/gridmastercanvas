@@ -2,56 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./components/general";
-@import "./components/header";
+@import './components/general';
+@import './components/header';
 
-@import "./components/chatAside";
+@import './components/chatAside';
 
 body {
   font-family: $font-primary;
 }
 
-@import "./components/roomlist";
+@import './components/roomlist';
 
 main {
   position: relative;
 }
 
+// .parent {
+//   display: grid;
+//   grid-template-columns: repeat(5, 1fr);
+//   grid-template-rows: 0.5fr repeat(4, 1fr);
+//   grid-column-gap: 0px;
+//   grid-row-gap: 0px;
+//   place-items: center;
+// }
+
+// .div1 {
+//   grid-area: 1 / 1 / 2 / 6;
+//   background-color: $lightOrangeColor;
+//   padding: 1rem;
+// }
+// .div2 {
+//   grid-area: 2 / 5 / 6 / 6;
+//   background-color: #d64a8b;
+// }
+// .div3 {
+//   grid-area: 2 / 2 / 6 / 5;
+//   background-color: gray;
+// }
+// .div4 {
+//   grid-area: 2 / 1 / 4 / 2;
+//   background-color: blue;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-wrap: wrap;
+//   gap: 4px;
+//   overflow-y: auto;
+// }
+// .div5 {
+//   grid-area: 4 / 1 / 6 / 2;
+//   background-color: purple;
+// }
+
 .parent {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 0.5fr repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  place-items: center;
 }
 
-.div1 {
-  grid-area: 1 / 1 / 2 / 6;
+.header {
+  grid-area: 1 / 1 / 3 / 5;
   background-color: $lightOrangeColor;
   padding: 1rem;
 }
-.div2 {
-  grid-area: 2 / 5 / 6 / 6;
+.main {
+  grid-area: 3 / 1 / 10 / 4;
   background-color: #d64a8b;
 }
-.div3 {
-  grid-area: 2 / 2 / 6 / 5;
+.chat {
+  grid-area: 3 / 4 / 10 / 5;
   background-color: gray;
 }
-.div4 {
-  grid-area: 2 / 1 / 4 / 2;
-  background-color: blue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-  overflow-y: auto;
-}
-.div5 {
-  grid-area: 4 / 1 / 6 / 2;
-  background-color: purple;
+.footer {
+  grid-area: 10 / 1 / 11 / 5;
+  background-color: red;
 }
 
 .canvas-grid {
