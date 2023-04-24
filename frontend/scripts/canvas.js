@@ -3,7 +3,7 @@ import { showGameOverPage } from "./gameover";
 
 export const createGridPage = (room) => {
   const mainContainer = document.querySelector("main");
-  // const user = { name: "Anton", color: "blue" };
+  const user = { name: "Anton", color: "blue" };
   const myColor = room.users.find((user) => user.id == socket.id).color;
   // sessionStorage.setItem("user", JSON.stringify(user));
   // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
