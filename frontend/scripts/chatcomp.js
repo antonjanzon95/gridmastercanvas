@@ -12,8 +12,39 @@ export function renderChatHtml() {
   const chatDiv = document.querySelector("#chat-div");
 
   chatDiv.innerHTML = `
-  <div>in room show  chat tabs+ darkmode Btn</div>
-  <div>Show users online</div>
+  <section class="story-highlights">
+  <section class="story-highlights">
+        <div class="scroll-container">
+        <p>Users online:</p>
+        <div class="item">
+            <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+      </div>
+    </section>
+  <div class="chat-btn-wrapper">
+    <button>GLOBAL chat</button>
+    <button disabled>ROOM chat</button>
+    <button class="material-symbols-outlined" id="light-dark-mode">
+    light_mode
+    </button>
+  </div>
     <div class="chat-container">
         <div class="messages" id="messages"></div>
       <input type='text' id='send-message' placeholder='Lets chat'/>
