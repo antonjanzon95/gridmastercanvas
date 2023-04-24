@@ -9,3 +9,9 @@ header {
   background-color: $lightOrangeColor;
   border: 5px solid #1b1b1b;
 }
+
+.navContainer {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
