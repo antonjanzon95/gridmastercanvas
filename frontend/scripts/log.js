@@ -10,6 +10,8 @@ export function initLog() {
     socket.off('saveUser');
 
     console.log('not logged in');
+    const chatDiv = document.querySelector("#chat-div");
+    chatDiv.innerHTML = '';
     renderLogForm();
   }
 }
