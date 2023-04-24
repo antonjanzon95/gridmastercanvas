@@ -1,5 +1,6 @@
-let rooms = [];
-const GRID_CELL_COUNT = 225;
+const GRID_SIZE = 15;
+const GRID_CELL_COUNT = GRID_SIZE ** 2;
+const { rooms } = require("./variables");
 
 function createEmptyGrid() {
   const emptyGrid = [];
@@ -38,4 +39,4 @@ function updateGrid(cell) {
   return updatedCell;
 }
 
-module.exports = { rooms, createEmptyGrid, updateGrid, createSolutionGrid };
+module.exports = { createEmptyGrid, updateGrid, createSolutionGrid };

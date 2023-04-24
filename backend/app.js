@@ -15,11 +15,11 @@ const highScoresRouter = require("./routes/highscores");
 
 const {
   createEmptyGrid,
-  rooms,
   updateGrid,
   createSolutionGrid,
 } = require("./modules/painting");
 const { calculateScore, saveScoreInDb } = require("./modules/score");
+const { rooms, MAX_USERS, GAME_COLORS } = require("./modules/variables");
 
 const app = express();
 const server = require("http").Server(app);
@@ -134,7 +134,7 @@ io.on("connection", (socket) => {
       grid: startGrid,
       users: roomUsers,
       roomId: uuidv4(),
-      colors: ["red", "blue", "green", "yellow"],
+      colors: GAME_COLORS,
     };
 
     const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
@@ -166,8 +166,8 @@ io.on("connection", (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    if (roomToJoin.users.length > 3) {
-      roomToJoin.isFull = true; // ej färdig!!
+    if (roomToJoin.users.length > MAX_USERS) {
+      roomToJoin.isFull = true;
     }
 
     const usersInRoom = roomToJoin.users.map((user) => user);
