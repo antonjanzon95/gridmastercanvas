@@ -202,14 +202,16 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("readyCheck", (roomAndUser) => {
-    const room = rooms.find((room) => room.id == roomAndUser.room.id);
+
+    const room = rooms.find((room) => room.roomId == roomAndUser.room);
+
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    console.log(room);
+    // console.log(rooms);
 
-    console.log(user);
+    // console.log(user);
 
-    console.log(roomAndUser.user);
+    // console.log(roomAndUser.user);
     // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
     // if (user.ready) {
     //   user.ready = false;
@@ -231,7 +233,12 @@ io.on("connection", (socket) => {
       return io.emit("showSolutionGrid", room);
     }
 
-    io.emit("readyCheck", user);
+    const userAndRoom = {
+      user: user,
+      room: room,
+    }
+
+    io.emit("readyCheck", userAndRoom);
   });
 
   socket.on("startGame", (room) => {

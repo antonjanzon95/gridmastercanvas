@@ -54,10 +54,12 @@ export function createSolutionGrid(room) {
   mainContainer.appendChild(gridContainer);
 
   socket.on("startGame", (roomToStart) => {
-    socket.off("startGame");
-    if (room.roomId == roomToStart.roomId) {
-      createGamePage(roomToStart);
+    if (room.roomId != roomToStart.roomId) {
+      return;
     }
+    socket.off("readyCheck");
+    socket.off("startGame");
+    createGamePage(roomToStart);
   });
 
   let idcounter = 0;
