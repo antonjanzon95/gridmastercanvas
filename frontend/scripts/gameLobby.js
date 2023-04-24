@@ -8,7 +8,7 @@ import {
 
 export const createGameLobbyPage = (room) => {
   const mainContainer = document.querySelector("main");
-  const user = { name: "Anton", color: "blue" };
+
   // sessionStorage.setItem("user", JSON.stringify(user));
   // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
 

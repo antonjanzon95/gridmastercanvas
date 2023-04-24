@@ -138,7 +138,8 @@ io.on("connection", (socket) => {
 
     const assignedColor = room.colors.splice(colorIndex, 1)[0];
 
-    user.color = assignedColor;
+    user.gameColor = assignedColor;
+    user.lobbyColor = user.color;
 
     roomUsers.push(user);
 
@@ -157,7 +158,8 @@ io.on("connection", (socket) => {
 
     const assignedColor = roomToJoin.colors.splice(colorIndex, 1)[0];
 
-    userAndRoomId.user.color = assignedColor;
+    userAndRoomId.user.gameColor = assignedColor;
+    userAndRoomId.user.lobbyColor = userAndRoomId.user.color;
 
     roomToJoin.users.push(userAndRoomId.user);
 
@@ -220,6 +222,7 @@ io.on("connection", (socket) => {
     const allAreReady = room.users.every((user) => user.ready === true);
 
     if (allAreReady) {
+      room.isStarted = true;
       const solutionGrid = createSolutionGrid(room.users);
 
       room.solutionGrid = solutionGrid;

@@ -13,7 +13,7 @@ function createEmptyGrid() {
 function createSolutionGrid(roomUsers) {
   const solutionGrid = [];
   for (let i = 0; i < GRID_CELL_COUNT; i++) {
-    const randomColorArray = roomUsers.map((user) => user.color);
+    const randomColorArray = roomUsers.map((user) => user.gameColor);
     randomColorArray.push("whitesmoke");
     const randomIndex = Math.floor(Math.random() * randomColorArray.length);
     const cell = { color: randomColorArray[randomIndex] };

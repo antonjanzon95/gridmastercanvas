@@ -4,7 +4,7 @@ import { createGameLobbyPage } from "./gameLobby";
 
 // create room
 function createNewRoom() {
-  const user = { id: socket.id, name: "Anton", color: "blue" }; // från session
+  const user = JSON.parse(sessionStorage.getItem("user"));
   socket.emit("create room", user);
 
   socket.on("create room", (createRoomResponse) => {
@@ -90,8 +90,7 @@ async function fetchRooms() {
 
 function joinActiveRoom(e) {
   socket.off("monitorRooms");
-  const user = { id: socket.id, name: "Max" };
-  localStorage.setItem("user", JSON.stringify(user));
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const roomId = e.target.id;
 
   const toSend = {

@@ -17,7 +17,13 @@ export const createGrid = (room) => {
 
   gridContainer.classList.add("canvas-grid");
   mainContainer.appendChild(gridContainer);
-  const myColor = room.users.find((user) => user.id == socket.id).color;
+  let myColor;
+  if (!room.isStarted) {
+    myColor = room.users.find((user) => user.id == socket.id).lobbyColor;
+  }
+  else {
+    myColor = room.users.find((user) => user.id == socket.id).gameColor;
+  }
 
   let idcounter = 0;
   for (let i = 0; i < 15; i++) {
