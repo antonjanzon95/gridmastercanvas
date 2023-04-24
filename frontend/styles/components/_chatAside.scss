@@ -9,6 +9,11 @@
 //     width: 300px;
 // }
 
+.chat {
+    grid-area: 3 / 4 / 10 / 5;
+    background-color: gray;
+  }
+
 .send-button {
     height: 36px;
     width: 100%;
