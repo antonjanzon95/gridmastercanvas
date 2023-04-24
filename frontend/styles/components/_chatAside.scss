@@ -1,23 +1,12 @@
 @import "./general";
 
-// input {
-//     height: 36px;
-//     border: 2px solid #2b2b2b;
-//     box-shadow: 0.15rem 0.15rem #2b2b2b;
-//     margin-bottom: 0.5rem;
-//     padding: 0.5rem;
-//     width: 300px;
-// }
-
 .chat {
     grid-area: 3 / 4 / 10 / 5;
     background-color: gray;
-  }
-
-#chat-div {
-  padding: 1rem;
-  height: 85%;
-  width: 350px;
+    height: 100vh;
+    padding: 1rem;
+    height: 85%;
+    width: 350px;
 }
 
 .scroll-container {
@@ -33,25 +22,25 @@
     width: 65px;
     height: 65px;
     margin-right: 10px;
-    padding: 3px;
     background-color: none;
-    border: 1px solid grey;
     border-radius: 50%;
   
     .user-color-circle {
-        height: 65px;
+        margin: 4px 0;
         width: 65px;
+        height: 65px;
         background-color: $white;
         border: 2px solid #2b2b2b;
         box-shadow: 0.15rem 0.15rem #2b2b2b;
         border-radius: 50%;
+        margin-right: 20px;
     }
   
     p {
       font-size: 0.75rem;
       text-align: center;
       padding: 0;
-      margin: 0 0 5px 5px;
+      margin: 0 0 5px 0;
     }
   }
   

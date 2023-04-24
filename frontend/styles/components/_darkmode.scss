@@ -1,0 +1,84 @@
+$chatTextColor: #D2D3D4;
+$chatTextBackground: #272C32;
+$serverBackground: #31353D;
+$mainBackgroundColor: #1D2126;
+$secondaryBackgroundColor: #21252b;
+$headingTextColor: #8e9093;
+
+$accessoryColor: #813333;
+
+$white: whitesmoke;
+
+
+
+body.dark {
+    background-color: $chatTextBackground;
+
+    header {
+        background-color: $mainBackgroundColor;
+    }
+
+    main {
+        background-color: $secondaryBackgroundColor;
+        color: $white;
+    }
+
+    input {
+        background-color: $chatTextBackground;
+        color: $white;
+    }
+
+    footer {
+        background-color: $secondaryBackgroundColor;
+        color: $chatTextColor;
+    }
+
+    button, .btn {
+        background-color: $accessoryColor; 
+        color: $white;
+        height: 50px;
+        border: none;
+        box-shadow: none;
+
+
+        &:hover {
+            background-color: #551f1f;
+            font-weight: bold; 
+            border: none;
+            box-shadow: none;
+        }
+    
+        &:active {
+            background-color: rgb(24, 24, 24);
+        }
+        &:disabled {
+            background-color: $chatTextBackground;
+            color: grey;
+            border: none;
+            transition: none;
+            box-shadow: none;;
+
+            &:hover {
+                background-color:$chatTextBackground;
+                font-weight: normal; 
+                border: none;
+                box-shadow:none;
+            }
+        }
+    }
+
+    .parent {
+       background-color: $secondaryBackgroundColor;
+    }
+
+    .chat  {
+        background-color: $chatTextBackground;
+        color: #D2D3D4;
+
+        .chat-container {
+            background-color: $mainBackgroundColor;
+        }
+    }
+
+
+}

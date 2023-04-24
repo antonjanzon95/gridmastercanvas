@@ -46,7 +46,7 @@ export function renderChatHtml() {
     <button>GLOBAL chat</button>
     <button disabled>ROOM chat</button>
     <button class="material-symbols-outlined" id="light-dark-mode">
-    light_mode
+    dark_mode
     </button>
   </div>
     <div class="chat-container">
@@ -60,7 +60,7 @@ export function renderChatHtml() {
   let sendButton = document.querySelector("#send-button");
   let sendMessage = document.querySelector("#send-message");
   let lightdarkBtn = document.querySelector("#light-dark-mode");
-  let isLightMode = false;
+  let isDarkMode = false;
 
   socket.on("message", (msg) => {
     console.log(msg);
@@ -145,11 +145,16 @@ export function renderChatHtml() {
 
   lightdarkBtn.addEventListener("click", () => {
     console.log("lets change light-dark-mode");
-    if (isLightMode) {
-      lightdarkBtn.innerHTML = "light_mode";
-    } else {
+    let body = document.body;
+
+    if (isDarkMode) {
       lightdarkBtn.innerHTML = "dark_mode";
+      body.classList.remove('dark');
+
+    } else {
+      lightdarkBtn.innerHTML = "light_mode";
+      body.classList.add('dark');
     }
-    isLightMode = !isLightMode;
+    isDarkMode = !isDarkMode;
   });
 }
