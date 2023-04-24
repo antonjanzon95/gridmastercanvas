@@ -49,13 +49,14 @@ app.use("/rooms", roomsRouter);
 io.on("connection", (socket) => {
   console.log("Någonting");
 
-  socket.on('saveUser', (userName) => {
-    console.log(userName);
-    socket.userName = userName;
+  socket.on('saveUser', (data) => {
+    let name = data.name;
+    console.log(data);
+  
     socket.userColor = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
   
     let user = {
-      name: socket.userName,
+      name: name,
       id: socket.id,
       color: socket.userColor,
     };
@@ -63,6 +64,7 @@ io.on("connection", (socket) => {
     console.log({ user });
 
     io.to(socket.id).emit('userLoggedIn', { user });
+    // io.emit('userLoggedIn', {user})
 
   });
 

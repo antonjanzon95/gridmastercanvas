@@ -43,14 +43,14 @@ export function renderChatHtml() {
     console.log(msg);
     console.log(msg.user)
 
-    // let user = JSON.parse(sessionStorage.user);
-    // console.log(user)
-    // let name = user.name;
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    console.log(user)
+    console.log(user.name)
   
     let chat = document.createElement("div");
     chat.setAttribute("class", "message");
   
-    if (msg.user === sessionStorage.getItem("user")) {
+    if (msg.user === user.name) {
       chat.setAttribute("class", "send-message");
     } else {
       chat.setAttribute("class", "receive-message");
@@ -72,19 +72,15 @@ export function renderChatHtml() {
   });
 
   function sendChat() {
-    // let user = JSON.parse(sessionStorage.user);
 
-    // console.log(user);
-    // console.log(user.color);
-
-    // let user = JSON.parse(sessionStorage.user);
-    let user = sessionStorage.getItem("user");
-    let color = sessionStorage.getItem("color");
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    // let user = sessionStorage.getItem("user");
+    // let color = sessionStorage.getItem("color");
 
     socket.emit("message", {
       message: sendMessage.value,
-      user: user,
-      color: color,
+      user: user.name,
+      color: user.color,
     });
     sendMessage.value = "";
   }

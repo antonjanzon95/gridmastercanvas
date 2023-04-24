@@ -3,10 +3,9 @@ import { createGridPage } from "./canvas";
 
 // create room
 function createNewRoom() {
-  let user = JSON.parse(sessionStorage.user);
   // const user = { id: socket.id, name: "Anton", color: "blue" }; // från session
-
-  console.log(user)
+const user = JSON.parse(sessionStorage.getItem('user'));
+console.log(user)
   socket.emit("create room", user);
 
   socket.on("create room", (createRoomResponse) => {

@@ -1,26 +1,16 @@
 import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
 
-export function initLog(color) {
+export function initLog() {
   if (sessionStorage.getItem('user')) {
     console.log('logged in');
-    renderLogoutButton(color);
+    renderLogoutButton();
   } else {
-    socket.off('addColor');
-    socket.off('removeColor');
     socket.off('saveUser');
 
     console.log('not logged in');
     renderLogForm();
   }
-
-  socket.off('updateColors');
-
-  socket.on('updateColors', (arg) => {
-    for (let i = 0; i < arg.length; i++) {
-      console.log(arg[i]);
-    }
-  });
 }
 
 function renderLogForm() {
@@ -44,28 +34,21 @@ function renderLogForm() {
       return;
     }
 
-    sessionStorage.setItem('user', logInput.value);
+    let user = {name: logInput.value, color: '', id: ''};
 
-    socket.emit('saveUser', sessionStorage.getItem('user'));
+    sessionStorage.setItem('user', JSON.stringify(user));
 
-    // socket.on('userLoggedIn', (arg) => {
-    //   console.log(arg)
-    //   let user = arg.user;
+    socket.emit('saveUser', JSON.parse(sessionStorage.getItem('user')));
 
-    //   console.log(`${user.name} has logged in with color ${user.color}`);
-    //   sessionStorage.setItem('color', user.color);
-
-    //   addColor(user.color);
-    //   // sessionStorage.setItem('color', user.color);
-
-    //   initLog(user.color);
-  
-    // });
+    initLog();
     logInput.value = '';
     logForm.innerHTML = '';
   });
+  
   socket.on('userLoggedIn', (data) => {
+    console.log(data);
     const user = data.user;
+    sessionStorage.setItem('user', JSON.stringify(user));
     
     console.log(`${user.name} has logged in with color ${user.color}`);
     const color = user.color;
@@ -75,7 +58,7 @@ function renderLogForm() {
   });
 }
 
-function renderLogoutButton(color) {
+function renderLogoutButton() {
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
   let logOutButton = document.createElement('button');
@@ -87,19 +70,9 @@ function renderLogoutButton(color) {
   logOutButton.addEventListener('click', () => {
     // let user = JSON.parse(sessionStorage.getItem('user'));
     sessionStorage.removeItem('user');
-    sessionStorage.removeItem('user');
-
-    removeColor(color);
+    sessionStorage.removeItem('color');
 
     initLog();
     logForm.innerHTML = '';
   });
-}
-
-function addColor(color) {
-  socket.emit('addColor', color);
-}
-
-function removeColor(color) {
-  socket.emit('removeColor', color);
 }
