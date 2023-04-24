@@ -6,12 +6,16 @@
 @import './components/header';
 
 @import './components/chatAside';
+@import './components/footer';
+
+@import './components/roomlist';
+
 
 body {
   font-family: $font-primary;
 }
 
-@import './components/roomlist';
+
 
 main {
   position: relative;
@@ -78,6 +82,9 @@ main {
 .footer {
   grid-area: 10 / 1 / 11 / 5;
   background-color: red;
+  height: 20px;
+  position: absolute;
+  bottom: 0;
 }
 
 .canvas-grid {
@@ -154,16 +161,7 @@ main {
   color: gold;
 }
 
-footer {
-  display: flex;
-  button {
-    width: 300px;
-    background-color: whitesmoke;
-    border: 2px solid #2b2b2b;
-    box-shadow: 0.15rem 0.15rem #2b2b2b;
-    margin: 1rem;
-  }
-}
+
 
 .modal-container {
   z-index: 5;
