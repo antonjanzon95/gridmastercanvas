@@ -11,7 +11,15 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const imageRouter = require("./routes/image");
 const roomsRouter = require("./routes/rooms");
-const { createEmptyGrid, rooms, updateGrid } = require("./modules/painting");
+const highScoresRouter = require("./routes/highscores");
+
+const {
+  createEmptyGrid,
+  rooms,
+  updateGrid,
+  createSolutionGrid,
+} = require("./modules/painting");
+const { calculateScore, saveScoreInDb } = require("./modules/score");
 
 const app = express();
 const server = require("http").Server(app);
@@ -45,6 +53,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/image", imageRouter);
 app.use("/rooms", roomsRouter);
+app.use("/highscores", highScoresRouter);
 
 io.on("connection", (socket) => {
   console.log("Någonting");
@@ -118,37 +127,57 @@ io.on("connection", (socket) => {
     const startGrid = createEmptyGrid();
     const roomUsers = [];
 
-    roomUsers.push(user);
-
     const room = {
       grid: startGrid,
       users: roomUsers,
       roomId: uuidv4(),
+      colors: ["red", "blue", "green", "yellow"],
     };
+
+    const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
+
+    const assignedColor = room.colors.splice(colorIndex, 1)[0];
+
+    user.color = assignedColor;
+
+    roomUsers.push(user);
 
     rooms.push(room);
 
     io.emit("create room", room);
+    io.emit("monitorRooms");
   });
 
-  socket.on("join room", (userAndRoomId) => {
+  socket.on("joinRoom", (userAndRoomId) => {
     const roomToJoin = rooms.find(
       (room) => room.roomId == userAndRoomId.roomId
     );
 
-    if (roomToJoin.users.length % 2 == 0) {
-      userAndRoomId.user.color = "green";
-    }
+    const colorIndex = Math.floor(Math.random() * roomToJoin.colors.length - 1);
+
+    const assignedColor = roomToJoin.colors.splice(colorIndex, 1)[0];
+
+    userAndRoomId.user.color = assignedColor;
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    io.emit("join room", roomToJoin);
+    if (roomToJoin.users.length > 3) {
+      roomToJoin.isFull = true; // ej färdig!!
+    }
+
+    io.emit("joinRoom", roomToJoin);
+    io.emit("monitorRooms");
   });
 
   socket.on("paint", (cellObject) => {
-    // {roomId: room.roomId, cellId: e.target.id, color: user.color});
     const updatedCell = updateGrid(cellObject);
-    io.emit("paint", updatedCell);
+
+    const roomIdAndUpdatedCell = {
+      roomId: cellObject.roomId,
+      updatedCell: updatedCell,
+    };
+
+    io.emit("paint", roomIdAndUpdatedCell);
   });
 
   // let colors = [];
@@ -169,6 +198,54 @@ io.on("connection", (socket) => {
 
   //   io.emit("updateColors", colors);
   // });
+
+  socket.on("readyCheck", (roomAndUser) => {
+    const room = rooms.find((room) => room.id == roomAndUser.room.id);
+    const user = room.users.find((user) => user.id == roomAndUser.user);
+
+    console.log(room);
+
+    console.log(user);
+
+    console.log(roomAndUser.user);
+    // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
+    // if (user.ready) {
+    //   user.ready = false;
+    // } else {
+    //   user.ready = true;
+    // }
+
+    user.ready = true;
+
+    const allAreReady = room.users.every((user) => user.ready === true);
+
+    if (allAreReady) {
+      const solutionGrid = createSolutionGrid(room.users);
+
+      room.solutionGrid = solutionGrid;
+      room.grid = createEmptyGrid();
+
+      return io.emit("showSolutionGrid", room);
+    }
+
+    io.emit("readyCheck", user);
+  });
+
+  socket.on("startGame", (room) => {
+    io.emit("startGame", room);
+    let cd = 5;
+    const gameInterval = setInterval(() => {
+      if (cd < 0) {
+        clearInterval(gameInterval);
+        const scoreInPercent = calculateScore(room);
+        room.score = scoreInPercent;
+        room.isDone = true;
+        saveScoreInDb(room.users, room.score);
+        io.emit("gameOver", room);
+      }
+      cd--;
+    }, 1000);
+  });
 });
 
 module.exports = { app: app, server: server };

@@ -17,23 +17,23 @@ export function initLog() {
 }
 
 function renderLogForm() {
-  let header = document.querySelector('header');
-  let logForm = document.createElement('div');
+  let header = document.querySelector("header");
+  let logForm = document.createElement("div");
 
-  let logInput = document.createElement('input');
-  let logUserButton = document.createElement('button');
+  let logInput = document.createElement("input");
+  let logUserButton = document.createElement("button");
 
-  logInput.type = 'text';
-  logInput.placeholder = 'name';
-  logUserButton.innerHTML = 'log in';
+  logInput.type = "text";
+  logInput.placeholder = "name";
+  logUserButton.innerHTML = "log in";
 
   header.appendChild(logForm);
   logForm.append(logInput, logUserButton);
 
-  logUserButton.addEventListener('click', (e) => {
+  logUserButton.addEventListener("click", (e) => {
     e.preventDefault();
 
-    if (logInput.value === '') {
+    if (logInput.value === "") {
       return;
     }
 
@@ -66,7 +66,7 @@ function renderLogoutButton() {
   let logForm = document.createElement('div');
   let logOutButton = document.createElement('button');
 
-  logOutButton.innerHTML = 'log out';
+  logOutButton.innerHTML = "log out";
   header.appendChild(logForm);
   logForm.appendChild(logOutButton);
 
@@ -76,6 +76,6 @@ function renderLogoutButton() {
     sessionStorage.removeItem('color');
 
     initLog();
-    logForm.innerHTML = '';
+    logForm.innerHTML = "";
   });
 }
