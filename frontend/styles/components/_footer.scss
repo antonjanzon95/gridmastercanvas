@@ -1,0 +1,12 @@
+footer {
+    display: flex;
+  
+  }
+
+  .footer {
+    grid-area: 10 / 1 / 11 / 5;
+    background-color: red;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+  }

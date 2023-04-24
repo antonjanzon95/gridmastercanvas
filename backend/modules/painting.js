@@ -2,12 +2,24 @@ let rooms = [];
 const GRID_CELL_COUNT = 225;
 
 function createEmptyGrid() {
-  const grid = [];
+  const emptyGrid = [];
   for (let i = 0; i < GRID_CELL_COUNT; i++) {
     const cell = { color: "whitesmoke" };
-    grid.push(cell);
+    emptyGrid.push(cell);
   }
-  return grid;
+  return emptyGrid;
+}
+
+function createSolutionGrid(roomUsers) {
+  const solutionGrid = [];
+  for (let i = 0; i < GRID_CELL_COUNT; i++) {
+    const randomColorArray = roomUsers.map((user) => user.gameColor);
+    randomColorArray.push("whitesmoke");
+    const randomIndex = Math.floor(Math.random() * randomColorArray.length);
+    const cell = { color: randomColorArray[randomIndex] };
+    solutionGrid.push(cell);
+  }
+  return solutionGrid;
 }
 
 function updateGrid(cell) {
@@ -15,11 +27,8 @@ function updateGrid(cell) {
 
   const index = cell.cellId;
 
-  if (activeRoom.grid[index].color !== "whitesmoke") {
-    activeRoom.grid[index].color = "whitesmoke";
-  } else {
-    activeRoom.grid[index].color = cell.color;
-  }
+  activeRoom.grid[index].color =
+    activeRoom.grid[index].color !== "whitesmoke" ? "whitesmoke" : cell.color;
 
   let updatedCell = {
     id: index,
@@ -29,4 +38,4 @@ function updateGrid(cell) {
   return updatedCell;
 }
 
-module.exports = { rooms, createEmptyGrid, updateGrid };
+module.exports = { rooms, createEmptyGrid, updateGrid, createSolutionGrid };

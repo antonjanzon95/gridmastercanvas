@@ -1,64 +1,80 @@
 import { socket } from "../main";
-import { createGridPage } from "./canvas";
+import { createButton } from "./buttons";
+import { createGameLobbyPage } from "./gameLobby";
 
 // create room
 function createNewRoom() {
-  const user = { id: socket.id, name: "Anton", color: "blue" }; // från session
+  const user = JSON.parse(sessionStorage.getItem("user"));
   socket.emit("create room", user);
 
   socket.on("create room", (createRoomResponse) => {
     enterRoomLobby(createRoomResponse);
+    socket.off("monitorRooms");
+
+    socket.on("joinRoom", (room) => {
+      if (room.roomId === createRoomResponse.roomId) {
+        createGameLobbyPage(room);
+      }
+    });
   });
+
+
 }
 
 function enterRoomLobby(room) {
   // enable chat
-  createGridPage(room);
+  createGameLobbyPage(room);
+  socket.off("create room");
 }
 
 export function renderRoomsSection() {
   const mainContainer = document.querySelector("main");
   const roomsContainer = document.createElement("div");
   const roomsBtnContainer = document.createElement("div");
-  const createRoomBtn = document.createElement("button");
-  const joinRoomBtn = document.createElement("button");
 
   mainContainer.innerHTML = "";
 
   roomsContainer.classList.add("rooms-container");
 
-  createRoomBtn.innerText = "Create room";
-  createRoomBtn.classList.add("btn");
-  createRoomBtn.addEventListener("click", createNewRoom);
-
-  joinRoomBtn.innerText = "Join this room";
-  joinRoomBtn.classList.add("btn");
-  joinRoomBtn.addEventListener("click", joinActiveRoom);
+  const createRoomBtn = createButton("Create Room", createNewRoom);
+  const joinRoomBtn = createButton("Join This Room", joinActiveRoom);
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
+  monitorRoomList();
   printRoomList();
+}
+
+function monitorRoomList() {
+  socket.on("monitorRooms", () => {
+    console.log("socket on monitorRooms");
+    printRoomList();
+  });
 }
 
 async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
+  roomsContainer.innerHTML = "";
   const rooms = await fetchRooms();
+
   if (rooms.length === 0) {
     roomsContainer.innerHTML = "No active game rooms";
   } else {
     rooms.map((room, index) => {
       const roomContainer = document.createElement("div");
       const titleElement = document.createElement("h4");
-      const joinBtn = document.createElement("button");
 
       roomContainer.classList.add("room-container");
 
       titleElement.innerHTML = "Room " + (index + 1);
 
-      joinBtn.classList.add("btn");
+      const joinBtn = createButton("Join Room", joinActiveRoom);
       joinBtn.id = room.roomId;
-      joinBtn.innerText = "Join room";
-      joinBtn.addEventListener("click", joinActiveRoom);
+
+      if (room.isFull) {
+        joinBtn.setAttribute("disabled", "");
+        joinBtn.innerHTML = "FULL";
+      }
 
       roomContainer.append(titleElement, joinBtn);
       roomsContainer.appendChild(roomContainer);
@@ -73,7 +89,8 @@ async function fetchRooms() {
 }
 
 function joinActiveRoom(e) {
-  const user = { id: socket.id, name: "Max", color: "red" };
+  socket.off("monitorRooms");
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const roomId = e.target.id;
 
   const toSend = {
@@ -81,10 +98,16 @@ function joinActiveRoom(e) {
     roomId: roomId,
   };
 
-  socket.emit("join room", toSend);
+  socket.emit("joinRoom", toSend);
+  socket.emit("monitorRooms");
 
-  socket.on("join room", (room) => {
-    console.log(room);
-    createGridPage(room);
+  socket.on("joinRoom", (room) => {
+    if (room.roomId == roomId) {
+      createGameLobbyPage(room);
+      console.log("funkar jag?");
+    }
   });
 }
+
+// testing purposes users
+// function testingUsers() {}

@@ -1,13 +1,18 @@
 @import "./general";
 
-input {
-    height: 36px;
-    border: 2px solid #2b2b2b;
-    box-shadow: 0.15rem 0.15rem #2b2b2b;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    width: 300px;
-}
+// input {
+//     height: 36px;
+//     border: 2px solid #2b2b2b;
+//     box-shadow: 0.15rem 0.15rem #2b2b2b;
+//     margin-bottom: 0.5rem;
+//     padding: 0.5rem;
+//     width: 300px;
+// }
+
+.chat {
+    grid-area: 3 / 4 / 10 / 5;
+    background-color: gray;
+  }
 
 .send-button {
     height: 36px;
@@ -36,33 +41,35 @@ input {
 
 .chat-container {
     height: 100%;
-    border: 2px solid #2b2b2b;
-    background-color: whitesmoke;
-    // overflow: scroll;
+    border: 2px solid $black;
+    background-color: $white;
+    overflow: scroll;
     box-shadow: 0.15rem 0.15rem #2b2b2b;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end;
+    // align-items: flex-end;
 }
 
-#messages {
+.messages {
     flex: 1;
     overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;   
 }
 .message {
+    color: $white;
     align-self: flex-end; 
-  }
+    position: relative;
+}
 
 .send-message {
     padding: 5px;
     margin-bottom: 10px;
     border-radius: 5px;
     text-align: right;
-    color: whitesmoke;
+    // color: whitesmoke;
     align-self: flex-end;
     max-width: 80%; 
 }
@@ -72,7 +79,7 @@ input {
     margin-bottom: 10px;
     border-radius: 5px;
     text-align: left;
-    color: whitesmoke;
+    // color: whitesmoke;
     align-self: flex-start;
     max-width: 80%; 
 }

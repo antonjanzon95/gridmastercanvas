@@ -1,90 +1,81 @@
 import { socket } from '../main';
+import { renderChatHtml } from './chatcomp';
 
-export function initLog(color) {
+export function initLog() {
   if (sessionStorage.getItem('user')) {
     console.log('logged in');
-    renderLogoutButton(color);
+    renderLogoutButton();
+    renderChatHtml();
   } else {
-    socket.off('addColor');
-    socket.off('removeColor');
     socket.off('saveUser');
 
     console.log('not logged in');
+    const chatDiv = document.querySelector("#chat-div");
+    chatDiv.innerHTML = '';
     renderLogForm();
   }
-
-  socket.off('updateColors');
-
-  socket.on('updateColors', (arg) => {
-    for (let i = 0; i < arg.length; i++) {
-      console.log(arg[i]);
-    }
-  });
 }
 
 function renderLogForm() {
-  let header = document.querySelector('header');
-  let logForm = document.createElement('div');
+  let header = document.querySelector("header");
+  let logForm = document.createElement("div");
 
-  let logInput = document.createElement('input');
-  let logUserButton = document.createElement('button');
+  let logInput = document.createElement("input");
+  let logUserButton = document.createElement("button");
 
-  logInput.type = 'text';
-  logInput.placeholder = 'name';
-  logUserButton.innerHTML = 'log in';
+  logInput.type = "text";
+  logInput.placeholder = "name";
+  logUserButton.innerHTML = "log in";
 
   header.appendChild(logForm);
   logForm.append(logInput, logUserButton);
 
-  logUserButton.addEventListener('click', (e) => {
+  logUserButton.addEventListener("click", (e) => {
     e.preventDefault();
 
-    if (logInput.value === '') {
+    if (logInput.value === "") {
       return;
     }
 
-    sessionStorage.setItem('user', logInput.value);
+    let user = {name: logInput.value, color: '', id: ''};
 
-    socket.emit('saveUser', sessionStorage.getItem('user'));
+    sessionStorage.setItem('user', JSON.stringify(user));
 
-    socket.on('saveUser', (arg) => {
-      let user = arg.user;
+    socket.emit('saveUser', JSON.parse(sessionStorage.getItem('user')));
 
-      console.log(`${user.userName} has logged in`);
-      addColor(user.userColor);
-
-      initLog(user.userColor);
-    });
-
+    initLog();
     logInput.value = '';
     logForm.innerHTML = '';
   });
+  
+  socket.on('userLoggedIn', (data) => {
+    console.log(data);
+    const user = data.user;
+    sessionStorage.setItem('user', JSON.stringify(user));
+    
+    console.log(`${user.name} has logged in with color ${user.color}`);
+    const color = user.color;
+    console.log(color);
+    sessionStorage.setItem('color', color)
+    
+  });
 }
 
-function renderLogoutButton(color) {
+function renderLogoutButton() {
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
   let logOutButton = document.createElement('button');
 
-  logOutButton.innerHTML = 'log out';
+  logOutButton.innerHTML = "log out";
   header.appendChild(logForm);
   logForm.appendChild(logOutButton);
 
   logOutButton.addEventListener('click', () => {
-
+    // let user = JSON.parse(sessionStorage.getItem('user'));
     sessionStorage.removeItem('user');
-
-    removeColor(color);
+    sessionStorage.removeItem('color');
 
     initLog();
-    logForm.innerHTML = '';
+    logForm.innerHTML = "";
   });
-}
-
-function addColor(color) {
-  socket.emit('addColor', color);
-}
-
-function removeColor(color) {
-  socket.emit('removeColor', color);
 }

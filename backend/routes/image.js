@@ -1,6 +1,7 @@
 var express = require("express");
 const ImageModel = require("../models/ImageModel");
 var router = express.Router();
+const { rooms } = require("../modules/painting");
 
 router.get("/", async function (req, res) {
   const imgs = await ImageModel.find();
@@ -17,11 +18,13 @@ router.get("/:id", async function (req, res) {
 });
 
 router.post("/save", async function (req, res) {
-  const { user, image } = req.body;
+  const { id } = req.body;
 
-  const toSend = { user: user.name, image: image };
+  const currentRoom = rooms.find((room) => room.id == id);
 
-  const saveImage = await ImageModel.create(toSend);
+  const toSave = { users: currentRoom.users, image: currentRoom.grid };
+
+  const saveImage = await ImageModel.create(toSave);
 
   res.status(201).json({ message: "Image saved!" });
 });

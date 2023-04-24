@@ -2,187 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./components/general";
-@import "./components/header";
+@import './components/general';
 
-@import "./components/chatAside";
+@import './components/header';
+@import './components/chatAside';
+@import './components/footer';
 
-body {
-  font-family: $font-primary;
-}
+@import './components/buttons';
+@import './components/inputs';
 
-@import "./components/roomlist";
+@import './components/roomlist';
+@import './components/gridGame';
 
-.parent {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 0.5fr repeat(4, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  place-items: center;
-}
+@import './components/scores';
+@import './components/timer';
+@import './components/modal';
+@import './components/userInGame';
 
-.div1 {
-  grid-area: 1 / 1 / 2 / 6;
-  background-color: $lightOrangeColor;
-  padding: 1rem;
-}
-.div2 {
-  grid-area: 2 / 5 / 6 / 6;
-  background-color: #d64a8b;
-}
-.div3 {
-  grid-area: 2 / 2 / 6 / 5;
-  background-color: gray;
-}
-.div4 {
-  grid-area: 2 / 1 / 4 / 2;
-  background-color: blue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-  overflow-y: auto;
-}
-.div5 {
-  grid-area: 4 / 1 / 6 / 2;
-  background-color: purple;
-}
 
-.canvas-grid {
-  display: grid;
-  min-width: 450px;
-  min-height: 450px;
-  border-radius: 10px;
-  border: black 3px solid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(15, 1fr);
-}
 
-.canvas-grid-mini {
-  display: grid;
-  width: 100px;
-  height: 100px;
-  // max-width: 45px;
-  // max-height: 45px;
-  border: black 1px solid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(15, 1fr);
-}
-
-.view-cell {
-  pointer-events: none;
-}
-
-.cell {
-  border-radius: 2px;
-  border: 2px solid #000;
-}
-
-.cell:hover {
-  border-width: 4px;
-  border-color: purple !important;
-  cursor: pointer;
-}
-
-.btn-container {
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-}
-
-.btn {
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 300px;
-  padding: 0.75rem 1.5rem;
-  font-size: 24px;
-  border-radius: 2px;
-  color: red;
-  background: linear-gradient(
-    90deg,
-    rgba(36, 36, 36, 1) 0%,
-    rgba(214, 214, 214, 0.958420868347339) 100%
-  );
-}
-
-.countdown {
-  position: absolute;
-  left: 50%;
-  top: 10%;
-  font-size: 72px;
-  font-weight: 900;
-  color: red;
-}
-
-.score-text {
-  font-size: 72px;
-  color: gold;
-}
-
-footer {
-  display: flex;
-  button {
-    width: 300px;
-    background-color: whitesmoke;
-    border: 2px solid #2b2b2b;
-    box-shadow: 0.15rem 0.15rem #2b2b2b;
-    margin: 1rem;
-  }
-}
-
-.modal-container {
-  z-index: 5;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-.modal {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.display-cell {
-  border-radius: 2px;
-  border: 2px solid #000;
-}
-
-.credit {
-  font-size: 48px;
-  font-weight: 800;
-  color: whitesmoke;
-}
-
-.close-modal {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  font-weight: 900;
-  color: black;
-  background-color: rgb(197, 0, 0);
-  transition: all 0.15s ease-in-out;
-
-  &:hover {
-    background-color: red;
-  }
-}
