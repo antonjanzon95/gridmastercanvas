@@ -1,4 +1,4 @@
-const { rooms } = require("../modules/painting");
+const { rooms } = require("../modules/variables");
 const ScoreModel = require("../models/ScoreModel");
 
 function calculateScore(room) {
@@ -13,7 +13,7 @@ function calculateScore(room) {
       score++;
     }
   }
-
+  
   const scoreInPercent = (score / gridLength) * 100;
 
   return Math.floor(scoreInPercent);

@@ -36,7 +36,6 @@ const init = () => {
   // renderHeader();
   // renderChatHtml();
   renderFooter();
-  // renderRoomsSection();
   // viewSavedImages();
 };
 

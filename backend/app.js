@@ -15,11 +15,12 @@ const highScoresRouter = require('./routes/highscores');
 
 const {
   createEmptyGrid,
-  rooms,
   updateGrid,
   createSolutionGrid,
-} = require('./modules/painting');
-const { calculateScore, saveScoreInDb } = require('./modules/score');
+} = require("./modules/painting");
+const { calculateScore, saveScoreInDb } = require("./modules/score");
+const { rooms, MAX_USERS, GAME_COLORS } = require("./modules/variables");
+
 
 const app = express();
 const server = require('http').Server(app);
@@ -58,15 +59,15 @@ app.use('/highscores', highScoresRouter);
 io.on('connection', (socket) => {
   console.log('Någonting');
 
-  socket.on('saveUser', (data) => {
+  socket.on("saveUser", (data) => {
     let name = data.name;
     console.log(data);
 
     socket.userColor =
-      '#' +
+      "#" +
       Math.floor(Math.random() * 16777215)
         .toString(16)
-        .padStart(6, '0');
+        .padStart(6, "0");
 
     let user = {
       name: name,
@@ -76,7 +77,7 @@ io.on('connection', (socket) => {
 
     console.log({ user });
 
-    io.to(socket.id).emit('userLoggedIn', { user });
+    io.to(socket.id).emit("userLoggedIn", { user });
     // io.emit('userLoggedIn', {user})
   });
 
@@ -118,8 +119,10 @@ io.on('connection', (socket) => {
    *****************************************************************************/
   console.log('someone is here');
 
-  let message = { message: 'Hello world', user: 'Server says' };
-  socket.emit('message', message);
+
+  let message = { message: "Hello world", user: "Server says" };
+  socket.emit("message", message);
+
 
   socket.on('message', (arg) => {
     console.log('Incoming chat', arg);
@@ -134,8 +137,8 @@ io.on('connection', (socket) => {
       grid: startGrid,
       users: roomUsers,
       roomId: uuidv4(),
-      colors: ['red', 'blue', 'green', 'yellow'],
-    };
+      colors: GAME_COLORS,
+
 
     const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
 
@@ -148,8 +151,8 @@ io.on('connection', (socket) => {
 
     rooms.push(room);
 
-    io.emit('create room', room);
-    io.emit('monitorRooms');
+    io.to(user.id).emit("create room", room);
+    io.emit("monitorRooms");
   });
 
   socket.on('joinRoom', (userAndRoomId) => {
@@ -166,15 +169,19 @@ io.on('connection', (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    if (roomToJoin.users.length > 3) {
-      roomToJoin.isFull = true; // ej färdig!!
+    if (roomToJoin.users.length > MAX_USERS) {
+      roomToJoin.isFull = true;
     }
 
-    io.emit('joinRoom', roomToJoin);
-    io.emit('monitorRooms');
+
+    const usersInRoom = roomToJoin.users.map((user) => user);
+    usersInRoom.forEach((user) => io.to(user.id).emit("joinRoom", roomToJoin));
+
+    io.emit("monitorRooms");
   });
 
-  socket.on('paint', (cellObject) => {
+  socket.on("paint", (cellObject) => {
+    const currentRoom = rooms.find((room) => room.roomId == cellObject.roomId);
     const updatedCell = updateGrid(cellObject);
 
     const roomIdAndUpdatedCell = {
@@ -182,7 +189,11 @@ io.on('connection', (socket) => {
       updatedCell: updatedCell,
     };
 
-    io.emit('paint', roomIdAndUpdatedCell);
+
+    const usersInRoom = currentRoom.users.map((user) => user);
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit("paint", roomIdAndUpdatedCell)
+    );
   });
 
   // let colors = [];
@@ -204,15 +215,13 @@ io.on('connection', (socket) => {
   //   io.emit("updateColors", colors);
   // });
 
-  socket.on('readyCheck', (roomAndUser) => {
-    const room = rooms.find((room) => room.id == roomAndUser.room.id);
+
+  socket.on("readyCheck", (roomAndUser) => {
+    const room = rooms.find((room) => room.roomId == roomAndUser.room);
+
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    console.log(room);
-
-    console.log(user);
-
-    console.log(roomAndUser.user);
+    // console.log(roomAndUser.user);
     // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
     // if (user.ready) {
     //   user.ready = false;
@@ -224,6 +233,8 @@ io.on('connection', (socket) => {
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
+    const usersInRoom = room.users.map((user) => user);
+
     if (allAreReady) {
       room.isStarted = true;
       const solutionGrid = createSolutionGrid(room.users);
@@ -231,27 +242,57 @@ io.on('connection', (socket) => {
       room.solutionGrid = solutionGrid;
       room.grid = createEmptyGrid();
 
-      return io.emit('showSolutionGrid', room);
+      let solutionGridCd = 5;
+      const solutionGridInterval = setInterval(() => {
+        if (solutionGridCd < 0) {
+          clearInterval(solutionGridInterval);
+          startGame(room);
+        }
+        solutionGridCd--;
+      }, 1000);
+
+      return usersInRoom.forEach((user) => {
+        io.to(user.id).emit("showSolutionGrid", room);
+      });
     }
 
-    io.emit('readyCheck', user);
-  });
+    const userAndRoom = {
+      user: user,
+      room: room,
+    };
 
-  socket.on('startGame', (room) => {
-    io.emit('startGame', room);
-    let cd = 5;
-    const gameInterval = setInterval(() => {
-      if (cd < 0) {
-        clearInterval(gameInterval);
-        const scoreInPercent = calculateScore(room);
-        room.score = scoreInPercent;
-        room.isDone = true;
-        saveScoreInDb(room.users, room.score);
-        io.emit('gameOver', room);
-      }
-      cd--;
-    }, 1000);
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit("readyCheck", userAndRoom)
+    );
+    // io.emit("readyCheck", userAndRoom);
   });
 });
+
+function startGame(room) {
+  const usersInRoom = room.users.map((user) => user);
+
+  usersInRoom.forEach((user) => io.to(user.id).emit("startGame", room));
+
+  let cd = 5;
+  const gameInterval = setInterval(() => {
+    if (cd < 0) {
+      clearInterval(gameInterval);
+      const scoreInPercent = calculateScore(room);
+      room.score = scoreInPercent;
+      saveScoreInDb(room.users, room.score);
+      const usersInRoom = room.users.map((user) => user);
+      usersInRoom.forEach((user) => io.to(user.id).emit("gameOver", room));
+
+      const roomToRemove = rooms.find(
+        (roomToFind) => roomToFind.roomId == room.roomId
+      );
+      const roomIndex = rooms.indexOf(roomToRemove);
+
+      rooms.splice(roomIndex, 1);
+      io.emit("monitorRooms");
+    }
+    cd--;
+  }, 1000);
+}
 
 module.exports = { app: app, server: server };

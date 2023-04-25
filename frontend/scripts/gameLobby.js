@@ -14,15 +14,19 @@ export const createGameLobbyPage = (room) => {
 
   mainContainer.innerHTML = "";
 
-  socket.on("readyCheck", (user) => {
-    const playerReady = document.getElementById(user.id);
-    playerReady.innerHTML = "&#x2713;" + user.name;
+  socket.on("readyCheck", (userAndRoom) => {
+    if (userAndRoom.room.id != room.id) {
+      return;
+    }
+    const playerReady = document.getElementById(userAndRoom.user.id);
+    playerReady.innerHTML = "&#x2713;" + userAndRoom.user.name;
   });
 
   socket.on("paint", (roomIdAndUpdatedCell) => {
-    if (roomIdAndUpdatedCell.roomId == room.roomId) {
-      updateCellColor(roomIdAndUpdatedCell.updatedCell);
+    if (roomIdAndUpdatedCell.roomId != room.roomId) {
+      return;
     }
+    updateCellColor(roomIdAndUpdatedCell.updatedCell);
   });
 
   createGrid(room);
@@ -68,13 +72,15 @@ function createUserContainer(user) {
 }
 
 export const readyCheck = (e) => {
-  const user = socket.id;
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const roomId = e.target.id; // room id is same as btn id
 
   const roomAndUser = {
     room: roomId,
-    user: user,
+    user: user.id,
   };
+
+  console.log(roomId);
 
   socket.on("showSolutionGrid", (room) => {
     if (room.roomId != roomId) {
