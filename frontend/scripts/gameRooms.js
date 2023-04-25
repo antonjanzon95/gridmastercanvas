@@ -1,9 +1,12 @@
 import { socket } from '../main';
 import { createButton } from './buttons';
 import { createGameLobbyPage } from './gameLobby';
+import { renderRoomChat } from './roomChat';
 
 // create room
 function createNewRoom() {
+  const roomChatBtn = document.querySelector('#roomChat');
+  roomChatBtn.disabled = false;
   const user = JSON.parse(sessionStorage.getItem('user'));
   socket.emit('create room', user);
 
@@ -16,6 +19,11 @@ function createNewRoom() {
         createGameLobbyPage(room);
       }
     });
+  });
+
+  roomChatBtn.addEventListener('click', () => {
+    console.log('click');
+    renderRoomChat();
   });
 }
 
