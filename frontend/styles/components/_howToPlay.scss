@@ -1,0 +1,19 @@
+.howToContainer {
+    overflow: scroll;
+
+    .howToPlayDiv {
+        padding: 2rem;
+        text-align: left;
+
+        h4 {
+            font-family: $font-secondary;
+            font-size: 2rem;;
+        }
+
+        span {
+            font-family: $font-secondary;
+            letter-spacing: 0.1rem;
+        }
+    }
+
+}
