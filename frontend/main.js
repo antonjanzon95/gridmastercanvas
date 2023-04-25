@@ -21,7 +21,6 @@ document.querySelector("#app").innerHTML = `
 const init = () => {
   initSockets();
   initLog();
-  renderStartPage() 
   // renderHeader();
   // renderChatHtml();
   renderFooter();

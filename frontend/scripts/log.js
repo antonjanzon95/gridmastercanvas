@@ -1,8 +1,9 @@
 import { removeSockets, socket } from "../main";
-import { renderChatHtml } from "./chatcomp";
 import { renderRoomsSection } from "./gameRooms";
 import { showHighScorePage } from "./gameover";
 import { viewSavedImages } from "./saveImg";
+import { renderStartPage } from "./startPage";
+import { renderChatHtml } from "./chatcomp";
 
 export function initLog() {
   renderLogo();
@@ -16,6 +17,7 @@ export function initLog() {
     socket.off("saveUser");
     console.log("not logged in");
     renderWelcome();
+    renderStartPage();
     renderLogForm();
   }
 }

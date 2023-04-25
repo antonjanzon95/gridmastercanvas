@@ -1,5 +1,5 @@
-import { socket } from "../main";
-import { renderChatHtml, renderChat } from "./chatcomp";
+// import { socket } from "../main";
+// import { renderChatHtml, renderChat } from "./chatcomp";
 
 // export function renderRoomChat(room) {
 //   const chatDiv = document.querySelector(".chat-div");
@@ -118,7 +118,7 @@ import { renderChatHtml, renderChat } from "./chatcomp";
 //   });
 // }
 
-function printChatHistory() {
-  let chatHistory = JSON.parse(sessionStorage.getItem("globalMessages"));
-  console.log(chatHistory);
-}
+// function printChatHistory() {
+//   let chatHistory = JSON.parse(sessionStorage.getItem("globalMessages"));
+//   console.log(chatHistory);
+// }

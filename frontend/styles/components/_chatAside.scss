@@ -6,7 +6,7 @@
   height: 100vh;
   padding: 1rem;
   height: 85%;
-  width: 350px;
+  // width: 350px;
 }
 
 .scroll-container {
@@ -65,6 +65,10 @@
         box-shadow: 0.15rem 0.15rem #2b2b2b;
       }
     }
+    &.showChat {
+      background-color: $lightpinkColor;
+      font-weight: bold;
+    }
   }
 }
 
@@ -94,9 +98,9 @@
 }
 
 .send-message {
-  padding: 5px;
+  padding: 5px 10px;
   margin-bottom: 10px;
-  border-radius: 5px;
+  border-radius: 8px 8px 0 8px;
   text-align: right;
   // color: whitesmoke;
   align-self: flex-end;
@@ -104,9 +108,9 @@
 }
 
 .receive-message {
-  padding: 5px;
+  padding: 5px 10px;
   margin-bottom: 10px;
-  border-radius: 5px;
+  border-radius: 8px 8px 8px 0;
   text-align: left;
   // color: whitesmoke;
   align-self: flex-start;
