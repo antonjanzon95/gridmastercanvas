@@ -101,6 +101,18 @@ function renderSiteNav() {
 
   header.appendChild(navContainer);
   navContainer.append(navImg, navPlay, navScore);
+
+  navImg.addEventListener('click', () => {
+    console.log('clicked img');
+  });
+
+  navPlay.addEventListener('click', () => {
+    console.log('clicked how to play');
+  });
+
+  navScore.addEventListener('click', () => {
+    console.log('clicked highscore');
+  });
 }
 
 function renderLogoutButton() {
