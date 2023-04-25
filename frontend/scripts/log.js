@@ -1,6 +1,7 @@
 import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
 import { renderRoomsSection } from './gameRooms';
+import { showHighScorePage } from './gameover';
 
 export function initLog() {
   renderLogo();
@@ -86,6 +87,7 @@ function renderLogo() {
 }
 
 function renderSiteNav() {
+  let isHighScoreVisible = false;
   let header = document.querySelector('header');
   let navContainer = document.createElement('div');
 
@@ -111,7 +113,13 @@ function renderSiteNav() {
   });
 
   navScore.addEventListener('click', () => {
-    console.log('clicked highscore');
+    if (isHighScoreVisible) {
+      header.innerHTML = '';
+      initLog();
+    } else {
+      showHighScorePage();
+    }
+    isHighScoreVisible = !isHighScoreVisible;
   });
 }
 
