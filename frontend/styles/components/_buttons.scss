@@ -21,10 +21,13 @@ button {
 .btn-container {
   width: fit-content;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2px;
+  position: absolute;
+  bottom: 0;
+  flex-flow: row;
+  width: 50%;
 }
 
 .btn {
@@ -35,9 +38,7 @@ button {
   font-size: 24px;
   border-radius: 2px;
   color: red;
-  background: linear-gradient(
-    90deg,
-    rgba(36, 36, 36, 1) 0%,
-    rgba(214, 214, 214, 0.958420868347339) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(36, 36, 36, 1) 0%,
+      rgba(214, 214, 214, 0.958420868347339) 100%);
 }
