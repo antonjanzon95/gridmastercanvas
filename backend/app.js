@@ -1,17 +1,17 @@
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const { v4: uuidv4 } = require("uuid");
-require("dotenv").config();
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const imageRouter = require("./routes/image");
-const roomsRouter = require("./routes/rooms");
-const highScoresRouter = require("./routes/highscores");
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const imageRouter = require('./routes/image');
+const roomsRouter = require('./routes/rooms');
+const highScoresRouter = require('./routes/highscores');
 
 const {
   createEmptyGrid,
@@ -21,13 +21,14 @@ const {
 const { calculateScore, saveScoreInDb } = require("./modules/score");
 const { rooms, MAX_USERS, GAME_COLORS } = require("./modules/variables");
 
+
 const app = express();
-const server = require("http").Server(app);
-const io = require("socket.io")(server, {
+const server = require('http').Server(app);
+const io = require('socket.io')(server, {
   cors: {
     origin: process.env.CLIENT_URI,
 
-    methods: ["GET", "POST"],
+    methods: ['GET', 'POST'],
   },
 });
 
@@ -37,26 +38,26 @@ mongoose.connect(process.env.DATABASE_URI, {
 });
 
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
+db.on('error', console.error.bind(console, 'connection error: '));
+db.once('open', function () {
+  console.log('Connected successfully');
 });
 
 app.use(cors());
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/image", imageRouter);
-app.use("/rooms", roomsRouter);
-app.use("/highscores", highScoresRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/image', imageRouter);
+app.use('/rooms', roomsRouter);
+app.use('/highscores', highScoresRouter);
 
-io.on("connection", (socket) => {
-  console.log("Någonting");
+io.on('connection', (socket) => {
+  console.log('Någonting');
 
   socket.on("saveUser", (data) => {
     let name = data.name;
@@ -116,17 +117,19 @@ io.on("connection", (socket) => {
   /*****************************************************************************
    *************************** SOCKET CHAT ************************************
    *****************************************************************************/
-  console.log("someone is here");
+  console.log('someone is here');
+
 
   let message = { message: "Hello world", user: "Server says" };
   socket.emit("message", message);
 
-  socket.on("message", (arg) => {
-    console.log("Incoming chat", arg);
-    io.emit("message", arg);
+
+  socket.on('message', (arg) => {
+    console.log('Incoming chat', arg);
+    io.emit('message', arg);
   });
 
-  socket.on("create room", (user) => {
+  socket.on('create room', (user) => {
     const startGrid = createEmptyGrid();
     const roomUsers = [];
 
@@ -135,7 +138,7 @@ io.on("connection", (socket) => {
       users: roomUsers,
       roomId: uuidv4(),
       colors: GAME_COLORS,
-    };
+
 
     const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
 
@@ -152,7 +155,7 @@ io.on("connection", (socket) => {
     io.emit("monitorRooms");
   });
 
-  socket.on("joinRoom", (userAndRoomId) => {
+  socket.on('joinRoom', (userAndRoomId) => {
     const roomToJoin = rooms.find(
       (room) => room.roomId == userAndRoomId.roomId
     );
@@ -170,6 +173,7 @@ io.on("connection", (socket) => {
       roomToJoin.isFull = true;
     }
 
+
     const usersInRoom = roomToJoin.users.map((user) => user);
     usersInRoom.forEach((user) => io.to(user.id).emit("joinRoom", roomToJoin));
 
@@ -184,6 +188,7 @@ io.on("connection", (socket) => {
       roomId: cellObject.roomId,
       updatedCell: updatedCell,
     };
+
 
     const usersInRoom = currentRoom.users.map((user) => user);
     usersInRoom.forEach((user) =>
@@ -209,6 +214,7 @@ io.on("connection", (socket) => {
 
   //   io.emit("updateColors", colors);
   // });
+
 
   socket.on("readyCheck", (roomAndUser) => {
     const room = rooms.find((room) => room.roomId == roomAndUser.room);
