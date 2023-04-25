@@ -2,6 +2,7 @@ import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
 import { renderRoomsSection } from './gameRooms';
 import { showHighScorePage } from './gameover';
+import { renderImages } from './showimgs';
 
 export function initLog() {
   renderLogo();
@@ -88,6 +89,7 @@ function renderLogo() {
 
 function renderSiteNav() {
   let isHighScoreVisible = false;
+  let isImagesVisibile = false;
   let header = document.querySelector('header');
   let navContainer = document.createElement('div');
 
@@ -106,6 +108,13 @@ function renderSiteNav() {
 
   navImg.addEventListener('click', () => {
     console.log('clicked img');
+    // if (isImagesVisibile) {
+    //   header.innerHTML = '';
+    //   initLog();
+    // } else {
+    //   renderImages();
+    // }
+    // isImagesVisibile = !isImagesVisibile;
   });
 
   navPlay.addEventListener('click', () => {
