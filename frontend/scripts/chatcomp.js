@@ -3,19 +3,18 @@ const socket = io("http://localhost:3000");
 
 export function renderChatHtml() {
   // let user = JSON.parse(sessionStorage.user);
-    // addColor(user.userColor);
+  // addColor(user.userColor);
   console.log("Hej från chat!");
   // let user = sessionStorage.getItem('user');
 
-// console.log(user, name, color);
+  // console.log(user, name, color);
 
   const chatDiv = document.querySelector("#chat-div");
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
-  <section class="story-highlights">
+      <p>Users online:</p>
         <div class="scroll-container">
-        <p>Users online:</p>
         <div class="item">
             <div class="user-color-circle"></div>
             <p>username</p>
@@ -36,13 +35,18 @@ export function renderChatHtml() {
         <div class="user-color-circle"></div>
             <p>username</p>
         </div>
+        <div class="item">
+        <div class="user-color-circle"></div>
+            <p>username</p>
+        </div>
+        
       </div>
     </section>
   <div class="chat-btn-wrapper">
     <button>GLOBAL chat</button>
     <button disabled>ROOM chat</button>
     <button class="material-symbols-outlined" id="light-dark-mode">
-    light_mode
+    dark_mode
     </button>
   </div>
     <div class="chat-container">
@@ -55,31 +59,20 @@ export function renderChatHtml() {
   let messages = document.querySelector("#messages");
   let sendButton = document.querySelector("#send-button");
   let sendMessage = document.querySelector("#send-message");
-
-  // socket.on('userObject', (user) => {
-  //   console.log(`${user.name} has logged in with color ${user.color}`);
-  //   console.log(user)
-
-  //   // let userObject = {
-  //   //   name: user.name,
-  //   //   id: user.id,
-  //   //   color: user.color
-  //   // };
-  //   sessionStorage.setItem('user', JSON.stringify(user))
-  //   // console.log(userObject)
-  // });
+  let lightdarkBtn = document.querySelector("#light-dark-mode");
+  let isDarkMode = false;
 
   socket.on("message", (msg) => {
     console.log(msg);
-    console.log(msg.user)
+    console.log(msg.user);
 
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    console.log(user)
-    console.log(user.name)
-  
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    console.log(user);
+    console.log(user.name);
+
     let chat = document.createElement("div");
     chat.setAttribute("class", "message");
-  
+
     if (msg.user === user.name) {
       chat.setAttribute("class", "send-message");
     } else {
@@ -102,8 +95,7 @@ export function renderChatHtml() {
   });
 
   function sendChat() {
-
-    let user = JSON.parse(sessionStorage.getItem('user'));
+    let user = JSON.parse(sessionStorage.getItem("user"));
     // let user = sessionStorage.getItem("user");
     // let color = sessionStorage.getItem("color");
 
@@ -120,7 +112,7 @@ export function renderChatHtml() {
     const rgb = hexToRgb(color);
     //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
     const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-    console.log(luminance)
+    console.log(luminance);
 
     return luminance;
   }
@@ -149,5 +141,20 @@ export function renderChatHtml() {
   sendButton.addEventListener("click", () => {
     console.log("Klick på knapp");
     sendChat();
+  });
+
+  lightdarkBtn.addEventListener("click", () => {
+    console.log("lets change light-dark-mode");
+    let body = document.body;
+
+    if (isDarkMode) {
+      lightdarkBtn.innerHTML = "dark_mode";
+      body.classList.remove('dark');
+
+    } else {
+      lightdarkBtn.innerHTML = "light_mode";
+      body.classList.add('dark');
+    }
+    isDarkMode = !isDarkMode;
   });
 }
