@@ -2,7 +2,7 @@ import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
 import { renderRoomsSection } from './gameRooms';
 import { showHighScorePage } from './gameover';
-import { renderImages } from './showimgs';
+import { viewSavedImages } from './saveImg';
 
 export function initLog() {
   renderLogo();
@@ -90,34 +90,51 @@ function renderLogo() {
 function renderSiteNav() {
   let isHighScoreVisible = false;
   let isImagesVisibile = false;
+  let isRoomsVisible = false;
+
   let header = document.querySelector('header');
+  let main = document.querySelector('main');
   let navContainer = document.createElement('div');
 
   navContainer.classList.add('navContainer');
 
-  let navImg = document.createElement('button');
   let navPlay = document.createElement('button');
+  let navImg = document.createElement('button');
+  let navHow = document.createElement('button');
   let navScore = document.createElement('button');
 
+  navPlay.innerHTML = 'Play';
   navImg.innerHTML = 'Saved images';
-  navPlay.innerHTML = 'How to play';
+  navHow.innerHTML = 'How to play';
   navScore.innerHTML = 'Highscores';
 
   header.appendChild(navContainer);
-  navContainer.append(navImg, navPlay, navScore);
+  navContainer.append(navPlay, navImg, navHow, navScore);
+
+  navPlay.addEventListener('click', () => {
+    console.log('clicked play');
+    if (isRoomsVisible) {
+      header.innerHTML = '';
+      initLog();
+    } else {
+      renderRoomsSection();
+    }
+    isRoomsVisible = !isRoomsVisible;
+  });
 
   navImg.addEventListener('click', () => {
     console.log('clicked img');
-    // if (isImagesVisibile) {
-    //   header.innerHTML = '';
-    //   initLog();
-    // } else {
-    //   renderImages();
-    // }
-    // isImagesVisibile = !isImagesVisibile;
+    if (isImagesVisibile) {
+      header.innerHTML = '';
+      initLog();
+    } else {
+      main.innerHTML = '';
+      viewSavedImages();
+    }
+    isImagesVisibile = !isImagesVisibile;
   });
 
-  navPlay.addEventListener('click', () => {
+  navHow.addEventListener('click', () => {
     console.log('clicked how to play');
   });
 

@@ -35,9 +35,10 @@ export function renderRoomsSection() {
   roomsContainer.classList.add('rooms-container');
 
   const createRoomBtn = createButton('Create Room', createNewRoom);
-  const joinRoomBtn = createButton('Join This Room', joinActiveRoom);
+  // const joinRoomBtn = createButton('Join This Room', joinActiveRoom);
+  // joinRoomBtn
 
-  roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
+  roomsBtnContainer.append(createRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
   monitorRoomList();
   printRoomList();
