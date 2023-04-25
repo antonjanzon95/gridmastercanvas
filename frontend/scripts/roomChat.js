@@ -1,5 +1,9 @@
+import { socket } from '../main';
+import { renderChatHtml, renderChat } from './chatcomp';
+
 export function renderRoomChat() {
-  const chatDiv = document.querySelector('#chat-div');
+  const chatDiv = document.querySelector('.chat-div');
+  chatDiv.innerHTML = '';
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
@@ -34,7 +38,7 @@ export function renderRoomChat() {
     </section>
     <p>ROOM chat</p>
   <div class="chat-btn-wrapper">
-    <button>GLOBAL chat</button>
+    <button class="global-chat" id="global-chat">GLOBAL chat</button>
     <button class="room-chat" id="roomChat">ROOM chat</button>
     <button class="material-symbols-outlined" id="light-dark-mode">
     dark_mode
@@ -47,6 +51,7 @@ export function renderRoomChat() {
     </div>
   `;
 
+  let globalChatBtn = document.querySelector('#global-chat');
   let roomChatBtn = document.querySelector('#roomChat');
   let messages = document.querySelector('#messages');
   let sendButton = document.querySelector('#send-button');
@@ -55,38 +60,50 @@ export function renderRoomChat() {
   let isDarkMode = false;
   roomChatBtn.disabled = true;
 
-  socket.on('roomMessage', (msg) => {
-    console.log(msg);
-    console.log(msg.user);
+  // socket.on('roomMessage', (msg) => {
+  //   console.log(msg);
+  //   console.log(msg.user);
 
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    console.log(user);
-    console.log(user.name);
+  //   let user = JSON.parse(sessionStorage.getItem('user'));
+  //   console.log(user);
+  //   console.log(user.name);
 
-    let chat = document.createElement('div');
-    chat.setAttribute('class', 'message');
+  //   let chat = document.createElement('div');
+  //   chat.setAttribute('class', 'message');
 
-    if (msg.user === user.name) {
-      chat.setAttribute('class', 'send-message');
-    } else {
-      chat.setAttribute('class', 'receive-message');
-    }
+  //   if (msg.user === user.name) {
+  //     chat.setAttribute('class', 'send-message');
+  //   } else {
+  //     chat.setAttribute('class', 'receive-message');
+  //   }
 
-    if (msg.color) {
-      chat.style.backgroundColor = msg.color;
-      const luminance = calculateLuminance(msg.color);
-      if (luminance > 0.5) {
-        chat.style.color = '#1b1b1b';
-      } else {
-        chat.style.color = 'whitesmoke';
-      }
-    }
+  //   if (msg.color) {
+  //     chat.style.backgroundColor = msg.color;
+  //     const luminance = calculateLuminance(msg.color);
+  //     if (luminance > 0.5) {
+  //       chat.style.color = '#1b1b1b';
+  //     } else {
+  //       chat.style.color = 'whitesmoke';
+  //     }
+  //   }
 
-    chat.innerHTML = msg.user + ': ' + msg.message;
-    messages.insertBefore(chat, messages.firstChild);
-    messages.scrollTop = messages.scrollHeight;
-  });
+  //   chat.innerHTML = msg.user + ': ' + msg.message;
+  //   messages.insertBefore(chat, messages.firstChild);
+  //   messages.scrollTop = messages.scrollHeight;
+  // });
 
+  globalChatBtn.addEventListener('click', () => {
+    console.log('click globalChat');
+    
+    printChatHistory();
+    renderChatHtml();
+    renderChat("global");
+  })
 
+}
 
+function printChatHistory() {
+  let chatHistory = JSON.parse(sessionStorage.getItem('globalMessages'));
+  console.log(chatHistory);
+  
 }

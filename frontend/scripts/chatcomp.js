@@ -1,15 +1,10 @@
-import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-const socket = io('http://localhost:3000');
+import { socket } from '../main';
 
 export function renderChatHtml() {
-  // let user = JSON.parse(sessionStorage.user);
-  // addColor(user.userColor);
+
   console.log('Hej från chat!');
-  // let user = sessionStorage.getItem('user');
-
-  // console.log(user, name, color);
-
   const chatDiv = document.querySelector('#chat-div');
+  chatDiv.innerHTML = '';
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
@@ -91,52 +86,16 @@ export function renderChatHtml() {
       }
     }
 
-    chat.innerHTML = msg.user + ': ' + msg.message;
-    const globalChat = {user: msg.user, message: msg.message};
+    // if() chatten där meddelandet skrivs är aktiv
+    chat.innerHTML += msg.user + ': ' + msg.message;
+    const globalChat = {user: msg.user, message: msg.message, color: msg.color};
     let globalMessages = JSON.parse(sessionStorage.getItem('globalMessages'));
-    globalMessages.push(globalChat);
+    globalMessages.unshift(globalChat);
     sessionStorage.setItem('globalMessages', JSON.stringify(globalMessages));
     
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
   });
-
-  function sendChat() {
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    // let user = sessionStorage.getItem("user");
-    // let color = sessionStorage.getItem("color");
-
-    socket.emit('message', {
-      message: sendMessage.value,
-      user: user.name,
-      color: user.color,
-    });
-    sendMessage.value = '';
-  }
-
-  function calculateLuminance(color) {
-    console.log(color);
-    const rgb = hexToRgb(color);
-    //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-    console.log(luminance);
-
-    return luminance;
-  }
-
-  function hexToRgb(hex) {
-    console.log(hex);
-    hex = hex.replace('#', '');
-    console.log(hex);
-
-    //convert hex to integer,
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    console.log({ r, g, b });
-
-    return { r, g, b };
-  }
 
   sendMessage.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
@@ -163,4 +122,78 @@ export function renderChatHtml() {
     }
     isDarkMode = !isDarkMode;
   });
+}
+
+function calculateLuminance(color) {
+  console.log(color);
+  const rgb = hexToRgb(color);
+  //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
+  const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+  console.log(luminance);
+
+  return luminance;
+}
+
+function hexToRgb(hex) {
+  console.log(hex);
+  hex = hex.replace('#', '');
+  console.log(hex);
+
+  //convert hex to integer,
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  console.log({ r, g, b });
+
+  return { r, g, b };
+}
+
+function sendChat() {
+  const messageInput = document.querySelector("#send-message");
+  let user = JSON.parse(sessionStorage.getItem('user'));
+  // let user = sessionStorage.getItem("user");
+  // let color = sessionStorage.getItem("color");
+
+  socket.emit('message', {
+    message: messageInput.value,
+    user: user.name,
+    color: user.color,
+  });
+  messageInput.value = '';
+}
+
+export function renderChat(currentChat) {
+  const chatWindow = document.querySelector("#messages");
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  let messages;
+  if (currentChat == "global") {
+    messages = JSON.parse(sessionStorage.getItem("globalMessages"));
+
+    // messages.reverse();
+
+    messages.forEach((message) => {
+      let chat = document.createElement('div');
+      chat.setAttribute('class', 'message');
+      chat.innerHTML = message.user + ": " + message.message;
+      // chatWindow.insertBefore(chat, chatWindow.firstChild);
+
+      if (message.user === user.name) {
+        chat.setAttribute('class', 'send-message');
+      } else {
+        chat.setAttribute('class', 'receive-message');
+      }
+  
+      if (message.color) {
+        chat.style.backgroundColor = message.color;
+        const luminance = calculateLuminance(message.color);
+        if (luminance > 0.5) {
+          chat.style.color = '#1b1b1b';
+        } else {
+          chat.style.color = 'whitesmoke';
+        }
+      }
+
+      chatWindow.appendChild(chat);
+    });
+  }
 }
