@@ -1,15 +1,15 @@
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-const socket = io("http://localhost:3000");
+import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
+const socket = io('http://localhost:3000');
 
 export function renderChatHtml() {
   // let user = JSON.parse(sessionStorage.user);
   // addColor(user.userColor);
-  console.log("Hej från chat!");
+  console.log('Hej från chat!');
   // let user = sessionStorage.getItem('user');
 
   // console.log(user, name, color);
 
-  const chatDiv = document.querySelector("#chat-div");
+  const chatDiv = document.querySelector('#chat-div');
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
@@ -56,55 +56,55 @@ export function renderChatHtml() {
     </div>
   `;
 
-  let messages = document.querySelector("#messages");
-  let sendButton = document.querySelector("#send-button");
-  let sendMessage = document.querySelector("#send-message");
-  let lightdarkBtn = document.querySelector("#light-dark-mode");
+  let messages = document.querySelector('#messages');
+  let sendButton = document.querySelector('#send-button');
+  let sendMessage = document.querySelector('#send-message');
+  let lightdarkBtn = document.querySelector('#light-dark-mode');
   let isDarkMode = false;
 
-  socket.on("message", (msg) => {
+  socket.on('message', (msg) => {
     console.log(msg);
     console.log(msg.user);
 
-    let user = JSON.parse(sessionStorage.getItem("user"));
+    let user = JSON.parse(sessionStorage.getItem('user'));
     console.log(user);
     console.log(user.name);
 
-    let chat = document.createElement("div");
-    chat.setAttribute("class", "message");
+    let chat = document.createElement('div');
+    chat.setAttribute('class', 'message');
 
     if (msg.user === user.name) {
-      chat.setAttribute("class", "send-message");
+      chat.setAttribute('class', 'send-message');
     } else {
-      chat.setAttribute("class", "receive-message");
+      chat.setAttribute('class', 'receive-message');
     }
 
     if (msg.color) {
       chat.style.backgroundColor = msg.color;
       const luminance = calculateLuminance(msg.color);
       if (luminance > 0.5) {
-        chat.style.color = "#1b1b1b";
+        chat.style.color = '#1b1b1b';
       } else {
-        chat.style.color = "whitesmoke";
+        chat.style.color = 'whitesmoke';
       }
     }
 
-    chat.innerHTML = msg.user + ": " + msg.message;
+    chat.innerHTML = msg.user + ': ' + msg.message;
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
   });
 
   function sendChat() {
-    let user = JSON.parse(sessionStorage.getItem("user"));
+    let user = JSON.parse(sessionStorage.getItem('user'));
     // let user = sessionStorage.getItem("user");
     // let color = sessionStorage.getItem("color");
 
-    socket.emit("message", {
+    socket.emit('message', {
       message: sendMessage.value,
       user: user.name,
       color: user.color,
     });
-    sendMessage.value = "";
+    sendMessage.value = '';
   }
 
   function calculateLuminance(color) {
@@ -119,7 +119,7 @@ export function renderChatHtml() {
 
   function hexToRgb(hex) {
     console.log(hex);
-    hex = hex.replace("#", "");
+    hex = hex.replace('#', '');
     console.log(hex);
 
     //convert hex to integer,
@@ -131,28 +131,27 @@ export function renderChatHtml() {
     return { r, g, b };
   }
 
-  sendMessage.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.keyCode === 13) {
+  sendMessage.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
       e.preventDefault();
       sendChat();
     }
   });
 
-  sendButton.addEventListener("click", () => {
-    console.log("Klick på knapp");
+  sendButton.addEventListener('click', () => {
+    console.log('Klick på knapp');
     sendChat();
   });
 
-  lightdarkBtn.addEventListener("click", () => {
-    console.log("lets change light-dark-mode");
+  lightdarkBtn.addEventListener('click', () => {
+    console.log('lets change light-dark-mode');
     let body = document.body;
 
     if (isDarkMode) {
-      lightdarkBtn.innerHTML = "dark_mode";
+      lightdarkBtn.innerHTML = 'dark_mode';
       body.classList.remove('dark');
-
     } else {
-      lightdarkBtn.innerHTML = "light_mode";
+      lightdarkBtn.innerHTML = 'light_mode';
       body.classList.add('dark');
     }
     isDarkMode = !isDarkMode;
