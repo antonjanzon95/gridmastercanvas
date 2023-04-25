@@ -1,29 +1,38 @@
 import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
 import { renderRoomsSection } from './gameRooms';
+import { showHighScorePage } from './gameover';
+import { renderImages } from './showimgs';
 
 export function initLog() {
+  renderLogo();
   if (sessionStorage.getItem('user')) {
     console.log('logged in');
-    renderLogoutButton();
     renderChatHtml();
     renderRoomsSection();
+    renderSiteNav();
+    renderLogoutButton();
   } else {
     socket.off('saveUser');
-
     console.log('not logged in');
-    const chatDiv = document.querySelector('#chat-div');
-    const mainContainer = document.querySelector('main');
-    mainContainer.innerHTML = 'logga in för att använda gridmaster';
-    chatDiv.innerHTML = '';
+    renderWelcome();
     renderLogForm();
   }
+}
+
+function renderWelcome() {
+  let div = document.createElement('div');
+  let header = document.querySelector('header');
+
+  div.innerHTML =
+    'Välkommen till gridmaster Canvas, logga in för att börja måla';
+
+  header.append(div);
 }
 
 function renderLogForm() {
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
-
   let logInput = document.createElement('input');
   let logUserButton = document.createElement('button');
 
@@ -47,9 +56,10 @@ function renderLogForm() {
 
     socket.emit('saveUser', JSON.parse(sessionStorage.getItem('user')));
 
-    initLog();
+    header.innerHTML = '';
     logInput.value = '';
     logForm.innerHTML = '';
+    initLog();
   });
 
   socket.on('userLoggedIn', (data) => {
@@ -64,7 +74,66 @@ function renderLogForm() {
   });
 }
 
+function renderLogo() {
+  let header = document.querySelector('#header');
+  let div = document.createElement('div');
+  let logo = document.createElement('img');
+
+  logo.setAttribute('src', '/gridmastercanvas_logo.png');
+  logo.setAttribute('alt', 'Grid Master Canvas Logo');
+  logo.setAttribute('width', '400');
+
+  header.appendChild(div);
+  div.appendChild(logo);
+}
+
+function renderSiteNav() {
+  let isHighScoreVisible = false;
+  let isImagesVisibile = false;
+  let header = document.querySelector('header');
+  let navContainer = document.createElement('div');
+
+  navContainer.classList.add('navContainer');
+
+  let navImg = document.createElement('button');
+  let navPlay = document.createElement('button');
+  let navScore = document.createElement('button');
+
+  navImg.innerHTML = 'Saved images';
+  navPlay.innerHTML = 'How to play';
+  navScore.innerHTML = 'Highscores';
+
+  header.appendChild(navContainer);
+  navContainer.append(navImg, navPlay, navScore);
+
+  navImg.addEventListener('click', () => {
+    console.log('clicked img');
+    // if (isImagesVisibile) {
+    //   header.innerHTML = '';
+    //   initLog();
+    // } else {
+    //   renderImages();
+    // }
+    // isImagesVisibile = !isImagesVisibile;
+  });
+
+  navPlay.addEventListener('click', () => {
+    console.log('clicked how to play');
+  });
+
+  navScore.addEventListener('click', () => {
+    if (isHighScoreVisible) {
+      header.innerHTML = '';
+      initLog();
+    } else {
+      showHighScorePage();
+    }
+    isHighScoreVisible = !isHighScoreVisible;
+  });
+}
+
 function renderLogoutButton() {
+  let chatDiv = document.querySelector('#chat-div');
   let mainContainer = document.querySelector('main');
   let header = document.querySelector('header');
   let logForm = document.createElement('div');
@@ -79,8 +148,10 @@ function renderLogoutButton() {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('color');
 
-    logForm.innerHTML = '';
     mainContainer.innerHTML = '';
+
+    chatDiv.innerHTML = '';
+    header.innerHTML = '';
     initLog();
   });
 }
