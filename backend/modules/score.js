@@ -6,15 +6,25 @@ function calculateScore(room) {
     (currentRoom) => currentRoom.roomId == room.roomId
   );
   let score = 0;
+  let whiteCounter = 0;
   const gridLength = currentRoom.grid.length;
 
   for (let i = 0; i < gridLength; i++) {
-    if (currentRoom.grid[i].color == currentRoom.solutionGrid[i].color) {
+    if (
+      currentRoom.grid[i].color == currentRoom.solutionGrid[i].color &&
+      currentRoom.grid[i].color == "whitesmoke"
+    ) {
+      whiteCounter++;
+    }
+    if (
+      currentRoom.grid[i].color == currentRoom.solutionGrid[i].color &&
+      currentRoom.grid[i].color != "whitesmoke"
+    ) {
       score++;
     }
   }
-  
-  const scoreInPercent = (score / gridLength) * 100;
+
+  const scoreInPercent = (score / (gridLength - whiteCounter)) * 100;
 
   return Math.floor(scoreInPercent);
 }

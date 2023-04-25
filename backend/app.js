@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
       name: name,
       id: socket.id,
       color: socket.userColor,
+      currentChat: "global",
     };
 
     console.log({ user });
@@ -121,9 +122,27 @@ io.on("connection", (socket) => {
   let message = { message: "Hello world", user: "Server says" };
   socket.emit("message", message);
 
-  socket.on("message", (arg) => {
-    console.log("Incoming chat", arg);
-    io.emit("message", arg);
+  socket.on("globalMessage", (arg) => {
+    io.emit("globalMessage", arg);
+  });
+
+  socket.on("localMessage", (messageAndUser) => {
+    const room = rooms.find(
+      (roomToFind) => roomToFind.roomId == messageAndUser.user.roomId
+    );
+    const usersInRoom = room.users.map((user) => user);
+
+    const message = {
+      user: messageAndUser.user.name,
+      message: messageAndUser.message,
+      color: messageAndUser.user.color,
+    };
+
+    room.messages.unshift(message);
+
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit("monitorRoomMessages", room)
+    );
   });
 
   socket.on("create room", (user) => {
@@ -135,6 +154,7 @@ io.on("connection", (socket) => {
       users: roomUsers,
       roomId: uuidv4(),
       colors: GAME_COLORS,
+      messages: [],
     };
 
     const colorIndex = Math.floor(Math.random() * room.colors.length - 1);
