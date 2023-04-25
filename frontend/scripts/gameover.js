@@ -18,9 +18,10 @@ export const showGameOverPage = (finalScore) => {
 
   const highScoreBtn = createButton("Highscores", showHighScorePage);
 
+  mainContainer.appendChild(score);
   mainContainer.appendChild(highScoreBtn);
   mainContainer.appendChild(playAgainBtn);
-  mainContainer.appendChild(score);
+
 };
 
 export async function showHighScorePage() {

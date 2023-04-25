@@ -65,7 +65,7 @@ async function printRoomList() {
 
       titleElement.innerHTML = "Room " + (index + 1);
 
-      const joinBtn = createButton("Join Room", joinActiveRoom);
+      const joinBtn = createButton(titleElement.innerHTML, joinActiveRoom);
       joinBtn.id = room.roomId;
 
       if (room.isFull) {
@@ -73,7 +73,7 @@ async function printRoomList() {
         joinBtn.innerHTML = "FULL";
       }
 
-      roomContainer.append(titleElement, joinBtn);
+      roomContainer.append(joinBtn);
       roomsContainer.appendChild(roomContainer);
     });
   }

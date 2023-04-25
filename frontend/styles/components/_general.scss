@@ -18,6 +18,9 @@ body {
 
 main {
   position: relative;
+  flex-direction: column;
+  text-align: center;
+
 }
 
 .main {
@@ -33,5 +36,3 @@ main {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
-
-
