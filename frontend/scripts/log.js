@@ -65,6 +65,7 @@ function renderLogForm() {
   socket.on('userLoggedIn', (data) => {
     console.log(data);
     const user = data.user;
+    sessionStorage.setItem('globalMessages', JSON.stringify([]));
     sessionStorage.setItem('user', JSON.stringify(user));
 
     console.log(`${user.name} has logged in with color ${user.color}`);

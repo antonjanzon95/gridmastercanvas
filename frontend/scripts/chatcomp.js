@@ -92,6 +92,11 @@ export function renderChatHtml() {
     }
 
     chat.innerHTML = msg.user + ': ' + msg.message;
+    const globalChat = {user: msg.user, message: msg.message};
+    let globalMessages = JSON.parse(sessionStorage.getItem('globalMessages'));
+    globalMessages.push(globalChat);
+    sessionStorage.setItem('globalMessages', JSON.stringify(globalMessages));
+    
     messages.insertBefore(chat, messages.firstChild);
     messages.scrollTop = messages.scrollHeight;
   });
