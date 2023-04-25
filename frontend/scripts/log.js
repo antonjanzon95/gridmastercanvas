@@ -165,16 +165,17 @@ function renderHowToPlay() {
 
   div.innerHTML = `
   <div class="howToPlayDiv">
-    <h4>Welcome to GridMaster Canvas,</h4>
-    <p>where you can unleash your pixel powers and dive into a world of pixel art and metal mayhem!</p>
-    <p>As you log in to our app, get ready to embark on an exhilarating journey of creativity, competition, and camaraderie.</p>
-    <p>With <span>GridMaster Canvas</span>, you have the freedom to chat with like-minded pixel art enthusiasts from around the world.<br> Share your ideas, techniques, and inspirations, and learn from a diverse community of artists who share your passion for all things pixelated. Whether you're a seasoned pixel art pro or just starting out, GridMaster Canvas is a place where artists of all levels can come together to celebrate their love for this unique art form.</p>
-    <p>But that's not all - <span>GridMaster Canvas</span> is not just about chatting, it's also about putting your skills to the test.</p>
-    <p>Challenge yourself with our exciting "Replicate the Image" competition, where you'll be given a pixel art masterpiece to replicate within a limited timeframe. Compete against the clock, and show off your pixel art prowess as you strive for the top spot on the leaderboard.</p><br>
-
-    <p>Immerse yourself in a visually stunning world of pink clouds, pixel art, and a death metal logo that sets the stage for an epic experience like no other.</p>
-    <p>So join us now, and let GridMaster Canvas be your canvas to create, compete, and connect with fellow pixel artists from around the globe. Unleash your pixel powers with</p>
-    <p><span>GridMaster Canvas - Where Pixel Art Meets Metal Mayhem!</span></p>
+  <h4>Here's a quick guide on how to play GridMaster Canvas:</h4>
+    <p>Step 1: <span>Log in</span> - Create an account or log in to your existing account on <span>GridMaster Canvas</span> to get started.</p>
+    <p>Step 2: <span>Chat</span> - Join the vibrant community of pixel art enthusiasts and engage in chat discussions. Share your ideas, techniques, and inspirations, and connect with like-minded artists from around the world.</p>
+    <p>Step 3: <span>Create GameRooms</span> - Set up your own GameRoom or join an existing one. GameRooms are where the pixel art magic happens! Collaborate with others or compete against them in friendly challenges.</p>
+    <p>Step 4: <span>Play alone or with others</span> - Choose to play alone or team up with other players in a GameRoom. Work together to create pixel art masterpieces or challenge yourself to replicate images on your own.</p>
+    <p>Step 5: <span>Paint and Remove Pixels</span> - Click on a pixel to paint it with the color of your choice. Click again to remove it if you need to make changes. Use your creativity and skills to bring your pixel art to life on the canvas.</p>
+    <p>Step 6: <span>Replicate the Image</span> - Once you're ready, take on the challenge of replicating a given image within a limited timeframe. Put your pixel art skills to the test and strive to achieve the highest score on the leaderboard.</p>
+    <p>Step 7: <span>Compete for Glory</span> - Compete against other players and aim for the top spot on the leaderboard. Earn bragging rights, showcase your pixel art prowess, and revel in the glory of your achievements.<p><br><br>
+  
+  <p>Get ready to unleash your pixel powers, express your creativity, and immerse yourself in the world of pixel art and metal mayhem on <span>GridMaster Canvas<span>.</p><br>
+  <h5>Let the competition begin!</h5>
   </div>
 
   `;
