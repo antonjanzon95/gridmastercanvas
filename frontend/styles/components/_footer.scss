@@ -1,14 +1,14 @@
 footer {
-    display: flex;
-    justify-content: center;
-  
-  }
+  display: flex;
+  justify-content: center;
+}
 
-  .footer {
-    grid-area: 10 / 1 / 11 / 5;
-    background-color: grey;
-    color: $white;
-    height: 20px;
-    position: absolute;
-    bottom: 0;
-  }
+.footer {
+  display: none; // TA BORT SEN
+  grid-area: 10 / 1 / 11 / 5;
+  background-color: grey;
+  color: $white;
+  height: 20px;
+  position: absolute;
+  bottom: 0;
+}

@@ -1,5 +1,6 @@
 import { socket } from "../main.js";
 import { createLobbyButtons } from "./buttons.js";
+import { renderChat, renderChatHtml } from "./chatcomp.js";
 import {
   createSolutionGrid,
   createGrid,
@@ -9,8 +10,18 @@ import {
 export const createGameLobbyPage = (room) => {
   const mainContainer = document.querySelector("main");
 
-  // sessionStorage.setItem("user", JSON.stringify(user));
-  // const userFromStorage = JSON.parse(sessionStorage.getItem("user"));
+  // add roomId to user in sessionstorage
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  user.roomId = room.roomId;
+  user.currentChat = "local";
+  sessionStorage.setItem("user", JSON.stringify(user));
+
+  socket.on("monitorRoomMessages", (roomWithMessage) => {
+    renderChat(roomWithMessage.messages);
+  });
+
+  renderChatHtml();
+  renderChat(room.messages);
 
   mainContainer.innerHTML = "";
 
