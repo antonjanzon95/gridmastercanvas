@@ -91,6 +91,7 @@ function renderSiteNav() {
   let isHighScoreVisible = false;
   let isImagesVisibile = false;
   let isRoomsVisible = false;
+  let isHowToPlayVisible = false;
 
   let header = document.querySelector('header');
   let main = document.querySelector('main');
@@ -112,7 +113,6 @@ function renderSiteNav() {
   navContainer.append(navPlay, navImg, navHow, navScore);
 
   navPlay.addEventListener('click', () => {
-    console.log('clicked play');
     if (isRoomsVisible) {
       header.innerHTML = '';
       initLog();
@@ -123,7 +123,6 @@ function renderSiteNav() {
   });
 
   navImg.addEventListener('click', () => {
-    console.log('clicked img');
     if (isImagesVisibile) {
       header.innerHTML = '';
       initLog();
@@ -135,7 +134,13 @@ function renderSiteNav() {
   });
 
   navHow.addEventListener('click', () => {
-    console.log('clicked how to play');
+    if (isHowToPlayVisible) {
+      header.innerHTML = '';
+      initLog();
+    } else {
+      renderHowToPlay();
+    }
+    isHowToPlayVisible = !isHowToPlayVisible;
   });
 
   navScore.addEventListener('click', () => {
@@ -147,6 +152,18 @@ function renderSiteNav() {
     }
     isHighScoreVisible = !isHighScoreVisible;
   });
+}
+
+function renderHowToPlay() {
+  let main = document.querySelector('main');
+
+  let div = document.createElement('div');
+
+  main.innerHTML = '';
+
+  div.innerHTML = 'Här ska det stå hur man spelar';
+
+  main.appendChild(div);
 }
 
 function renderLogoutButton() {
