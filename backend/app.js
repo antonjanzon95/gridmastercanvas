@@ -190,7 +190,7 @@ io.on("connection", (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    if (roomToJoin.users.length > MAX_USERS) {
+    if (roomToJoin.users.length == MAX_USERS) {
       roomToJoin.isFull = true;
     }
 
@@ -293,20 +293,31 @@ io.on("connection", (socket) => {
 
     room.users.splice(userIndex, 1);
 
-    const message = {
-      user: "Server",
-      message: userToRemove.name + " has left the room.",
-      color: "red",
-    };
+    if (room.users.length == MAX_USERS - 1) {
+      room.isFull = false;
+    }
 
-    room.messages.unshift(message);
-    console.log(room.messages);
+    if (room.users.length == 0) {
+      const roomIndex = rooms.indexOf(room);
 
-    const usersInRoom = room.users.map((user) => user);
+      rooms.splice(roomIndex, 1);
 
-    usersInRoom.forEach((user) => io.to(user.id).emit("leaveRoom", room));
+      return io.emit("monitorRooms");
+    } else {
+      const message = {
+        user: "Server",
+        message: userToRemove.name + " has left the room.",
+        color: "red",
+      };
 
-    io.emit("monitorRooms");
+      room.messages.unshift(message);
+
+      const usersInRoom = room.users.map((user) => user);
+
+      usersInRoom.forEach((user) => io.to(user.id).emit("leaveRoom", room));
+
+      io.emit("monitorRooms");
+    }
   });
 });
 
@@ -324,14 +335,6 @@ function startGame(room) {
       saveScoreInDb(room.users, room.score);
       const usersInRoom = room.users.map((user) => user);
       usersInRoom.forEach((user) => io.to(user.id).emit("gameOver", room));
-
-      const roomToRemove = rooms.find(
-        (roomToFind) => roomToFind.roomId == room.roomId
-      );
-      const roomIndex = rooms.indexOf(roomToRemove);
-
-      rooms.splice(roomIndex, 1);
-      io.emit("monitorRooms");
     }
     cd--;
   }, 1000);
