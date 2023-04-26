@@ -1,8 +1,14 @@
 .room-container {
   display: flex;
 
+
 }
 
 .rooms-container {
   overflow: auto;
+
+  .btn {
+    min-width: 25vw;
+    background-color: rgb(187, 182, 182);
+  }
 }
