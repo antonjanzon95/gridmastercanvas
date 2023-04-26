@@ -4,3 +4,9 @@ export async function fetchUsers() {
   console.log('users', users);
   return users;
 }
+
+export function renderUserCount(userCount) {
+  const usersOnlineElement = document.querySelector('#users-online');
+
+  usersOnlineElement.innerHTML = 'Users online: ' + userCount;
+}
