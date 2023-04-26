@@ -1,32 +1,31 @@
-import { socket } from '../main';
-import { renderRoomUsers } from './gameLobby';
-import { showGameOverPage } from './gameover';
-import { createGrid } from './paintGrid';
+import { socket } from "../main";
+import { renderRoomUsers } from "./gameLobby";
+import { showGameOverPage } from "./gameover";
+import { createGrid } from "./paintGrid";
 
 export function createGamePage(room) {
-  socket.off('readyCheck');
-
-  const mainContainer = document.querySelector('main');
+  const mainContainer = document.querySelector("main");
   // const user = { id: socket.id, name: "Anton", color: "blue" };
 
-  mainContainer.innerHTML = '';
+  mainContainer.innerHTML = "";
 
   createGrid(room);
   let usersInLobby = renderRoomUsers(room.users);
   mainContainer.appendChild(usersInLobby);
 
-  socket.on('gameOver', (roomWithScore) => {
+  socket.on("gameOver", (roomWithScore) => {
     if (roomWithScore.id != room.id) {
       return;
     }
-    socket.off('gameOver');
 
     showGameOverPage(roomWithScore.score);
+
+    socket.off("gameOver");
   });
 
   let gameTimer = 5;
-  const gameTimerHeading = document.createElement('h2');
-  gameTimerHeading.classList.add('game-timer');
+  const gameTimerHeading = document.createElement("h2");
+  gameTimerHeading.classList.add("game-timer");
   gameTimerHeading.innerHTML = gameTimer;
   mainContainer.appendChild(gameTimerHeading);
 

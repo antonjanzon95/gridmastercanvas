@@ -3,8 +3,10 @@ import { renderChatHtml } from "./chatcomp";
 import { renderRoomsSection } from "./gameRooms";
 import { showHighScorePage } from "./gameover";
 import { viewSavedImages } from "./saveImg";
+import { renderStartPage } from "./startPage";
 
 export function initLog() {
+  renderStartPage();
   renderLogo();
   if (sessionStorage.getItem("user")) {
     console.log("logged in");
@@ -159,7 +161,7 @@ function renderHowToPlay() {
   let main = document.querySelector("main");
 
   let div = document.createElement("div");
-  div.setAttribute('class', 'howToContainer')
+  div.setAttribute("class", "howToContainer");
 
   main.innerHTML = "";
 

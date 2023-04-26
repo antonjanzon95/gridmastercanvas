@@ -73,6 +73,7 @@ io.on("connection", (socket) => {
       id: socket.id,
       color: socket.userColor,
       currentChat: "global",
+      ready: false, // lade till denna för att kunna toggla ready check i lobby
     };
 
     console.log({ user });
@@ -235,15 +236,11 @@ io.on("connection", (socket) => {
 
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    // console.log(roomAndUser.user);
-    // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
-    // if (user.ready) {
-    //   user.ready = false;
-    // } else {
-    //   user.ready = true;
-    // }
-
-    user.ready = true;
+    if (user.ready) {
+      user.ready = false;
+    } else {
+      user.ready = true;
+    }
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
@@ -251,6 +248,7 @@ io.on("connection", (socket) => {
 
     if (allAreReady) {
       room.isStarted = true;
+      io.emit("monitorRooms");
       const solutionGrid = createSolutionGrid(room.users);
 
       room.solutionGrid = solutionGrid;
@@ -278,7 +276,6 @@ io.on("connection", (socket) => {
     usersInRoom.forEach((user) =>
       io.to(user.id).emit("readyCheck", userAndRoom)
     );
-    // io.emit("readyCheck", userAndRoom);
   });
 });
 
@@ -307,6 +304,19 @@ function startGame(room) {
     }
     cd--;
   }, 1000);
+
+  // socket.on("leaveRoom", (user) => {
+  //   const room = rooms.find((room) => room.roomId == user.roomId);
+
+  //   const userToRemove = room.users.find(
+  //     (userToFind) => userToFind.id == user.id
+  //   );
+  //   const userIndex = room.users.indexOf(userToRemove);
+
+  //   room.users.splice(userIndex, 1);
+
+  //   io.emit("leaveRoom", room);
+  // });
 }
 
 module.exports = { app: app, server: server };
