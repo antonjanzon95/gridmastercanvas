@@ -58,6 +58,7 @@ export function renderChatHtml() {
   let lightdarkBtn = document.querySelector("#light-dark-mode");
   let isDarkMode = false;
   roomChatBtn.disabled = true;
+  globalChatBtn.disabled = true;
 
   globalChatBtn.addEventListener("click", () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
