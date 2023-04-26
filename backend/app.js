@@ -19,7 +19,7 @@ const {
   createSolutionGrid,
 } = require("./modules/painting");
 const { calculateScore, saveScoreInDb } = require("./modules/score");
-const { rooms, MAX_USERS, GAME_COLORS } = require("./modules/variables");
+const { ROOMS, MAX_USERS, GAME_COLORS, users, GLOBAL_USERS } = require("./modules/variables");
 
 const app = express();
 const server = require("http").Server(app);
@@ -56,6 +56,15 @@ app.use("/rooms", roomsRouter);
 app.use("/highscores", highScoresRouter);
 
 io.on("connection", (socket) => {
+
+  socket.on('disconnect', () => {
+    let disconnectedUser = GLOBAL_USERS.find((user) => socket.id == user.id)
+    
+    let indexOfUser = GLOBAL_USERS.indexOf(disconnectedUser);
+    GLOBAL_USERS.splice(indexOfUser, 1);
+    io.emit("userDisconnect", disconnectedUser);
+  });
+
   socket.on("saveUser", (data) => {
     let name = data.name;
 
@@ -73,6 +82,8 @@ io.on("connection", (socket) => {
       ready: false, // lade till denna för att kunna toggla ready check i lobby
     };
 
+    GLOBAL_USERS.push(user);
+
     console.log(user.name + " has signed in to the server");
 
     io.emit("loggedUser", { user });
@@ -80,10 +91,15 @@ io.on("connection", (socket) => {
     // io.emit('userLoggedIn', {user})
   });
 
-  socket.on("removeUser", (data) => {
-    let name = data.name;
+  socket.on("removeUser", (user) => {
+    let name = user.name;
 
-    console.log(name + " has left the server");
+    console.log(name + " has logged out");
+    let disconnectedUser = GLOBAL_USERS.find((userToFind) => userToFind.id == user.id)
+    
+    let indexOfUser = GLOBAL_USERS.indexOf(disconnectedUser);
+    GLOBAL_USERS.splice(indexOfUser, 1);
+    io.emit("userDisconnect", disconnectedUser);
   });
 
   // socket.emit("message", { message: "Hello from the server!" });
@@ -131,7 +147,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("localMessage", (messageAndUser) => {
-    const room = rooms.find(
+    const room = ROOMS.find(
       (roomToFind) => roomToFind.roomId == messageAndUser.user.roomId
     );
     const usersInRoom = room.users.map((user) => user);
@@ -170,14 +186,14 @@ io.on("connection", (socket) => {
 
     roomUsers.push(user);
 
-    rooms.push(room);
+    ROOMS.push(room);
 
     io.to(user.id).emit("create room", room);
     io.emit("monitorRooms");
   });
 
   socket.on("joinRoom", (userAndRoomId) => {
-    const roomToJoin = rooms.find(
+    const roomToJoin = ROOMS.find(
       (room) => room.roomId == userAndRoomId.roomId
     );
 
@@ -201,7 +217,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("paint", (cellObject) => {
-    const currentRoom = rooms.find((room) => room.roomId == cellObject.roomId);
+    const currentRoom = ROOMS.find((room) => room.roomId == cellObject.roomId);
     const updatedCell = updateGrid(cellObject);
 
     const roomIdAndUpdatedCell = {
@@ -235,7 +251,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("readyCheck", (roomAndUser) => {
-    const room = rooms.find((room) => room.roomId == roomAndUser.room);
+    const room = ROOMS.find((room) => room.roomId == roomAndUser.room);
 
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
@@ -282,7 +298,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leaveRoom", (user) => {
-    const room = rooms.find((room) => room.roomId == user.roomId);
+    const room = ROOMS.find((room) => room.roomId == user.roomId);
 
     const userToRemove = room.users.find(
       (userToFind) => userToFind.id == user.id
@@ -298,9 +314,9 @@ io.on("connection", (socket) => {
     }
 
     if (room.users.length == 0) {
-      const roomIndex = rooms.indexOf(room);
+      const roomIndex = ROOMS.indexOf(room);
 
-      rooms.splice(roomIndex, 1);
+      ROOMS.splice(roomIndex, 1);
 
       return io.emit("monitorRooms");
     } else {
