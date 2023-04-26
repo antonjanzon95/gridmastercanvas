@@ -56,11 +56,8 @@ app.use("/rooms", roomsRouter);
 app.use("/highscores", highScoresRouter);
 
 io.on("connection", (socket) => {
-  console.log("Någonting");
-
   socket.on("saveUser", (data) => {
     let name = data.name;
-    console.log(data);
 
     socket.userColor =
       "#" +
@@ -73,12 +70,20 @@ io.on("connection", (socket) => {
       id: socket.id,
       color: socket.userColor,
       currentChat: "global",
+      ready: false, // lade till denna för att kunna toggla ready check i lobby
     };
 
-    console.log({ user });
+    console.log(user.name + " has signed in to the server");
 
+    io.emit("loggedUser", { user });
     io.to(socket.id).emit("userLoggedIn", { user });
     // io.emit('userLoggedIn', {user})
+  });
+
+  socket.on("removeUser", (data) => {
+    let name = data.name;
+
+    console.log(name + " has left the server");
   });
 
   // socket.emit("message", { message: "Hello from the server!" });
@@ -117,7 +122,6 @@ io.on("connection", (socket) => {
   /*****************************************************************************
    *************************** SOCKET CHAT ************************************
    *****************************************************************************/
-  console.log("someone is here");
 
   let message = { message: "Hello world", user: "Server says" };
   socket.emit("message", message);
@@ -186,7 +190,7 @@ io.on("connection", (socket) => {
 
     roomToJoin.users.push(userAndRoomId.user);
 
-    if (roomToJoin.users.length > MAX_USERS) {
+    if (roomToJoin.users.length == MAX_USERS) {
       roomToJoin.isFull = true;
     }
 
@@ -235,15 +239,11 @@ io.on("connection", (socket) => {
 
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    // console.log(roomAndUser.user);
-    // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
-    // if (user.ready) {
-    //   user.ready = false;
-    // } else {
-    //   user.ready = true;
-    // }
-
-    user.ready = true;
+    if (user.ready) {
+      user.ready = false;
+    } else {
+      user.ready = true;
+    }
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
@@ -251,6 +251,7 @@ io.on("connection", (socket) => {
 
     if (allAreReady) {
       room.isStarted = true;
+      io.emit("monitorRooms");
       const solutionGrid = createSolutionGrid(room.users);
 
       room.solutionGrid = solutionGrid;
@@ -278,7 +279,45 @@ io.on("connection", (socket) => {
     usersInRoom.forEach((user) =>
       io.to(user.id).emit("readyCheck", userAndRoom)
     );
-    // io.emit("readyCheck", userAndRoom);
+  });
+
+  socket.on("leaveRoom", (user) => {
+    const room = rooms.find((room) => room.roomId == user.roomId);
+
+    const userToRemove = room.users.find(
+      (userToFind) => userToFind.id == user.id
+    );
+    const userIndex = room.users.indexOf(userToRemove);
+
+    room.colors.push(userToRemove.gameColor);
+
+    room.users.splice(userIndex, 1);
+
+    if (room.users.length == MAX_USERS - 1) {
+      room.isFull = false;
+    }
+
+    if (room.users.length == 0) {
+      const roomIndex = rooms.indexOf(room);
+
+      rooms.splice(roomIndex, 1);
+
+      return io.emit("monitorRooms");
+    } else {
+      const message = {
+        user: "Server",
+        message: userToRemove.name + " has left the room.",
+        color: "red",
+      };
+
+      room.messages.unshift(message);
+
+      const usersInRoom = room.users.map((user) => user);
+
+      usersInRoom.forEach((user) => io.to(user.id).emit("leaveRoom", room));
+
+      io.emit("monitorRooms");
+    }
   });
 });
 
@@ -296,14 +335,6 @@ function startGame(room) {
       saveScoreInDb(room.users, room.score);
       const usersInRoom = room.users.map((user) => user);
       usersInRoom.forEach((user) => io.to(user.id).emit("gameOver", room));
-
-      const roomToRemove = rooms.find(
-        (roomToFind) => roomToFind.roomId == room.roomId
-      );
-      const roomIndex = rooms.indexOf(roomToRemove);
-
-      rooms.splice(roomIndex, 1);
-      io.emit("monitorRooms");
     }
     cd--;
   }, 1000);

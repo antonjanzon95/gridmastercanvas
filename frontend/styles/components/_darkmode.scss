@@ -34,24 +34,23 @@ body.dark {
         color: $chatTextColor;
     }
 
-    button, .btn {
-        background-color: $accessoryColor; 
+    button,
+    .btn {
+        background-color: $accessoryColor;
         color: $white;
-        height: 50px;
-        border: 4px solid  $chatTextBackground;
+        border: none;
         box-shadow: none;
 
 
         &:hover {
             background-color: #551f1f;
-            font-weight: bold; 
-            border: none;
-            box-shadow: none;
+
         }
-    
+
         &:active {
             background-color: rgb(24, 24, 24);
         }
+
         &:disabled {
             background-color: $chatTextBackground;
             color: grey;
@@ -60,10 +59,10 @@ body.dark {
             box-shadow: none; 
 
             &:hover {
-                background-color:$chatTextBackground;
-                font-weight: normal; 
+                background-color: $chatTextBackground;
+                font-weight: normal;
                 border: none;
-                box-shadow:none;
+                box-shadow: none;
             }
         }
 
@@ -75,15 +74,25 @@ body.dark {
     }
 
     .parent {
-       background-color: $secondaryBackgroundColor;
+        background-color: $secondaryBackgroundColor;
     }
 
-    .chat  {
-        background-color: $chatTextBackground;
+    .chat {
+
+        background-color: $mainBackgroundColor;
         color: #D2D3D4;
 
         .chat-container {
             background-color: $mainBackgroundColor;
+        }
+
+
+        ::-webkit-scrollbar {
+            background-color: $mainBackgroundColor;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: $chatTextColor;
         }
     }
 

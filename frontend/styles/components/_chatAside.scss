@@ -1,4 +1,4 @@
-@import './general';
+@import "./general";
 
 .chat {
   grid-area: 2 / 4 / 11 / 5;
@@ -67,42 +67,40 @@
         box-shadow: 0.15rem 0.15rem #2b2b2b;
       }
     }
-    &.showChat {
+    &.active-chat-btn {
+      box-shadow: 0px 0px 3px 3px rgba(192, 153, 197, 0.75) inset;
       background-color: $lightpinkColor;
-      font-weight: bold;
-      color: #2b2b2b;
-
-      &:disabled {
-        color: #2b2b2b;
-        border: 2px solid grey;
         font-weight: bold;
-        transition: none;
-        box-shadow: 0.15rem 0.15rem #2b2b2b;
-  
-        &:hover {
-          background-color: $lightpinkColor;
-          font-weight: bold;
+        color: #2b2b2b;
+      
+        &:disabled {
           color: #2b2b2b;
-          font-weight: normal;
           border: 2px solid grey;
+          font-weight: bold;
+          transition: none;
           box-shadow: 0.15rem 0.15rem #2b2b2b;
+      
+          &:hover {
+            background-color: $lightpinkColor;
+            font-weight: bold;
+            color: #2b2b2b;
+            font-weight: normal;
+            border: 2px solid grey;
+            box-shadow: 0.15rem 0.15rem #2b2b2b;
+          }
         }
-      }
     }
   }
 }
 
 .chat-container {
   height: 100%;
-  border: 2px solid $black;
   background-color: $white;
-  overflow: scroll;
-  box-shadow: 0.15rem 0.15rem #2b2b2b;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  // align-items: flex-end;
+  overflow: auto;
+  flex: auto;
 }
 
 .messages {
@@ -110,8 +108,9 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
-
+  padding: 1rem;
 }
+
 .message {
   color: $white;
   align-self: flex-end;
@@ -159,7 +158,6 @@
   }
 }
 
-
 .story-highlights {
   text-align: -webkit-center;
 }
@@ -174,3 +172,4 @@
   border-radius: 50px;
   box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.5) inset;
 }
+

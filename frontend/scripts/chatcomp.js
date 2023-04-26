@@ -1,8 +1,5 @@
 import { socket } from "../main";
 
-export let globalChatBtn;
-export let roomChatBtn;
-
 export function renderChatHtml() {
   const chatDiv = document.querySelector("#chat-div");
   chatDiv.innerHTML = "";
@@ -39,7 +36,7 @@ export function renderChatHtml() {
       </div>
     </section>
   <div class="chat-btn-wrapper">
-    <button class="global-chat showChat" id="global-chat">GLOBAL chat</button>
+    <button class="global-chat active-chat-btn" id="global-chat">GLOBAL chat</button>
     <button class="room-chat" id="room-chat">ROOM chat</button>
     <button class="material-symbols-outlined" id="light-dark-mode">
     dark_mode
@@ -52,9 +49,8 @@ export function renderChatHtml() {
     </div>
   `;
 
-  globalChatBtn = document.querySelector("#global-chat");
-  roomChatBtn = document.querySelector("#room-chat");
-  let messages = document.querySelector("#messages");
+  let globalChatBtn = document.querySelector("#global-chat");
+  let roomChatBtn = document.querySelector("#room-chat");
   let sendButton = document.querySelector(".send-button");
   let sendMessage = document.querySelector("#send-message");
   let lightdarkBtn = document.querySelector("#light-dark-mode");
@@ -169,9 +165,23 @@ function sendChat() {
 }
 
 export function renderChat(messages) {
+  let globalChatBtn = document.querySelector("#global-chat");
+  let roomChatBtn = document.querySelector("#room-chat");
   const chatWindow = document.querySelector("#messages");
   chatWindow.innerHTML = "";
   const user = JSON.parse(sessionStorage.getItem("user"));
+
+  if (user.currentChat == "global") {
+    globalChatBtn.classList.add("active-chat-btn");
+    roomChatBtn.classList.remove("active-chat-btn");
+  } else if (user.currentChat == "local") {
+    roomChatBtn.classList.add("active-chat-btn");
+    globalChatBtn.classList.remove("active-chat-btn");
+  }
+
+  if (messages == undefined) {
+    return console.log("undefineeeed");
+  }
 
   messages.forEach((message) => {
     let chat = document.createElement("div");
