@@ -1,10 +1,7 @@
 import { createButton } from "./buttons";
-import { renderRoomsSection } from "./gameRooms";
+import { leaveRoom } from "./gameLobby";
 
 export const showGameOverPage = (finalScore) => {
-  // let roomChatBtn = document.querySelector("#room-chat");
-  // roomChatBtn.disabled = true;
-
   const mainContainer = document.querySelector("main");
   mainContainer.innerHTML = "";
 
@@ -12,18 +9,11 @@ export const showGameOverPage = (finalScore) => {
   score.classList.add("score-text");
   score.innerHTML = `Good Job! You got ${finalScore}% correct!`;
 
-  const playAgainBtn = document.createElement("button");
-  playAgainBtn.classList.add("btn");
-  playAgainBtn.innerHTML = "Play Again";
-  playAgainBtn.addEventListener("click", () => {
-    renderRoomsSection();
-  });
+  const playAgainBtn = createButton("Back To Room Selection", leaveRoom);
 
   const highScoreBtn = createButton("Highscores", showHighScorePage);
 
-  mainContainer.appendChild(score);
-  mainContainer.appendChild(highScoreBtn);
-  mainContainer.appendChild(playAgainBtn);
+  mainContainer.append(score, highScoreBtn, playAgainBtn);
 };
 
 export async function showHighScorePage() {

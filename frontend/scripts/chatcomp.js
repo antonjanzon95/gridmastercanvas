@@ -167,12 +167,22 @@ function sendChat() {
 }
 
 export function renderChat(messages) {
+  let globalChatBtn = document.querySelector("#global-chat");
+  let roomChatBtn = document.querySelector("#room-chat");
   const chatWindow = document.querySelector("#messages");
   chatWindow.innerHTML = "";
   const user = JSON.parse(sessionStorage.getItem("user"));
 
+  if (user.currentChat == "global") {
+    globalChatBtn.classList.add("active-chat-btn");
+    roomChatBtn.classList.remove("active-chat-btn");
+  } else if (user.currentChat == "local") {
+    roomChatBtn.classList.add("active-chat-btn");
+    globalChatBtn.classList.remove("active-chat-btn");
+  }
+
   if (messages == undefined) {
-    return;
+    return console.log("undefineeeed");
   }
 
   messages.forEach((message) => {
