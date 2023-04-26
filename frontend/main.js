@@ -22,7 +22,6 @@ const init = () => {
   initLog();
   renderStartPage();
   renderFooter();
-  // viewSavedImages();
 };
 
 init();
