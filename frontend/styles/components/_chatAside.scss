@@ -1,7 +1,7 @@
 @import './general';
 
 .chat {
-  grid-area: 3 / 4 / 10 / 5;
+  grid-area: 1 / 4 / 10 / 5;
   background-color: lightgrey;
   height: 100vh;
   padding: 1rem;
@@ -87,6 +87,7 @@
   display: flex;
   flex-direction: column-reverse;
 }
+
 .message {
   color: $white;
   align-self: flex-end;
