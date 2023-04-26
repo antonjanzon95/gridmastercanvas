@@ -1,11 +1,11 @@
-import { socket } from "../main";
-import { renderChatHtml } from "./chatcomp";
-import { renderRoomsSection } from "./gameRooms";
-import { showHighScorePage } from "./gameover";
-import { initGlobalChatSockets, removeGlobalSockets } from "./globalSockets";
-import { viewSavedImages } from "./saveImg";
-import { renderStartPage } from "./startPage";
-import { fetchUsers } from "./userService";
+import { socket } from '../main';
+import { renderChatHtml } from './chatcomp';
+import { renderRoomsSection } from './gameRooms';
+import { showHighScorePage } from './gameover';
+import { initGlobalChatSockets, removeGlobalSockets } from './globalSockets';
+import { viewSavedImages } from './saveImg';
+import { renderStartPage } from './startPage';
+import { fetchUsers, renderUserCount } from './userService';
 
 export function initLog() {
   renderStartPage();
@@ -80,15 +80,10 @@ function renderLogForm() {
     const color = user.color;
     console.log(color);
     sessionStorage.setItem('color', color);
-    printUserLoggedIn();
-  });
-}
 
-function printUserLoggedIn() {
-  const chatDiv = document.querySelector('#messages');
-
-  socket.on('loggedUser', (arg) => {
-    console.log('hej från logged user');
+    socket.on('monitorGlobalUsers', (globalUsers) => {
+      renderUserCount(globalUsers.length);
+    });
   });
 }
 

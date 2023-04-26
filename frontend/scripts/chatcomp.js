@@ -1,12 +1,12 @@
-import { socket } from "../main";
+import { socket } from '../main';
 
 export function renderChatHtml() {
-  const chatDiv = document.querySelector("#chat-div");
-  chatDiv.innerHTML = "";
+  const chatDiv = document.querySelector('#chat-div');
+  chatDiv.innerHTML = '';
 
   chatDiv.innerHTML = `
   <section class="story-highlights">
-      <p>Users online:</p>
+      <p id="users-online"></p>
         <div class="scroll-container">
         <div class="item">
             <div class="user-color-circle"></div>
@@ -49,31 +49,31 @@ export function renderChatHtml() {
     </div>
   `;
 
-  let globalChatBtn = document.querySelector("#global-chat");
-  let roomChatBtn = document.querySelector("#room-chat");
-  let sendButton = document.querySelector(".send-button");
-  let sendMessage = document.querySelector("#send-message");
-  let lightdarkBtn = document.querySelector("#light-dark-mode");
+  let globalChatBtn = document.querySelector('#global-chat');
+  let roomChatBtn = document.querySelector('#room-chat');
+  let sendButton = document.querySelector('.send-button');
+  let sendMessage = document.querySelector('#send-message');
+  let lightdarkBtn = document.querySelector('#light-dark-mode');
   let isDarkMode = false;
   roomChatBtn.disabled = true;
   globalChatBtn.disabled = true;
 
-  globalChatBtn.addEventListener("click", () => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    user.currentChat = "global";
-    sessionStorage.setItem("user", JSON.stringify(user));
+  globalChatBtn.addEventListener('click', () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    user.currentChat = 'global';
+    sessionStorage.setItem('user', JSON.stringify(user));
     roomChatBtn.classList.remove('showChat');
     globalChatBtn.classList.add('showChat');
     roomChatBtn.disabled = false;
     globalChatBtn.disabled = true;
-    renderChat(JSON.parse(sessionStorage.getItem("globalMessages")));
+    renderChat(JSON.parse(sessionStorage.getItem('globalMessages')));
   });
 
-  roomChatBtn.addEventListener("click", async () => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+  roomChatBtn.addEventListener('click', async () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const userRoomId = user.roomId;
-    user.currentChat = "local";
-    sessionStorage.setItem("user", JSON.stringify(user));
+    user.currentChat = 'local';
+    sessionStorage.setItem('user', JSON.stringify(user));
     roomChatBtn.classList.add('showChat');
     globalChatBtn.classList.remove('showChat');
     globalChatBtn.disabled = false;
@@ -82,29 +82,28 @@ export function renderChatHtml() {
     renderChat(roomMessages);
   });
 
-
-  sendMessage.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.keyCode === 13) {
+  sendMessage.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
       e.preventDefault();
       sendChat();
     }
   });
 
-  sendButton.addEventListener("click", () => {
-    console.log("Klick på knapp");
+  sendButton.addEventListener('click', () => {
+    console.log('Klick på knapp');
     sendChat();
   });
 
-  lightdarkBtn.addEventListener("click", () => {
-    console.log("lets change light-dark-mode");
+  lightdarkBtn.addEventListener('click', () => {
+    console.log('lets change light-dark-mode');
     let body = document.body;
 
     if (isDarkMode) {
-      lightdarkBtn.innerHTML = "dark_mode";
-      body.classList.remove("dark");
+      lightdarkBtn.innerHTML = 'dark_mode';
+      body.classList.remove('dark');
     } else {
-      lightdarkBtn.innerHTML = "light_mode";
-      body.classList.add("dark");
+      lightdarkBtn.innerHTML = 'light_mode';
+      body.classList.add('dark');
     }
     isDarkMode = !isDarkMode;
   });
@@ -112,7 +111,7 @@ export function renderChatHtml() {
 
 async function fetchRoomMessages(roomId) {
   const response = await fetch(
-    "http://localhost:3000/rooms/messages/" + roomId
+    'http://localhost:3000/rooms/messages/' + roomId
   );
   const data = await response.json();
 
@@ -128,7 +127,7 @@ function calculateLuminance(color) {
 }
 
 function hexToRgb(hex) {
-  hex = hex.replace("#", "");
+  hex = hex.replace('#', '');
 
   //convert hex to integer,
   const r = parseInt(hex.substring(0, 2), 16);
@@ -139,8 +138,8 @@ function hexToRgb(hex) {
 }
 
 function sendChat() {
-  const messageInput = document.querySelector("#send-message");
-  let user = JSON.parse(sessionStorage.getItem("user"));
+  const messageInput = document.querySelector('#send-message');
+  let user = JSON.parse(sessionStorage.getItem('user'));
 
   const messageToGlobal = {
     message: messageInput.value,
@@ -153,54 +152,54 @@ function sendChat() {
     user: user,
   };
 
-  if (user.currentChat == "global") {
-    socket.emit("globalMessage", messageToGlobal);
-    messageInput.value = "";
-  } else if (user.currentChat == "local") {
-    socket.emit("localMessage", messageToLocal);
-    messageInput.value = "";
+  if (user.currentChat == 'global') {
+    socket.emit('globalMessage', messageToGlobal);
+    messageInput.value = '';
+  } else if (user.currentChat == 'local') {
+    socket.emit('localMessage', messageToLocal);
+    messageInput.value = '';
   } else {
     return;
   }
 }
 
 export function renderChat(messages) {
-  let globalChatBtn = document.querySelector("#global-chat");
-  let roomChatBtn = document.querySelector("#room-chat");
-  const chatWindow = document.querySelector("#messages");
-  chatWindow.innerHTML = "";
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  let globalChatBtn = document.querySelector('#global-chat');
+  let roomChatBtn = document.querySelector('#room-chat');
+  const chatWindow = document.querySelector('#messages');
+  chatWindow.innerHTML = '';
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
-  if (user.currentChat == "global") {
-    globalChatBtn.classList.add("active-chat-btn");
-    roomChatBtn.classList.remove("active-chat-btn");
-  } else if (user.currentChat == "local") {
-    roomChatBtn.classList.add("active-chat-btn");
-    globalChatBtn.classList.remove("active-chat-btn");
+  if (user.currentChat == 'global') {
+    globalChatBtn.classList.add('active-chat-btn');
+    roomChatBtn.classList.remove('active-chat-btn');
+  } else if (user.currentChat == 'local') {
+    roomChatBtn.classList.add('active-chat-btn');
+    globalChatBtn.classList.remove('active-chat-btn');
   }
 
   if (messages == undefined) {
-    return console.log("undefineeeed");
+    return console.log('undefineeeed');
   }
 
   messages.forEach((message) => {
-    let chat = document.createElement("div");
-    chat.setAttribute("class", "message");
-    chat.innerHTML = message.user + ": " + message.message;
+    let chat = document.createElement('div');
+    chat.setAttribute('class', 'message');
+    chat.innerHTML = message.user + ': ' + message.message;
 
     if (message.user === user.name) {
-      chat.setAttribute("class", "send-message");
+      chat.setAttribute('class', 'send-message');
     } else {
-      chat.setAttribute("class", "receive-message");
+      chat.setAttribute('class', 'receive-message');
     }
 
     if (message.color) {
       chat.style.backgroundColor = message.color;
       const luminance = calculateLuminance(message.color);
       if (luminance > 0.5) {
-        chat.style.color = "#1b1b1b";
+        chat.style.color = '#1b1b1b';
       } else {
-        chat.style.color = "whitesmoke";
+        chat.style.color = 'whitesmoke';
       }
     }
 
