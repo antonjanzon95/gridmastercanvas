@@ -1,7 +1,7 @@
 var express = require("express");
 const ImageModel = require("../models/ImageModel");
 var router = express.Router();
-const { rooms } = require("../modules/painting");
+const { ROOMS } = require("../modules/painting");
 
 router.get("/", async function (req, res) {
   const imgs = await ImageModel.find();
@@ -20,7 +20,7 @@ router.get("/:id", async function (req, res) {
 router.post("/save", async function (req, res) {
   const { id } = req.body;
 
-  const currentRoom = rooms.find((room) => room.id == id);
+  const currentRoom = ROOMS.find((room) => room.id == id);
 
   const toSave = { users: currentRoom.users, image: currentRoom.grid };
 
