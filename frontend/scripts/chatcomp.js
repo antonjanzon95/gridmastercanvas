@@ -59,7 +59,8 @@ export function renderChatHtml() {
   let sendMessage = document.querySelector("#send-message");
   let lightdarkBtn = document.querySelector("#light-dark-mode");
   let isDarkMode = false;
-  // roomChatBtn.disabled = true;
+  roomChatBtn.disabled = true;
+  globalChatBtn.disabled = true;
 
   globalChatBtn.addEventListener("click", () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -67,8 +68,8 @@ export function renderChatHtml() {
     sessionStorage.setItem("user", JSON.stringify(user));
     roomChatBtn.classList.remove('showChat');
     globalChatBtn.classList.add('showChat');
-    // roomChatBtn.disabled = false;
-    // globalChatBtn.disabled = true;
+    roomChatBtn.disabled = false;
+    globalChatBtn.disabled = true;
     renderChat(JSON.parse(sessionStorage.getItem("globalMessages")));
   });
 
@@ -79,8 +80,8 @@ export function renderChatHtml() {
     sessionStorage.setItem("user", JSON.stringify(user));
     roomChatBtn.classList.add('showChat');
     globalChatBtn.classList.remove('showChat');
-    // globalChatBtn.disabled = false;
-    // roomChatBtn.disabled = true;
+    globalChatBtn.disabled = false;
+    roomChatBtn.disabled = true;
     const roomMessages = await fetchRoomMessages(userRoomId);
     renderChat(roomMessages);
   });

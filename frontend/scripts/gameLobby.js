@@ -8,6 +8,8 @@ import {
 } from "./paintGrid.js";
 
 export const createGameLobbyPage = (room) => {
+  socket.off("monitorRooms");
+
   const mainContainer = document.querySelector("main");
 
   // add roomId to user in sessionstorage
@@ -22,12 +24,17 @@ export const createGameLobbyPage = (room) => {
 
   renderChatHtml();
   renderChat(room.messages);
+  document.querySelector("#global-chat").disabled = false;
 
   mainContainer.innerHTML = "";
 
   socket.on("readyCheck", (userAndRoom) => {
     if (userAndRoom.room.id != room.id) {
       return;
+    }
+    if (userAndRoom.user.id == user.id) {
+      user.ready = userAndRoom.user.ready; // lade till detta för att kunna toggla ready
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
     const playerReady = document.getElementById(userAndRoom.user.id);
     playerReady.innerHTML = "&#x2713;" + userAndRoom.user.name;
@@ -98,6 +105,8 @@ export const readyCheck = (e) => {
       return;
     }
     createSolutionGrid(room);
+
+    socket.off("showSolutionGrid");
   });
 
   socket.emit("readyCheck", roomAndUser);
