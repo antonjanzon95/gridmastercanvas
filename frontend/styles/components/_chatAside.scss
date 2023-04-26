@@ -68,8 +68,8 @@
       }
     }
     &.active-chat-btn {
-      box-shadow: 0px 0px 3px 3px rgba(192, 153, 197, 0.75) inset;
-      background-color: $lightpinkColor;
+      box-shadow: 0px 0px 3px 3px rgba(169, 169, 169, 0.75) inset;
+      // background-color: $lightpinkColor;
         font-weight: bold;
         color: #2b2b2b;
       
@@ -80,14 +80,14 @@
           transition: none;
           box-shadow: 0.15rem 0.15rem #2b2b2b;
       
-          &:hover {
-            background-color: $lightpinkColor;
-            font-weight: bold;
-            color: #2b2b2b;
-            font-weight: normal;
-            border: 2px solid grey;
-            box-shadow: 0.15rem 0.15rem #2b2b2b;
-          }
+          // &:hover {
+            // background-color: $lightpinkColor;
+            // font-weight: bold;
+            // color: $black;
+            // font-weight: normal;
+            // border: 2px solid grey;
+            // box-shadow: 0.15rem 0.15rem #2b2b2b;
+          // }
         }
     }
   }

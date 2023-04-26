@@ -5,7 +5,7 @@ import { showHighScorePage } from './gameover';
 import { initGlobalChatSockets, removeGlobalSockets } from './globalSockets';
 import { viewSavedImages } from './saveImg';
 import { renderStartPage } from './startPage';
-import { fetchUsers, renderUserCount } from './userService';
+import { fetchUsers, renderUserCount, renderUsers } from './userService';
 
 export function initLog() {
   renderStartPage();
@@ -83,6 +83,8 @@ function renderLogForm() {
 
     socket.on('monitorGlobalUsers', (globalUsers) => {
       renderUserCount(globalUsers.length);
+      renderUsers(globalUsers);
+
     });
   });
 }
