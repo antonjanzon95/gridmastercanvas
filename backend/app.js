@@ -31,6 +31,8 @@ const io = require("socket.io")(server, {
   },
 });
 
+app.locals.io = io;
+
 mongoose.connect(process.env.DATABASE_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -242,14 +244,13 @@ io.on("connection", (socket) => {
       user.ready = true;
     }
 
-    // user.ready = true;
-
     const allAreReady = room.users.every((user) => user.ready === true);
 
     const usersInRoom = room.users.map((user) => user);
 
     if (allAreReady) {
       room.isStarted = true;
+      io.emit("monitorRooms");
       const solutionGrid = createSolutionGrid(room.users);
 
       room.solutionGrid = solutionGrid;
@@ -277,7 +278,6 @@ io.on("connection", (socket) => {
     usersInRoom.forEach((user) =>
       io.to(user.id).emit("readyCheck", userAndRoom)
     );
-    // io.emit("readyCheck", userAndRoom);
   });
 });
 
@@ -306,6 +306,19 @@ function startGame(room) {
     }
     cd--;
   }, 1000);
+
+  // socket.on("leaveRoom", (user) => {
+  //   const room = rooms.find((room) => room.roomId == user.roomId);
+
+  //   const userToRemove = room.users.find(
+  //     (userToFind) => userToFind.id == user.id
+  //   );
+  //   const userIndex = room.users.indexOf(userToRemove);
+
+  //   room.users.splice(userIndex, 1);
+
+  //   io.emit("leaveRoom", room);
+  // });
 }
 
 module.exports = { app: app, server: server };

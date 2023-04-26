@@ -22,6 +22,9 @@ function createNewRoom() {
 }
 
 export function renderRoomsSection() {
+  socket.on("monitorRooms", () => {
+    printRoomList();
+  });
   const mainContainer = document.querySelector("main");
   const roomsContainer = document.createElement("div");
   const roomsBtnContainer = document.createElement("div");
@@ -35,15 +38,8 @@ export function renderRoomsSection() {
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
-  monitorRoomList();
-  printRoomList();
-}
 
-function monitorRoomList() {
-  socket.on("monitorRooms", () => {
-    console.log("socket on monitorRooms");
-    printRoomList();
-  });
+  printRoomList();
 }
 
 async function printRoomList() {
@@ -68,6 +64,11 @@ async function printRoomList() {
       if (room.isFull) {
         joinBtn.setAttribute("disabled", "");
         joinBtn.innerHTML = "FULL";
+      }
+
+      if (room.isStarted) {
+        joinBtn.disabled = true;
+        joinBtn.innerHTML = "Started";
       }
 
       roomContainer.append(joinBtn);
