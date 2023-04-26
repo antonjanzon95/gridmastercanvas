@@ -8,23 +8,23 @@ function createNewRoom() {
   socket.emit("create room", user);
 
   socket.on("create room", (createRoomResponse) => {
-    enterRoomLobby(createRoomResponse);
-    socket.off("monitorRooms");
+    createGameLobbyPage(createRoomResponse);
 
     socket.on("joinRoom", (room) => {
-      if (room.roomId === createRoomResponse.roomId) {
-        createGameLobbyPage(room);
+      if (room.roomId !== createRoomResponse.roomId) {
+        return;
       }
+      createGameLobbyPage(room);
     });
+
+    socket.off("create room");
   });
 }
 
-function enterRoomLobby(room) {
-  createGameLobbyPage(room);
-  socket.off("create room");
-}
-
 export function renderRoomsSection() {
+  socket.on("monitorRooms", () => {
+    printRoomList();
+  });
   const mainContainer = document.querySelector("main");
   const roomsContainer = document.createElement("div");
   const roomsBtnContainer = document.createElement("div");
@@ -38,15 +38,8 @@ export function renderRoomsSection() {
 
   roomsBtnContainer.append(createRoomBtn, joinRoomBtn);
   mainContainer.append(roomsContainer, roomsBtnContainer);
-  monitorRoomList();
-  printRoomList();
-}
 
-function monitorRoomList() {
-  socket.on("monitorRooms", () => {
-    console.log("socket on monitorRooms");
-    printRoomList();
-  });
+  printRoomList();
 }
 
 async function printRoomList() {
@@ -73,6 +66,11 @@ async function printRoomList() {
         joinBtn.innerHTML = "FULL";
       }
 
+      if (room.isStarted) {
+        joinBtn.disabled = true;
+        joinBtn.innerHTML = "Started";
+      }
+
       roomContainer.append(joinBtn);
       roomsContainer.appendChild(roomContainer);
     });
@@ -86,7 +84,6 @@ async function fetchRooms() {
 }
 
 function joinActiveRoom(e) {
-  socket.off("monitorRooms");
   const user = JSON.parse(sessionStorage.getItem("user"));
   const roomId = e.target.id;
 
@@ -96,15 +93,13 @@ function joinActiveRoom(e) {
   };
 
   socket.emit("joinRoom", toSend);
-  socket.emit("monitorRooms");
 
   socket.on("joinRoom", (room) => {
-    if (room.roomId == roomId) {
-      createGameLobbyPage(room);
-      console.log("funkar jag?");
+    if (room.roomId != roomId) {
+      return;
     }
+    createGameLobbyPage(room);
   });
-}
 
-// testing purposes users
-// function testingUsers() {}
+  socket.emit("monitorRooms");
+}

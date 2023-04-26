@@ -1,10 +1,12 @@
-import { removeSockets, socket } from '../main';
-import { renderChatHtml } from './chatcomp';
-import { renderRoomsSection } from './gameRooms';
-import { showHighScorePage } from './gameover';
-import { viewSavedImages } from './saveImg';
+import { removeSockets, socket } from "../main";
+import { renderChatHtml } from "./chatcomp";
+import { renderRoomsSection } from "./gameRooms";
+import { showHighScorePage } from "./gameover";
+import { viewSavedImages } from "./saveImg";
+import { renderStartPage } from "./startPage";
 
 export function initLog() {
+  renderStartPage();
   renderLogo();
   if (sessionStorage.getItem('user')) {
     console.log('logged in');

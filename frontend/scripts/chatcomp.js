@@ -52,12 +52,12 @@ export function renderChatHtml() {
 
   let globalChatBtn = document.querySelector("#global-chat");
   let roomChatBtn = document.querySelector("#room-chat");
-  let messages = document.querySelector("#messages");
   let sendButton = document.querySelector(".send-button");
   let sendMessage = document.querySelector("#send-message");
   let lightdarkBtn = document.querySelector("#light-dark-mode");
   let isDarkMode = false;
   roomChatBtn.disabled = true;
+  globalChatBtn.disabled = true;
 
   globalChatBtn.addEventListener("click", () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -170,6 +170,10 @@ export function renderChat(messages) {
   const chatWindow = document.querySelector("#messages");
   chatWindow.innerHTML = "";
   const user = JSON.parse(sessionStorage.getItem("user"));
+
+  if (messages == undefined) {
+    return;
+  }
 
   messages.forEach((message) => {
     let chat = document.createElement("div");
