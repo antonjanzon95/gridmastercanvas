@@ -1,4 +1,5 @@
-let rooms = [];
+let ROOMS = [];
+let GLOBAL_USERS = [];
 const GAME_COLORS = [
   "red",
   "blue",
@@ -13,4 +14,4 @@ const GAME_COLORS = [
 ];
 const MAX_USERS = GAME_COLORS.length;
 
-module.exports = { rooms, GAME_COLORS, MAX_USERS };
+module.exports = { ROOMS, GAME_COLORS, MAX_USERS, GLOBAL_USERS };

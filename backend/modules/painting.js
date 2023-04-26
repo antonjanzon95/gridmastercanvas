@@ -1,6 +1,6 @@
 const GRID_SIZE = 15;
 const GRID_CELL_COUNT = GRID_SIZE ** 2;
-const { rooms } = require("./variables");
+const { ROOMS } = require("./variables");
 
 function createEmptyGrid() {
   const emptyGrid = [];
@@ -24,7 +24,7 @@ function createSolutionGrid(roomUsers) {
 }
 
 function updateGrid(cell) {
-  const activeRoom = rooms.find((room) => room.roomId === cell.roomId);
+  const activeRoom = ROOMS.find((room) => room.roomId === cell.roomId);
 
   const index = cell.cellId;
 

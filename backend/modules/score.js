@@ -1,8 +1,8 @@
-const { rooms } = require("../modules/variables");
+const { ROOMS } = require("../modules/variables");
 const ScoreModel = require("../models/ScoreModel");
 
 function calculateScore(room) {
-  const currentRoom = rooms.find(
+  const currentRoom = ROOMS.find(
     (currentRoom) => currentRoom.roomId == room.roomId
   );
   let score = 0;
