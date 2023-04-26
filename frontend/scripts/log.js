@@ -1,7 +1,8 @@
-import { removeSockets, socket } from "../main";
+import { socket } from "../main";
 import { renderChatHtml } from "./chatcomp";
 import { renderRoomsSection } from "./gameRooms";
 import { showHighScorePage } from "./gameover";
+import { initGlobalChatSockets, removeGlobalSockets } from "./globalSockets";
 import { viewSavedImages } from "./saveImg";
 import { renderStartPage } from "./startPage";
 
@@ -69,6 +70,8 @@ function renderLogForm() {
     const user = data.user;
     sessionStorage.setItem('globalMessages', JSON.stringify([]));
     sessionStorage.setItem('user', JSON.stringify(user));
+
+    initGlobalChatSockets();
 
     console.log(`${user.name} has logged in with color ${user.color}`);
     const color = user.color;
@@ -217,7 +220,7 @@ function renderLogoutButton() {
 
     chatDiv.innerHTML = '';
     header.innerHTML = '';
-    removeSockets();
+    removeGlobalSockets();
     initLog();
   });
 }
