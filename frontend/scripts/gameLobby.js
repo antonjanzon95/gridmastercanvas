@@ -1,6 +1,7 @@
 import { socket } from "../main.js";
-import { createLobbyButtons } from "./buttons.js";
+import { createButton, createLobbyButtons } from "./buttons.js";
 import { renderChat, renderChatHtml } from "./chatcomp.js";
+import { printRoomList, renderRoomsSection } from "./gameRooms.js";
 import {
   createSolutionGrid,
   createGrid,
@@ -20,6 +21,11 @@ export const createGameLobbyPage = (room) => {
 
   socket.on("monitorRoomMessages", (roomWithMessage) => {
     renderChat(roomWithMessage.messages);
+  });
+
+  socket.on("leaveRoom", (updatedRoom) => {
+    // usersInLobby = renderRoomUsers(updatedRoom.users);
+    renderChat(updatedRoom.messages);
   });
 
   renderChatHtml();
@@ -53,6 +59,15 @@ export const createGameLobbyPage = (room) => {
 
   mainContainer.appendChild(usersInLobby);
 };
+
+export function leaveRoom() {
+  socket.off("leaveRoom");
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  socket.off("monitorRooms");
+  socket.emit("leaveRoom", user);
+
+  renderRoomsSection();
+}
 
 export const renderRoomUsers = (users) => {
   const usersWrapper = document.createElement("div");
