@@ -29,6 +29,10 @@ export const createGameLobbyPage = (room) => {
     if (userAndRoom.room.id != room.id) {
       return;
     }
+    if (userAndRoom.user.id == user.id) {
+      user.ready = userAndRoom.user.ready; // lade till detta för att kunna toggla ready
+      sessionStorage.setItem("user", JSON.stringify(user));
+    }
     const playerReady = document.getElementById(userAndRoom.user.id);
     playerReady.innerHTML = "&#x2713;" + userAndRoom.user.name;
   });

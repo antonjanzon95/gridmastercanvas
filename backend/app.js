@@ -73,6 +73,7 @@ io.on("connection", (socket) => {
       id: socket.id,
       color: socket.userColor,
       currentChat: "global",
+      ready: false, // lade till denna för att kunna toggla ready check i lobby
     };
 
     console.log({ user });
@@ -235,15 +236,13 @@ io.on("connection", (socket) => {
 
     const user = room.users.find((user) => user.id == roomAndUser.user);
 
-    // console.log(roomAndUser.user);
-    // LÄGG PÅ "USER.READY = FALSE" VID LOGIN FÖR ATT ENKELT KUNNA ANVÄNDA DENNA CHECK (ready toggle)
-    // if (user.ready) {
-    //   user.ready = false;
-    // } else {
-    //   user.ready = true;
-    // }
+    if (user.ready) {
+      user.ready = false;
+    } else {
+      user.ready = true;
+    }
 
-    user.ready = true;
+    // user.ready = true;
 
     const allAreReady = room.users.every((user) => user.ready === true);
 
