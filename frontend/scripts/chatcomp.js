@@ -1,7 +1,6 @@
 import { socket } from "../main";
 
 export function renderChatHtml() {
-  console.log("Hej från chat!");
   const chatDiv = document.querySelector("#chat-div");
   chatDiv.innerHTML = "";
 
@@ -37,7 +36,7 @@ export function renderChatHtml() {
       </div>
     </section>
   <div class="chat-btn-wrapper">
-    <button class="global-chat" id="global-chat">GLOBAL chat</button>
+    <button class="global-chat active-chat-btn" id="global-chat">GLOBAL chat</button>
     <button class="room-chat" id="room-chat">ROOM chat</button>
     <button class="material-symbols-outlined" id="light-dark-mode">
     dark_mode
@@ -63,6 +62,8 @@ export function renderChatHtml() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     user.currentChat = "global";
     sessionStorage.setItem("user", JSON.stringify(user));
+    roomChatBtn.classList.remove('showChat');
+    globalChatBtn.classList.add('showChat');
     roomChatBtn.disabled = false;
     globalChatBtn.disabled = true;
     renderChat(JSON.parse(sessionStorage.getItem("globalMessages")));
@@ -73,12 +74,14 @@ export function renderChatHtml() {
     const userRoomId = user.roomId;
     user.currentChat = "local";
     sessionStorage.setItem("user", JSON.stringify(user));
-
+    roomChatBtn.classList.add('showChat');
+    globalChatBtn.classList.remove('showChat');
     globalChatBtn.disabled = false;
     roomChatBtn.disabled = true;
     const roomMessages = await fetchRoomMessages(userRoomId);
     renderChat(roomMessages);
   });
+
 
   sendMessage.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -117,25 +120,20 @@ async function fetchRoomMessages(roomId) {
 }
 
 function calculateLuminance(color) {
-  console.log(color);
   const rgb = hexToRgb(color);
   //Luminance (perceived option 1): (0.299*R + 0.587*G + 0.114*B)
   const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-  console.log(luminance);
 
   return luminance;
 }
 
 function hexToRgb(hex) {
-  console.log(hex);
   hex = hex.replace("#", "");
-  console.log(hex);
 
   //convert hex to integer,
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
-  console.log({ r, g, b });
 
   return { r, g, b };
 }
@@ -167,12 +165,22 @@ function sendChat() {
 }
 
 export function renderChat(messages) {
+  let globalChatBtn = document.querySelector("#global-chat");
+  let roomChatBtn = document.querySelector("#room-chat");
   const chatWindow = document.querySelector("#messages");
   chatWindow.innerHTML = "";
   const user = JSON.parse(sessionStorage.getItem("user"));
 
+  if (user.currentChat == "global") {
+    globalChatBtn.classList.add("active-chat-btn");
+    roomChatBtn.classList.remove("active-chat-btn");
+  } else if (user.currentChat == "local") {
+    roomChatBtn.classList.add("active-chat-btn");
+    globalChatBtn.classList.remove("active-chat-btn");
+  }
+
   if (messages == undefined) {
-    return;
+    return console.log("undefineeeed");
   }
 
   messages.forEach((message) => {

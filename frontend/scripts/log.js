@@ -5,6 +5,7 @@ import { showHighScorePage } from "./gameover";
 import { initGlobalChatSockets, removeGlobalSockets } from "./globalSockets";
 import { viewSavedImages } from "./saveImg";
 import { renderStartPage } from "./startPage";
+import { fetchUsers } from "./userService";
 
 export function initLog() {
   renderStartPage();
@@ -19,6 +20,7 @@ export function initLog() {
     socket.off('saveUser');
     console.log('not logged in');
     renderWelcome();
+    renderStartPage();
     renderLogForm();
   }
 }
@@ -67,6 +69,7 @@ function renderLogForm() {
 
   socket.on('userLoggedIn', (data) => {
     console.log(data);
+    fetchUsers();
     const user = data.user;
     sessionStorage.setItem('globalMessages', JSON.stringify([]));
     sessionStorage.setItem('user', JSON.stringify(user));

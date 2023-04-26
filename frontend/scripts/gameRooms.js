@@ -24,7 +24,7 @@ function createNewRoom() {
 export function renderRoomsSection() {
   socket.off("monitorRooms"); // ensures that it does not get applied multiple times
   socket.on("monitorRooms", () => {
-    printRoomList();
+    renderRoomsSection();
   });
   const mainContainer = document.querySelector("main");
   const roomsContainer = document.createElement("div");
@@ -43,7 +43,7 @@ export function renderRoomsSection() {
   printRoomList();
 }
 
-async function printRoomList() {
+export async function printRoomList() {
   const roomsContainer = document.querySelector(".rooms-container");
   roomsContainer.innerHTML = "";
   const rooms = await fetchRooms();
@@ -99,6 +99,8 @@ function joinActiveRoom(e) {
     if (room.roomId != roomId) {
       return;
     }
+    const roomsContainer = document.querySelector(".rooms-container");
+    roomsContainer.innerHTML = "";
     createGameLobbyPage(room);
   });
 

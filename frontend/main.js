@@ -4,6 +4,7 @@ import { initLog } from './scripts/log';
 import { renderChat } from './scripts/chatcomp';
 import { renderFooter } from './scripts/footerComp';
 import { renderStartPage } from './scripts/startPage';
+import { fetchUsers } from './scripts/userService';
 
 export let grids = {};
 export const socket = io('http://localhost:3000');
@@ -20,6 +21,7 @@ document.querySelector('#app').innerHTML = `
 const init = () => {
   initLog();
   renderFooter();
+  fetchUsers();
 };
 
 init();
