@@ -5,7 +5,6 @@ import { renderChat } from "./scripts/chatcomp";
 import { renderFooter } from "./scripts/footerComp";
 import { renderStartPage } from "./scripts/startPage";
 
-
 export let grids = {};
 export const socket = io("http://localhost:3000");
 
@@ -21,11 +20,7 @@ document.querySelector("#app").innerHTML = `
 const init = () => {
   initSockets();
   initLog();
-  renderStartPage() 
-  // renderHeader();
-  // renderChatHtml();
   renderFooter();
-  // viewSavedImages();
 };
 
 init();

@@ -31,8 +31,6 @@ const io = require("socket.io")(server, {
   },
 });
 
-app.locals.io = io;
-
 mongoose.connect(process.env.DATABASE_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

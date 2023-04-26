@@ -24,6 +24,7 @@ export const createGameLobbyPage = (room) => {
 
   renderChatHtml();
   renderChat(room.messages);
+  document.querySelector("#global-chat").disabled = false;
 
   mainContainer.innerHTML = "";
 
