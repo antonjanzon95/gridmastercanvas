@@ -2,6 +2,9 @@ import { createButton } from "./buttons";
 import { renderRoomsSection } from "./gameRooms";
 
 export const showGameOverPage = (finalScore) => {
+  // let roomChatBtn = document.querySelector("#room-chat");
+  // roomChatBtn.disabled = true;
+
   const mainContainer = document.querySelector("main");
   mainContainer.innerHTML = "";
 
@@ -18,9 +21,9 @@ export const showGameOverPage = (finalScore) => {
 
   const highScoreBtn = createButton("Highscores", showHighScorePage);
 
+  mainContainer.appendChild(score);
   mainContainer.appendChild(highScoreBtn);
   mainContainer.appendChild(playAgainBtn);
-  mainContainer.appendChild(score);
 };
 
 export async function showHighScorePage() {

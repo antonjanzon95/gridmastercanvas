@@ -57,9 +57,12 @@ export function createSolutionGrid(room) {
     if (room.roomId != roomToStart.roomId) {
       return;
     }
+
+    createGamePage(roomToStart);
+
+    socket.off("joinRoom");
     socket.off("readyCheck");
     socket.off("startGame");
-    createGamePage(roomToStart);
   });
 
   let idcounter = 0;
@@ -76,7 +79,7 @@ export function createSolutionGrid(room) {
 
   const countdownDiv = document.createElement("div");
   countdownDiv.classList.add("countdown");
-  document.querySelector("#app").appendChild(countdownDiv);
+  document.querySelector("main").appendChild(countdownDiv);
 
   // timer for showing solution grid
   let cd = 5;
@@ -88,8 +91,9 @@ export function createSolutionGrid(room) {
       countdownDiv.innerHTML = "PAINT!";
       setTimeout(() => {
         countdownDiv.innerHTML = "";
+        socket.emit("startGame", room); // sköt i back-end istället
       }, 2000);
-      socket.emit("startGame", room); // sköt i back-end istället
+
       clearInterval(countdownInterval);
     }
   }, 1000);
