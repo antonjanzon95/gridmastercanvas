@@ -1,4 +1,4 @@
-import { readyCheck } from "./gameLobby";
+import { leaveRoom, readyCheck } from "./gameLobby";
 import { showHighScorePage } from "./gameover";
 import { handleSaveImage } from "./saveImg";
 
@@ -17,15 +17,13 @@ export const createLobbyButtons = (roomId) => {
   buttonContainer.classList.add("btn-container");
   mainContainer.appendChild(buttonContainer);
 
-  // save practice image button
+  const leaveBtn = createButton("leave room", leaveRoom);
+
   const saveImageBtn = createButton("Save Image", handleSaveImage);
   saveImageBtn.id = roomId;
 
-  const highScoreBtn = createButton("Highscores", showHighScorePage);
-
-  // start game button
   const startBtn = createButton("Start Game", readyCheck);
   startBtn.id = roomId;
 
-  buttonContainer.append(startBtn, saveImageBtn, highScoreBtn);
+  buttonContainer.append(leaveBtn, startBtn, saveImageBtn);
 };
