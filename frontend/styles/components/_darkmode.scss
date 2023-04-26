@@ -11,99 +11,99 @@ $white: whitesmoke;
 
 
 
-body.dark {
-    background-color: $textBackground;
+	body.dark {
+			background-color: $textBackground;
 
-    header {
-        background-color: $mainBackgroundColor;
-        color: $white;
-    }
+			header {
+					background-color: $mainBackgroundColor;
+					color: $white;
+			}
 
-    main {
-        background-color: $secondaryBackgroundColor;
-        color: $white;
-    }
+			main {
+					background-color: $secondaryBackgroundColor;
+					color: $white;
+			}
 
-    input {
-        background-color: $textBackground;
-        color: $white;
-    }
+			input {
+					background-color: $textBackground;
+					color: $white;
+			}
 
-    footer {
-        background-color: $secondaryBackgroundColor;
-        color: $thirdBackgroundColor;
-    }
+			footer {
+					background-color: $secondaryBackgroundColor;
+					color: $thirdBackgroundColor;
+			}
 
-    button,
-    .btn {
-
-
-        color: $white;
+			// button,
+			// .btn {
 
 
-        &:hover {
-            background-color: #551f1f;
+			// 		color: $white;
 
-        }
 
-        &:active {
-            background-color: rgb(24, 24, 24);
-        }
+			// 		// &:hover {
+			// 		// 		background-color: #551f1f;
 
-        &:disabled {
-            background-color: $textBackground;
-            color: grey;
-            ;
+			// 		// }
 
-            &:hover {
-                background-color: $textBackground;
-                font-weight: normal;
-                border: 1 solid black;
-            }
-        }
+			// 		&:active {
+			// 				background-color: rgb(24, 24, 24);
+			// 		}
 
-        &.showChat {
-            background-color: #551f1f;
-            font-weight: bold;
-            pointer-events: none;
-        }
-    }
+			// 		&:disabled {
+			// 				background-color: $textBackground;
+			// 				color: grey;
+			// 				;
 
-    .parent {
-        background-color: $secondaryBackgroundColor;
-    }
+			// 				&:hover {
+			// 						background-color: $textBackground;
+			// 						font-weight: normal;
+			// 						border: 1 solid black;
+			// 				}
+			// 		}
 
-    .chat {
+			// 		// &.showChat {
+			// 		// 		background-color: #551f1f;
+			// 		// 		font-weight: bold;
 
-        background-color: $mainBackgroundColor;
-        color: #D2D3D4;
+			// 		// }
+			// }
 
-        .chat-container {
-            background-color: $mainBackgroundColor;
-        }
+			.parent {
+					background-color: $secondaryBackgroundColor;
+			}
 
-        button {
-            background-color: $textBackground;
-            color: $white;
-        }
+			.chat {
 
-        ::-webkit-scrollbar {
-            background-color: $mainBackgroundColor;
-        }
+					background-color: $mainBackgroundColor;
+					color: #D2D3D4;
 
-        ::-webkit-scrollbar-thumb {
-            background-color: $thirdBackgroundColor;
-        }
-    }
+					.chat-container {
+							background-color: $mainBackgroundColor;
+					}
 
-    .countdown,
-    .game-timer {
+					// button {
+					// 		background-color: $textBackground;
+					// 		color: $white;
+					// }
 
-        color: whitesmoke;
+					::-webkit-scrollbar {
+							background-color: $mainBackgroundColor;
+					}
 
-    }
+					::-webkit-scrollbar-thumb {
+							background-color: $thirdBackgroundColor;
+					}
+			}
 
-    .rooms-container .btn {
-        background-color: $serverBackground;
-    }
-}
+			.countdown,
+			.game-timer {
+
+					color: whitesmoke;
+
+			}
+
+			.rooms-container .btn {
+					background-color: $serverBackground;
+			}
+	}
