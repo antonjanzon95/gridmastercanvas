@@ -79,7 +79,7 @@ export function leaveRoom() {
 
 export const renderRoomUsers = (users) => {
   const usersWrapper = document.createElement("div");
-
+  usersWrapper.classList.add("user-ready-container");
   users.forEach((user) => {
     const userContainer = createUserContainer(user);
     usersWrapper.appendChild(userContainer);
