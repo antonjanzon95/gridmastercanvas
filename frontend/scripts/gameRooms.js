@@ -22,6 +22,7 @@ function createNewRoom() {
 }
 
 export function renderRoomsSection() {
+  socket.off("monitorRooms"); // ensures that it does not get applied multiple times
   socket.on("monitorRooms", () => {
     printRoomList();
   });
