@@ -1,9 +1,9 @@
-$chatTextColor: #D2D3D4;
-$chatTextBackground: #272C32;
+$textBackground: #272C32;
 $serverBackground: #31353D;
 $mainBackgroundColor: #1D2126;
 $secondaryBackgroundColor: #21252b;
-$headingTextColor: #8e9093;
+$thirdBackgroundColor: #D2D3D4;
+//$headingTextColor: #8e9093;
 
 $accessoryColor: #813333;
 
@@ -12,7 +12,7 @@ $white: whitesmoke;
 
 
 body.dark {
-    background-color: $chatTextBackground;
+    background-color: $textBackground;
 
     header {
         background-color: $mainBackgroundColor;
@@ -25,21 +25,20 @@ body.dark {
     }
 
     input {
-        background-color: $chatTextBackground;
+        background-color: $textBackground;
         color: $white;
     }
 
     footer {
         background-color: $secondaryBackgroundColor;
-        color: $chatTextColor;
+        color: $thirdBackgroundColor;
     }
 
     button,
     .btn {
-        background-color: $accessoryColor;
+
+
         color: $white;
-        border: none;
-        box-shadow: none;
 
 
         &:hover {
@@ -52,18 +51,14 @@ body.dark {
         }
 
         &:disabled {
-            background-color: $chatTextBackground;
+            background-color: $textBackground;
             color: grey;
-            border: none;
-            transition: none;
-            box-shadow: none;
             ;
 
             &:hover {
-                background-color: $chatTextBackground;
+                background-color: $textBackground;
                 font-weight: normal;
-                border: none;
-                box-shadow: none;
+                border: 1 solid black;
             }
         }
     }
@@ -81,15 +76,25 @@ body.dark {
             background-color: $mainBackgroundColor;
         }
 
+        button {
+            background-color: $textBackground;
+            color: $white;
+        }
+
 
         ::-webkit-scrollbar {
             background-color: $mainBackgroundColor;
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: $chatTextColor;
+            background-color: $thirdBackgroundColor;
         }
     }
 
+    .countdown,
+    .game-timer {
 
+        color: whitesmoke;
+
+    }
 }
