@@ -63,10 +63,10 @@ body.dark {
         }
 
         &.showChat {
-            background-color:  #551f1f; 
+            background-color: #551f1f;
             font-weight: bold;
             pointer-events: none;
-          }
+        }
     }
 
     .parent {
@@ -101,5 +101,9 @@ body.dark {
 
         color: whitesmoke;
 
+    }
+
+    .rooms-container .btn {
+        background-color: $serverBackground;
     }
 }
