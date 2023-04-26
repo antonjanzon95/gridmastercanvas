@@ -8,6 +8,8 @@ import {
 } from "./paintGrid.js";
 
 export const createGameLobbyPage = (room) => {
+  socket.off("monitorRooms");
+
   const mainContainer = document.querySelector("main");
 
   // add roomId to user in sessionstorage
@@ -102,6 +104,8 @@ export const readyCheck = (e) => {
       return;
     }
     createSolutionGrid(room);
+
+    socket.off("showSolutionGrid");
   });
 
   socket.emit("readyCheck", roomAndUser);

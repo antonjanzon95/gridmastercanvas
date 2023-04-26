@@ -57,9 +57,12 @@ export function createSolutionGrid(room) {
     if (room.roomId != roomToStart.roomId) {
       return;
     }
+
+    createGamePage(roomToStart);
+
+    socket.off("joinRoom");
     socket.off("readyCheck");
     socket.off("startGame");
-    createGamePage(roomToStart);
   });
 
   let idcounter = 0;
