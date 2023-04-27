@@ -20,6 +20,20 @@
   grid-template-rows: repeat(15, 1fr);
 }
 
+.canvas-grid-mini:hover {
+  scale: 1.1;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.img-parent-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 900px;
+  gap: 2rem;
+  overflow-y: auto;
+}
+
 .view-cell {
   pointer-events: none;
 }

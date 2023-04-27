@@ -120,7 +120,7 @@ io.on('connection', (socket) => {
     const usersInRoom = room.users.map((user) => user);
 
     const message = {
-      user: messageAndUser.user.name,
+      user: messageAndUser.user,
       message: messageAndUser.message,
       color: messageAndUser.user.color,
     };
