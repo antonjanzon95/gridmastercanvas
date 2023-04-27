@@ -294,7 +294,10 @@ function startGame(room) {
   usersInRoom.forEach((user) => io.to(user.id).emit('startGame', room));
 
   let cd = GAME_RUNTIME_SECONDS;
-  const gameInterval = setInterval(() => {    
+  const gameInterval = setInterval(() => {
+
+    usersInRoom.forEach((user) => io.to(user.id).emit('gameCountdownTimer', cd));
+    
     if (cd < 0) {
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);

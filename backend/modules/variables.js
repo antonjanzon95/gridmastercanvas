@@ -1,7 +1,7 @@
 let ROOMS = [];
 let GLOBAL_USERS = [];
 
-const GAME_RUNTIME_SECONDS = 10;
+const GAME_RUNTIME_SECONDS = 5;
 
 const GAME_COLORS = [
   "red",
