@@ -14,21 +14,21 @@ $font-secondary: "Righteous", cursive;
 
 
 body.light {
-    font-family: $font-primary;
+  font-family: $font-primary;
 
-  
+
   main {
     position: relative;
     flex-direction: column;
     text-align: center;
-  
+
   }
-  
+
   .main {
     grid-area: 2 / 1 / 11 / 4;
     background-color: rgb(177, 176, 176);
   }
-  
+
   .parent {
     display: grid;
     background-color: lightgrey;
@@ -37,7 +37,13 @@ body.light {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
   }
+
   .chat {
+    background-color: $lightpinkColor;
+  }
+
+  .rooms-container .btn {
+
     background-color: $lightpinkColor;
   }
 
