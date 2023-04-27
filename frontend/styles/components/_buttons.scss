@@ -14,20 +14,17 @@ button {
 
   &:active {
     background-color: rgb(24, 24, 24);
-
   }
 
-
-.btn {
-  color: $white;
-  height: 50px;
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 300px;
-  font-size: 24px;
-  border-radius: 2px;
-
-}
+  .btn {
+    color: $white;
+    height: 50px;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 300px;
+    font-size: 24px;
+    border-radius: 2px;
+  }
 }
 
 .btn-container {
@@ -40,4 +37,12 @@ button {
   bottom: 0;
   flex-flow: row;
   width: 50%;
+}
+
+.saveMessageDiv {
+  position: absolute;
+  z-index: 10;
+  bottom: 3.5rem;
+  font-size: 2rem;
+  color: $accessoryColorSuccess;
 }

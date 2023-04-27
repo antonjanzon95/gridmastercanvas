@@ -84,7 +84,6 @@ function renderLogForm() {
     socket.on('monitorGlobalUsers', (globalUsers) => {
       renderUserCount(globalUsers.length);
       renderUsers(globalUsers);
-
     });
   });
 }

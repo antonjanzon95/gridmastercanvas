@@ -1,19 +1,19 @@
 // globala variabler här
 $lightpinkColor: #eeb2cc;
-$textBackground: #272C32;
-$serverBackground: #31353D;
-$mainBackgroundColor: #1D2126;
+$textBackground: #272c32;
+$serverBackground: #31353d;
+$mainBackgroundColor: #1d2126;
 $secondaryBackgroundColor: #21252b;
-$thirdBackgroundColor: #D2D3D4;
+$thirdBackgroundColor: #d2d3d4;
 //$headingTextColor: #8e9093;
 
 $accessoryColor: #551f1f;
-
+$accessoryColorSuccess: rgb(170, 235, 170);
 $white: whitesmoke;
 $black: #2b2b2b;
 
-$font-primary: "Dosis", sans-serif;
-$font-secondary: "Righteous", cursive;
+$font-primary: 'Dosis', sans-serif;
+$font-secondary: 'Righteous', cursive;
 
 body {
   color-scheme: dark light;
@@ -37,12 +37,12 @@ main {
 .main {
   grid-area: 2 / 1 / 11 / 4;
   background-color: $secondaryBackgroundColor;
-	color: $white;
+  color: $white;
 }
 
 .parent {
   display: grid;
- 	background-color: $secondaryBackgroundColor;
+  background-color: $secondaryBackgroundColor;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 0px;
