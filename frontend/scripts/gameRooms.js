@@ -98,8 +98,6 @@ function joinActiveRoom(e) {
     if (room.roomId != roomId) {
       return;
     }
-    const roomsContainer = document.querySelector('.rooms-container');
-    roomsContainer.innerHTML = '';
     createGameLobbyPage(room);
   });
 

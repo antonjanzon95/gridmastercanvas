@@ -180,6 +180,8 @@ io.on('connection', (socket) => {
     const usersInRoom = roomToJoin.users.map((user) => user);
     usersInRoom.forEach((user) => io.to(user.id).emit('joinRoom', roomToJoin));
 
+    console.log(usersInRoom);
+
     io.emit('monitorRooms');
   });
 
