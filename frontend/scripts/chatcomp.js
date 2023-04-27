@@ -119,7 +119,7 @@ function sendChat() {
 
   const messageToGlobal = {
     message: messageInput.value,
-    user: user.name,
+    user: user,
     color: user.color,
   };
 
@@ -161,9 +161,9 @@ export function renderChat(messages) {
   messages.forEach((message) => {
     let chat = document.createElement('div');
     chat.setAttribute('class', 'message');
-    chat.innerHTML = message.user + ': ' + message.message;
+    chat.innerHTML = message.user.name + ': ' + message.message;
 
-    if (message.user === user.name) {
+    if (message.user.id === user.id) {
       chat.setAttribute('class', 'send-message');
     } else {
       chat.setAttribute('class', 'receive-message');
