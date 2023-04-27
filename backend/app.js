@@ -24,6 +24,7 @@ const {
   MAX_USERS,
   GAME_COLORS,
   GLOBAL_USERS,
+  GAME_RUNTIME_SECONDS,
 } = require('./modules/variables');
 
 const app = express();
@@ -292,8 +293,8 @@ function startGame(room) {
 
   usersInRoom.forEach((user) => io.to(user.id).emit('startGame', room));
 
-  let cd = 5;
-  const gameInterval = setInterval(() => {
+  let cd = GAME_RUNTIME_SECONDS;
+  const gameInterval = setInterval(() => {    
     if (cd < 0) {
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);
