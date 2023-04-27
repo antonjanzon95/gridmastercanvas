@@ -271,7 +271,7 @@ io.on('connection', (socket) => {
       return io.emit('monitorRooms');
     } else {
       const message = {
-        user: 'Server',
+        user: {name: 'Gridmaster Bot'},
         message: userToRemove.name + ' has left the room.',
         color: 'red',
       };
