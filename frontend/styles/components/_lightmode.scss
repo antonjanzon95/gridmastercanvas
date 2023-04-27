@@ -13,12 +13,13 @@ $font-primary: 'Dosis', sans-serif;
 $font-secondary: 'Righteous', cursive;
 
 body.light {
-  font-family: $font-primary;
   background-color: $lightpinkColor;
+  font-family: $font-primary;
   color: $black;
 
   header {
     background-color: $lightpinkColor;
+
     color: $black;
 
     // div {
@@ -33,6 +34,9 @@ body.light {
     flex-direction: column;
     text-align: center;
     color: $black;
+    background-image: url('/gridmaster-canvas-bkg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   button {
@@ -48,20 +52,24 @@ body.light {
 
   .main {
     grid-area: 2 / 1 / 11 / 4;
-    background-color: $lightpinkColor;
+
   }
 
-  .parent {
-    display: grid;
-    background-color: lightgrey;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-  }
+
 
   .chat {
-    background-color: $lightpinkColor;
+    background-image: url('/gridmaster-canvas-bkg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+  }
+  .scroll-container {
+    color: $black;
+    background-color: $white;
+  }
+    .story-hightlights {
+      background-color: $white;
+    }
 
     button {
       background-color: $white;
@@ -80,6 +88,7 @@ body.light {
         }
       }
     }
+  
 
     .chat-container {
       background-color: $white;
@@ -90,4 +99,4 @@ body.light {
   .rooms-container .btn {
     background-color: $lightpinkColor;
   }
-}
+
