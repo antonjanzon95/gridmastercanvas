@@ -11,9 +11,9 @@ export const showGameOverPage = (finalScore) => {
 
   const playAgainBtn = createButton("Back To Room Selection", leaveRoom);
 
-  const highScoreBtn = createButton("Highscores", showHighScorePage);
+  // const highScoreBtn = createButton("Highscores", showHighScorePage);    // causes rooms to freak out, so disabled for now
 
-  mainContainer.append(score, highScoreBtn, playAgainBtn);
+  mainContainer.append(score, playAgainBtn);  // highScoreBtn <-- unappended until fixed
 };
 
 export async function showHighScorePage() {
