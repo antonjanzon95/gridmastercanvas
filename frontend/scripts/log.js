@@ -84,7 +84,6 @@ function renderLogForm() {
     socket.on('monitorGlobalUsers', (globalUsers) => {
       renderUserCount(globalUsers.length);
       renderUsers(globalUsers);
-
     });
   });
 }
@@ -94,7 +93,7 @@ function renderLogo() {
   let div = document.createElement('div');
   let logo = document.createElement('img');
 
-  logo.setAttribute('src', '/gridmastercanvas_logo.png');
+  logo.setAttribute('src', '/gridmastercanvas_logo_white.png');
   logo.setAttribute('alt', 'Grid Master Canvas Logo');
   logo.setAttribute('width', '400');
 
