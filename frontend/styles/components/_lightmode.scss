@@ -20,6 +20,12 @@ body.light {
   header {
     background-color: $lightpinkColor;
     color: $black;
+
+    div {
+      .logo-header {
+        img: 'src:/gridmastercanvas_logo_white.png';
+      }
+    }
   }
 
   main {
@@ -36,6 +42,7 @@ body.light {
 
     &:hover {
       background-color: $white;
+      color: $black;
     }
   }
 
@@ -56,8 +63,27 @@ body.light {
   .chat {
     background-color: $lightpinkColor;
 
-    .chat-conatiner {
-      color: $white;
+    button {
+      background-color: $white;
+      color: $black;
+
+      &:hover {
+        background-color: lightblue;
+      }
+
+      &:disabled {
+        background-color: lightgrey;
+
+        &:hover {
+          background-color: transparent;
+          border: 2px solid $black;
+        }
+      }
+    }
+
+    .chat-container {
+      background-color: $white;
+
     }
   }
 
