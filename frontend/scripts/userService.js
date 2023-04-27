@@ -10,3 +10,27 @@ export function renderUserCount(userCount) {
 
   usersOnlineElement.innerHTML = 'Users online: ' + userCount;
 }
+
+export function renderUsers(globalUsers) {
+  console.log(globalUsers);
+  const users = globalUsers;
+  const scrollContainer = document.querySelector('#scroll-container');
+  scrollContainer.innerHTML = '';
+
+  users.forEach(user => {
+    const item = document.createElement('div');
+    item.classList.add('item');
+
+    const colorCircle = document.createElement('div');
+    colorCircle.classList.add('user-color-circle');
+    colorCircle.style.backgroundColor = user.color;
+
+    const name = document.createElement('p');
+    name.textContent = user.name;
+
+    item.appendChild(colorCircle);
+    item.appendChild(name);
+
+    scrollContainer.appendChild(item);
+  })
+}

@@ -7,31 +7,8 @@ export function renderChatHtml() {
   chatDiv.innerHTML = `
   <section class="story-highlights">
       <p id="users-online"></p>
-        <div class="scroll-container">
-        <div class="item">
-            <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
+        <div class="scroll-container" id="scroll-container">
+
         
       </div>
     </section>
