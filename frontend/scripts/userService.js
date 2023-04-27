@@ -8,13 +8,22 @@ export async function fetchUsers() {
 export function renderUserCount(userCount) {
   const usersOnlineElement = document.querySelector('#users-online');
 
+  if(usersOnlineElement){
   usersOnlineElement.innerHTML = 'Users online: ' + userCount;
+} else {
+  return;
+}
 }
 
 export function renderUsers(globalUsers) {
   console.log(globalUsers);
   const users = globalUsers;
   const scrollContainer = document.querySelector('#scroll-container');
+
+  if (!scrollContainer) {
+    return;
+  }
+
   scrollContainer.innerHTML = '';
 
   users.forEach(user => {
