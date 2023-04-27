@@ -24,6 +24,7 @@ const {
   MAX_USERS,
   GAME_COLORS,
   GLOBAL_USERS,
+  GAME_RUNTIME_SECONDS,
 } = require('./modules/variables');
 
 const app = express();
@@ -271,7 +272,7 @@ io.on('connection', (socket) => {
       return io.emit('monitorRooms');
     } else {
       const message = {
-        user: 'Server',
+        user: {name: 'Gridmaster Bot'},
         message: userToRemove.name + ' has left the room.',
         color: 'red',
       };
@@ -292,8 +293,11 @@ function startGame(room) {
 
   usersInRoom.forEach((user) => io.to(user.id).emit('startGame', room));
 
-  let cd = 5;
+  let cd = GAME_RUNTIME_SECONDS;
   const gameInterval = setInterval(() => {
+
+    usersInRoom.forEach((user) => io.to(user.id).emit('gameCountdownTimer', cd));
+    
     if (cd < 0) {
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);
