@@ -29,6 +29,16 @@ body.light {
     color: $black;
   }
 
+  button {
+    color: $white;
+    border: 2px solid $black;
+    color: $black;
+
+    &:hover {
+      background-color: $white;
+    }
+  }
+
   .main {
     grid-area: 2 / 1 / 11 / 4;
     background-color: $lightpinkColor;
