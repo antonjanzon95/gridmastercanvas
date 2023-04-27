@@ -6,8 +6,8 @@ header {
 
 .header {
   grid-area: 1 / 1 / 2 / 5;
-  background-color: rgb(149, 149, 149);
-
+  background-color: $mainBackgroundColor;
+  color: $white;
 }
 
 .navContainer {

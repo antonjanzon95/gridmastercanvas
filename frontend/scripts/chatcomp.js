@@ -15,14 +15,14 @@ export function renderChatHtml() {
   <div class="chat-btn-wrapper">
     <button class="global-chat active-chat-btn" id="global-chat">GLOBAL chat</button>
     <button class="room-chat" id="room-chat">ROOM chat</button>
-    <button class="material-symbols-outlined" id="light-dark-mode">
-    dark_mode
+    <button class="material-symbols-outlined light" id="light-dark-mode">
+    light_mode
     </button>
   </div>
     <div class="chat-container">
         <div class="messages" id="messages"></div>
       <input type='text' id='send-message' placeholder='Lets chat'/>
-        <button id='send-button' class="send-button">Send</button>
+        <button id='send-button' class="send-button button">Send</button>
     </div>
   `;
 
@@ -72,15 +72,14 @@ export function renderChatHtml() {
   });
 
   lightdarkBtn.addEventListener('click', () => {
-    console.log('lets change light-dark-mode');
     let body = document.body;
 
     if (isDarkMode) {
-      lightdarkBtn.innerHTML = 'dark_mode';
-      body.classList.remove('dark');
-    } else {
       lightdarkBtn.innerHTML = 'light_mode';
-      body.classList.add('dark');
+      body.classList.remove('light');
+    } else {
+      lightdarkBtn.innerHTML = 'dark_mode';
+      body.classList.add('light');
     }
     isDarkMode = !isDarkMode;
   });

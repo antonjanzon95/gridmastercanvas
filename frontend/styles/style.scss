@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @import './components/general';
 
 @import './components/header';
@@ -21,7 +23,9 @@
 @import './components/modal';
 @import './components/userInGame';
 
-@import './components/darkmode'
+@import './components/lightmode'
+
+// @import './components/darkmode'
 
 
 
