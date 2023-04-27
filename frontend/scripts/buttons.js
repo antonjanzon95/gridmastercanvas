@@ -12,6 +12,8 @@ export const createButton = (text, clickFunction, id) => {
 };
 
 export const createLobbyButtons = (roomId) => {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('saveMessageDiv');
   const mainContainer = document.querySelector('main');
   const buttonContainer = document.createElement('div');
   buttonContainer.classList.add('btn-container');
@@ -25,5 +27,5 @@ export const createLobbyButtons = (roomId) => {
   const startBtn = createButton('Start Game', readyCheck);
   startBtn.id = roomId;
 
-  buttonContainer.append(leaveBtn, startBtn, saveImageBtn);
+  buttonContainer.append(leaveBtn, startBtn, saveImageBtn, messageDiv);
 };
