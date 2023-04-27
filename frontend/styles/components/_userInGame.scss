@@ -14,7 +14,6 @@
   display: flex;
   align-items: center;
   width: 75px;
-  padding: 0.5rem;
   gap: 2px;
 
   div {
@@ -24,4 +23,5 @@
 
 .user-ready-container {
   place-self: flex-end;
+  margin-bottom: auto;
 }
