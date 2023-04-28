@@ -5,7 +5,6 @@ import { createGrid } from "./paintGrid";
 
 export function createGamePage(room) {
   const mainContainer = document.querySelector("main");
-  // const user = { id: socket.id, name: "Anton", color: "blue" };
 
   mainContainer.innerHTML = "";
 
@@ -21,19 +20,15 @@ export function createGamePage(room) {
     showGameOverPage(roomWithScore.score);
 
     socket.off("gameOver");
+    socket.off('gameCountdownTimer');
   });
 
-  let gameTimer = 5;
   const gameTimerHeading = document.createElement("h2");
   gameTimerHeading.classList.add("game-timer");
-  gameTimerHeading.innerHTML = gameTimer;
   mainContainer.appendChild(gameTimerHeading);
 
-  const gameTimerInterval = setInterval(() => {
-    gameTimerHeading.innerHTML = gameTimer.toString();
-    gameTimer--;
-    if (gameTimer < 0) {
-      clearInterval(gameTimerInterval);
-    }
-  }, 1000);
+  socket.on('gameCountdownTimer', (timerLeftInSeconds) => {
+    gameTimerHeading.innerHTML = timerLeftInSeconds;
+  })
+
 }

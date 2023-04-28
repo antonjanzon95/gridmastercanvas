@@ -2,12 +2,13 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+  padding-bottom: 100px;
 }
 
 .header {
   grid-area: 1 / 1 / 2 / 5;
-  background-color: rgb(149, 149, 149);
-
+  background-color: $mainBackgroundColor;
+  color: $white;
 }
 
 .navContainer {

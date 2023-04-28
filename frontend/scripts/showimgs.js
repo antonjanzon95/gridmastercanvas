@@ -13,6 +13,8 @@ export async function fetchImageById(id) {
 
 export function renderImages(images) {
   const mainContainer = document.querySelector('main');
+  const imageParentContainer = document.createElement('div');
+  imageParentContainer.classList.add('img-parent-container');
   const sideBarContainer = document.createElement('div');
   sideBarContainer.innerHTML = '';
 
@@ -33,8 +35,8 @@ export function renderImages(images) {
     }
     imageContainer.addEventListener('click', renderImage);
 
-    mainContainer.appendChild(imageContainer);
-    mainContainer.appendChild(imageContainer);
+    mainContainer.appendChild(imageParentContainer);
+    imageParentContainer.appendChild(imageContainer);
   });
 }
 

@@ -1,52 +1,52 @@
-import { socket } from "../main.js";
-import { createButton, createLobbyButtons } from "./buttons.js";
-import { renderChat, renderChatHtml } from "./chatcomp.js";
-import { printRoomList, renderRoomsSection } from "./gameRooms.js";
+import { socket } from '../main.js';
+import { createLobbyButtons } from './buttons.js';
+import { renderChat, renderChatHtml } from './chatcomp.js';
+import { renderRoomsSection } from './gameRooms.js';
 import {
   createSolutionGrid,
   createGrid,
   updateCellColor,
-} from "./paintGrid.js";
+} from './paintGrid.js';
 
 export const createGameLobbyPage = (room) => {
-  socket.off("monitorRooms");
+  socket.off('monitorRooms');
 
-  const mainContainer = document.querySelector("main");
+  const mainContainer = document.querySelector('main');
 
   // add roomId to user in sessionstorage
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem('user'));
   user.roomId = room.roomId;
-  user.currentChat = "local";
-  sessionStorage.setItem("user", JSON.stringify(user));
+  user.currentChat = 'local';
+  sessionStorage.setItem('user', JSON.stringify(user));
 
-  socket.on("monitorRoomMessages", (roomWithMessage) => {
+  socket.on('monitorRoomMessages', (roomWithMessage) => {
     renderChat(roomWithMessage.messages);
   });
 
-  socket.on("leaveRoom", (updatedRoom) => {
+  socket.on('leaveRoom', (updatedRoom) => {
     // usersInLobby = renderRoomUsers(updatedRoom.users);
     renderChat(updatedRoom.messages);
   });
 
   renderChatHtml();
   renderChat(room.messages);
-  document.querySelector("#global-chat").disabled = false;
+  document.querySelector('#global-chat').disabled = false;
 
-  mainContainer.innerHTML = "";
+  mainContainer.innerHTML = '';
 
-  socket.on("readyCheck", (userAndRoom) => {
+  socket.on('readyCheck', (userAndRoom) => {
     if (userAndRoom.room.id != room.id) {
       return;
     }
     if (userAndRoom.user.id == user.id) {
       user.ready = userAndRoom.user.ready; // lade till detta för att kunna toggla ready
-      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem('user', JSON.stringify(user));
     }
     const playerReady = document.getElementById(userAndRoom.user.id);
-    playerReady.innerHTML = "&#x2713;" + userAndRoom.user.name;
+    playerReady.innerHTML = '&#x2713;' + userAndRoom.user.name;
   });
 
-  socket.on("paint", (roomIdAndUpdatedCell) => {
+  socket.on('paint', (roomIdAndUpdatedCell) => {
     if (roomIdAndUpdatedCell.roomId != room.roomId) {
       return;
     }
@@ -61,25 +61,25 @@ export const createGameLobbyPage = (room) => {
 };
 
 export function leaveRoom() {
-  socket.off("joinRoom");
-  socket.off("leaveRoom");
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const messages = JSON.parse(sessionStorage.getItem("globalMessages"));
-  let globalChatBtn = document.querySelector("#global-chat");
-  let roomChatBtn = document.querySelector("#room-chat");
+  socket.off('joinRoom');
+  socket.off('leaveRoom');
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const messages = JSON.parse(sessionStorage.getItem('globalMessages'));
+  let globalChatBtn = document.querySelector('#global-chat');
+  let roomChatBtn = document.querySelector('#room-chat');
   globalChatBtn.disabled = true;
   roomChatBtn.disabled = true;
 
-  socket.off("monitorRooms");
-  socket.emit("leaveRoom", user);
+  socket.off('monitorRooms');
+  socket.emit('leaveRoom', user);
 
   renderRoomsSection();
   renderChat(messages);
 }
 
 export const renderRoomUsers = (users) => {
-  const usersWrapper = document.createElement("div");
-
+  const usersWrapper = document.createElement('div');
+  usersWrapper.classList.add('user-ready-container');
   users.forEach((user) => {
     const userContainer = createUserContainer(user);
     usersWrapper.appendChild(userContainer);
@@ -89,20 +89,20 @@ export const renderRoomUsers = (users) => {
 };
 
 function createUserContainer(user) {
-  const userContainer = document.createElement("div");
-  userContainer.classList.add("user-container");
+  const userContainer = document.createElement('div');
+  userContainer.classList.add('user-container');
 
   // color indicator
-  const colorCircle = document.createElement("div");
-  colorCircle.classList.add("color-circle");
+  const colorCircle = document.createElement('div');
+  colorCircle.classList.add('color-circle');
   colorCircle.style.backgroundColor = user.color;
 
   // name
-  const nameHeading = document.createElement("h2");
+  const nameHeading = document.createElement('h2');
   nameHeading.id = user.id;
 
   if (user.ready == true) {
-    nameHeading.innerHTML = "&#x2713;" + user.name;
+    nameHeading.innerHTML = '&#x2713;' + user.name;
   } else {
     nameHeading.innerHTML = user.name;
   }
@@ -113,7 +113,7 @@ function createUserContainer(user) {
 }
 
 export const readyCheck = (e) => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const roomId = e.target.id; // room id is same as btn id
 
   const roomAndUser = {
@@ -123,14 +123,14 @@ export const readyCheck = (e) => {
 
   console.log(roomId);
 
-  socket.on("showSolutionGrid", (room) => {
+  socket.on('showSolutionGrid', (room) => {
     if (room.roomId != roomId) {
       return;
     }
     createSolutionGrid(room);
 
-    socket.off("showSolutionGrid");
+    socket.off('showSolutionGrid');
   });
 
-  socket.emit("readyCheck", roomAndUser);
+  socket.emit('readyCheck', roomAndUser);
 };

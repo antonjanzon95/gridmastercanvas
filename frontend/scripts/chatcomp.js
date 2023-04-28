@@ -7,45 +7,20 @@ export function renderChatHtml() {
   chatDiv.innerHTML = `
   <section class="story-highlights">
       <p id="users-online"></p>
-        <div class="scroll-container">
-        <div class="item">
-            <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        <div class="item">
-        <div class="user-color-circle"></div>
-            <p>username</p>
-        </div>
-        
+        <div class="scroll-container" id="scroll-container">
       </div>
     </section>
   <div class="chat-btn-wrapper">
     <button class="global-chat active-chat-btn" id="global-chat">GLOBAL chat</button>
     <button class="room-chat" id="room-chat">ROOM chat</button>
-    <button class="material-symbols-outlined" id="light-dark-mode">
-    dark_mode
+    <button class="material-symbols-outlined light" id="light-dark-mode">
+    light_mode
     </button>
   </div>
     <div class="chat-container">
         <div class="messages" id="messages"></div>
       <input type='text' id='send-message' placeholder='Lets chat'/>
-        <button id='send-button' class="send-button">Send</button>
+        <button id='send-button' class="send-button button">Send</button>
     </div>
   `;
 
@@ -95,15 +70,14 @@ export function renderChatHtml() {
   });
 
   lightdarkBtn.addEventListener('click', () => {
-    console.log('lets change light-dark-mode');
     let body = document.body;
 
     if (isDarkMode) {
-      lightdarkBtn.innerHTML = 'dark_mode';
-      body.classList.remove('dark');
-    } else {
       lightdarkBtn.innerHTML = 'light_mode';
-      body.classList.add('dark');
+      body.classList.remove('light');
+    } else {
+      lightdarkBtn.innerHTML = 'dark_mode';
+      body.classList.add('light');
     }
     isDarkMode = !isDarkMode;
   });
@@ -143,7 +117,7 @@ function sendChat() {
 
   const messageToGlobal = {
     message: messageInput.value,
-    user: user.name,
+    user: user,
     color: user.color,
   };
 
@@ -185,9 +159,9 @@ export function renderChat(messages) {
   messages.forEach((message) => {
     let chat = document.createElement('div');
     chat.setAttribute('class', 'message');
-    chat.innerHTML = message.user + ': ' + message.message;
+    chat.innerHTML = message.user.name + ': ' + message.message;
 
-    if (message.user === user.name) {
+    if (message.user.id === user.id) {
       chat.setAttribute('class', 'send-message');
     } else {
       chat.setAttribute('class', 'receive-message');

@@ -24,6 +24,7 @@ const {
   MAX_USERS,
   GAME_COLORS,
   GLOBAL_USERS,
+  GAME_RUNTIME_SECONDS,
 } = require('./modules/variables');
 
 const app = express();
@@ -68,6 +69,10 @@ io.on('connection', (socket) => {
     GLOBAL_USERS.splice(indexOfUser, 1);
     io.emit('userDisconnect', disconnectedUser);
     io.emit('monitorGlobalUsers', GLOBAL_USERS);
+  });
+
+  socket.on('monitorGlobalUsers', (user) => {
+    socket.to(user.id).emit('monitorGlobalUsers', GLOBAL_USERS);
   });
 
   socket.on('saveUser', (data) => {
@@ -120,7 +125,7 @@ io.on('connection', (socket) => {
     const usersInRoom = room.users.map((user) => user);
 
     const message = {
-      user: messageAndUser.user.name,
+      user: messageAndUser.user,
       message: messageAndUser.message,
       color: messageAndUser.user.color,
     };
@@ -179,6 +184,8 @@ io.on('connection', (socket) => {
 
     const usersInRoom = roomToJoin.users.map((user) => user);
     usersInRoom.forEach((user) => io.to(user.id).emit('joinRoom', roomToJoin));
+
+    console.log(usersInRoom);
 
     io.emit('monitorRooms');
   });
@@ -269,7 +276,7 @@ io.on('connection', (socket) => {
       return io.emit('monitorRooms');
     } else {
       const message = {
-        user: 'Server',
+        user: { name: 'Gridmaster Bot' },
         message: userToRemove.name + ' has left the room.',
         color: 'red',
       };
@@ -290,8 +297,12 @@ function startGame(room) {
 
   usersInRoom.forEach((user) => io.to(user.id).emit('startGame', room));
 
-  let cd = 5;
+  let cd = GAME_RUNTIME_SECONDS;
   const gameInterval = setInterval(() => {
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit('gameCountdownTimer', cd)
+    );
+
     if (cd < 0) {
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);

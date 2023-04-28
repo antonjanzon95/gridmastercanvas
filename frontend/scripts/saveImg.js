@@ -1,15 +1,14 @@
-import { fetchImages, renderImages } from "./showimgs";
+import { fetchImages, renderImages } from './showimgs';
 
 const saveImagePost = async (roomId) => {
-  const response = await fetch("http://localhost:3000/image/save", {
-    method: "POST",
+  const response = await fetch('http://localhost:3000/image/save', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ roomId }),
   });
   const data = await response.json();
-  viewSavedImages();
 };
 
 // view saved images
@@ -21,4 +20,15 @@ export const viewSavedImages = async () => {
 export function handleSaveImage(e) {
   const roomId = e.target.id;
   saveImagePost(roomId);
+  showSaveMessage();
+}
+
+function showSaveMessage() {
+  const messageDiv = document.querySelector('.saveMessageDiv');
+
+  messageDiv.innerHTML = 'Din bild har sparats';
+
+  setTimeout(() => {
+    messageDiv.innerHTML = '';
+  }, 3000);
 }

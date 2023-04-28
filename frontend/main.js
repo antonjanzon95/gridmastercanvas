@@ -12,8 +12,9 @@ export const socket = io('http://localhost:3000');
 document.querySelector('#app').innerHTML = `
 <div class='h-screen bg-teal-900 parent'>
   <header class="header w-full h-full" id="header"></header>
+
   <main class="main w-full h-full p-4 flex justify-center items-center gap-4"></main>
-  <aside class="chat w-full h-full chat-div" id="chat-div">chat </aside>
+  <aside class="chat w-full h-full chat-div" id="chat-div"></aside>
   
 </div>
 <footer id='footer' class='footer w-full h-full'>footer </footer>`;
