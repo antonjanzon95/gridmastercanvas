@@ -71,6 +71,10 @@ io.on('connection', (socket) => {
     io.emit('monitorGlobalUsers', GLOBAL_USERS);
   });
 
+  socket.on('monitorGlobalUsers', (user) => {
+    socket.to(user.id).emit('monitorGlobalUsers', GLOBAL_USERS);
+  });
+
   socket.on('saveUser', (data) => {
     let name = data.name;
 
@@ -272,7 +276,7 @@ io.on('connection', (socket) => {
       return io.emit('monitorRooms');
     } else {
       const message = {
-        user: {name: 'Gridmaster Bot'},
+        user: { name: 'Gridmaster Bot' },
         message: userToRemove.name + ' has left the room.',
         color: 'red',
       };
@@ -295,9 +299,10 @@ function startGame(room) {
 
   let cd = GAME_RUNTIME_SECONDS;
   const gameInterval = setInterval(() => {
+    usersInRoom.forEach((user) =>
+      io.to(user.id).emit('gameCountdownTimer', cd)
+    );
 
-    usersInRoom.forEach((user) => io.to(user.id).emit('gameCountdownTimer', cd));
-    
     if (cd < 0) {
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);
