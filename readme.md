@@ -1,63 +1,84 @@
-## Gridmastercanvas
 
-### Header
+# Nothing Phone
 
-- skitcool logga
-- highscores // gruppnamn eller komma-separerade namn
-- spela (väntrum)
+A brief description of what this project does and who it's for
 
-### Inlogg
 
-- formulär
-- input text (namn)
-- knapp (spara namn + ge id)
-- spara user-objektet i sessionstorage // {id: 0, name: Anton, color: randomColor}
+## Bakgrund
+Som en uppgift i kursen API-utveckling, Medieinstitutet 2023, skulle vi ta fram en applikation för att färglägga online. 
+ Kriterier var att färgläggningen skulle ske i realtid mellan samtliga inloggade i applikationen, minst 4 st, och att varje användare får en färg och målar med den färgen. Färgning skall ske i ett rutnät med minst 15 kolumner och 15 rader, och bild skall kunna sparas och öppnas igen. Det skulle också finnas en chat så att de 4 användare som färgar även kan chatta med varandra. 
 
-<!-- ### Väntrum
+## Demo
 
-- spelrum-array // spelrum = ["spelrum 1"]
-- gå med i spelrum // lägg till färg till user-objektet -->
 
-### Chatt
+## Teknik
+Klient: VITE, JavaScript, Sass 
 
-- input
-- knapp
-- chat-ruta
-- namn & färg
+Server: Express, Mongoose, SOCKET.io, Nodemon, Cors, dotenv 
 
-### Spelrum
+## Detaljer
+En användare loggar in, blir tilldelad en random färg, och kan börja chatta direkt med alla som är inloggade.  
 
-- chatten börjar synas här
-- rendera rutmönster // testa
-- tillåt färgläggning för alla i spelrummet
-- spara bild-knapp // {id: 0, users: ["namn1", "namn2", "namn3", "namn4"]}
-- fetcha alla sparade bilder och visa vid sidan av
+Användarnamnet skickas till Server och ett userObjekt skapas, som sedan skickas tillbaka till klienten och sparas i sessionStorage, resan när användaren lämnar. 
+ Dynamisk textfärg i chatten beroende på den random färg användaren tilldelats. 
 
-- spelregler
-- starta spel knapp // alla 4 måste trycka (ready = true) --> visa facit
+För att spela så skapar användaren ett rum. Här kan du måla med alla andra inloggade med den färgen du blivit tilldelad, och där antal användare i rummet går att bestämma på serversidan. 
+ Vi ville att hela projektet skulle vara skalbar, från hårdkokade användare till att vi enkelt skulle kunna begära rum till bestämda antal likväl för öppet för alla. 
 
-### Spela med andra
+I detta läget i appen kan du även spara din bild som du även kan kika på genom att gå ut ur rummet och kolla Saved Images i Headern. 
 
-#### Facit
+För att spela spel med andra på tid kan du skapa ett rum, och därefter SPELA. 
+ du får se en referensbild, där denna genereras av antalet användare och färger i rummet, och där du/ni sen på den tid som anges ska färga grid enligt referensen. När tiden är slut meddelas användaren/användarna ett score och du kan därefter gå ur rummet, och sen se din plats på vår highscore.  
 
-- starta spelet knapp // (timer senare) --> rendera grid
+Pågående projekt, Se ISSUES för buggar. 
 
-#### Spelet
+## Starta Projektet
+Server: 
 
-- 15x15 grid // rendera efter att alla tryckt på starta
-- klar knapp // disable knapp och målningsrättigheter. alla 4 måste klicka för att registrera som färdig
+Om du har nodemon globalt: 
 
-#### Resultat
+```bash 
 
-- jämför bilden med facit
-- räkna ut %
-- skriv ut %
-- tillbaka till väntrum-knapp
+nodemon start 
 
-## Uppgifter
+``` 
 
-Anton & Max: målverktyget
-Jenny: chat
-Malin
-Robin: inlogg
-Simon: design
+ Annars kan du ta hem nodemon via npm lokalt: 
+
+```bash 
+ npm install --save-dev nodemon 
+
+``` 
+
+Och köra igång det via: 
+
+```bash 
+
+npx nodemon 
+
+``` 
+
+Du behöver en MongoDbserver som körs. 
+
+Skapa en.env fil och fyll i dina uppgifter för  
+
+```bash 
+
+PORT =  
+CLIENT_URI =  
+
+DATABASE_URI = 
+
+``` 
+
+ 
+ 
+
+För att kicka igång projektet i klienten behöver du köra scriptet: 
+ ```bash 
+
+npm run dev 
+
+``` 
+
+ 
