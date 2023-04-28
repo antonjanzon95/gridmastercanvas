@@ -1,7 +1,5 @@
 
-# Nothing Phone
-
-A brief description of what this project does and who it's for
+# Gridmaster Canvas
 
 
 ## Bakgrund
