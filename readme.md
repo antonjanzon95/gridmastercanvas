@@ -8,7 +8,7 @@ Som en uppgift i kursen API-utveckling, Medieinstitutet 2023, skulle vi ta fram 
 
 ## Demo
 
-<img src="frontend/public/gridmastercanvas.gif" width="800" />
+<img src="frontend/public/gridmastercanvas.gif" width="100%" />
 
 
 ## Teknik
