@@ -238,7 +238,11 @@ body.light {
   color: black;
 }
 
-  }
+.first-place, .second-place, .third-place {
+  color: $white;
+}
+
+}
 
   // .rooms-container .btn {
   //   background-color: $lightpinkColor;
