@@ -8,8 +8,6 @@ export function renderChatHtml() {
   <section class="story-highlights">
       <p id="users-online"></p>
         <div class="scroll-container" id="scroll-container">
-
-        
       </div>
     </section>
   <div class="chat-btn-wrapper">

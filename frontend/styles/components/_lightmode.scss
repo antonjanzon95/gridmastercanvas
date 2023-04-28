@@ -13,45 +13,239 @@ $font-primary: 'Dosis', sans-serif;
 $font-secondary: 'Righteous', cursive;
 
 body.light {
-  font-family: $font-primary;
   background-color: $lightpinkColor;
+  font-family: $font-primary;
   color: $black;
 
   header {
     background-color: $lightpinkColor;
     color: $black;
+
+    button {
+      background-color: $white;
+      color: $black;
+      border: 2px solid $black;
+      box-shadow: 0.15rem 0.15rem $black;
+      width: 175px;
+  
+      &:hover {
+        background-color: lightblue;
+        font-weight: bolder;
+      }
+
+      &:disabled {
+        background-color: lightgrey;
+
+        &:hover {
+          background-color: transparent;
+          border: 2px solid $black;
+        }
+      }
+    }
+
+  }
+
+  p {
+    color: black;
   }
 
   main {
+    grid-area: 2 / 1 / 11 / 4;
     position: relative;
     flex-direction: column;
     text-align: center;
     color: $black;
-  }
+    background-image: url('/gridmaster-canvas-bkg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0.74);
+    
 
-  .main {
-    grid-area: 2 / 1 / 11 / 4;
-    background-color: $lightpinkColor;
-  }
-
-  .parent {
-    display: grid;
-    background-color: lightgrey;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-  }
-
-  .chat {
-    background-color: $lightpinkColor;
-
-    .chat-conatiner {
-      color: $white;
+    button {
+      background-color: $white;
+      color: $black;
+      border: 2px solid $black;
+      box-shadow: 0.15rem 0.15rem $black;
+      width: 175px;
+  
+      &:hover {
+        background-color: $white;
+        color: $black;
+        background-color: lightblue;
+      }
+      &:disabled {
+        background-color: $white;
+        color: grey;
+      }
     }
   }
 
-  .rooms-container .btn {
-    background-color: $lightpinkColor;
+  button {
+    background-color: $white;
+      color: $black;
+      border: 2px solid $black;
+      box-shadow: 0.15rem 0.15rem $black;
+      width: 95%;
+
+    &:hover {
+      background-color: $white;
+      color: $black;
+      background-color: lightblue;
+      border: 3px solid $black;
+    }
   }
+
+  input {
+    background-color: $white;
+    color: $black;
+    border: 2px solid $black;
+    box-shadow: 0.15rem 0.15rem $black;
+    width: 95%;
+
+  }
+
+  .chat {
+    color: #D2D3D4;
+    height: 100vh;
+    height: 100%;
+    min-width: 420px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0.15rem 0.15rem $black;
+    border: 2px solid $black;
+  }
+  
+  .chat-container {
+    background-color: $white;
+
+  }
+  .scroll-container {
+    width: 100%;
+    padding-bottom: 30px;
+    white-space: nowrap;
+    overflow: auto;
+    clip-path: inset(0 0 30px 0);
+  }
+  
+  .item {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    margin-right: 10px;
+    background-color: none;
+    border-radius: 50%;
+  
+    .user-color-circle {
+      margin: 4px 0;
+      width: 65px;
+      height: 65px;
+      background-color: $white;
+      border: 2px solid $black;
+      box-shadow: 0.15rem 0.15rem $black;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+  
+    p {
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 0;
+      margin: 0 0 5px 0;
+    }
+  }
+  
+  .chat-btn-wrapper {
+    width: 100%;
+    display: flex;
+  
+    button , .light, .button {
+      width: 33.34%;
+      height: 44px;
+      background-color: $white;
+      color: $black;
+  
+      &:disabled {
+        color:grey;
+        border: 2px solid grey;
+        transition: none;
+  
+        &:hover {
+          background-color: $white;
+          color:grey;
+          font-weight: bolder;
+          border: 2px solid grey;
+          box-shadow: 0.15rem 0.15rem #2b2b2b;
+          border: 2px solid $black;
+        }
+      }
+      &.active-chat-btn {
+        box-shadow: 0px 0px 3px 3px rgba(192, 153, 197, 0.75) inset;
+        background-color: $white;
+        color: $black;
+        cursor: pointer;
+        
+          &:disabled {
+            // color: grey;
+            border: 2px solid grey;
+            transition: none;
+            box-shadow: 0.15rem 0.15rem #2b2b2b;
+        
+            &:hover {
+              background-color: $white;
+              font-weight: bold;
+              color: grey;
+              font-weight: normal;
+              border: 2px solid grey;
+              box-shadow: 0.15rem 0.15rem #2b2b2b;
+            }
+          }
+      }
+    }
+  }
+
+  .chat {
+    background-image: linear-gradient(to bottom, #eeb2cc, whitesmoke);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 0;
+  }
+
+  .startDiv {
+    background-color: rgba(255, 255, 255, 0.74);
+    box-shadow: 0.15rem 0.15rem $black;
+    border: 2px solid $black;
+  }
+ 
+  .howToPlayDiv {
+    background-color: rgba(255, 255, 255, 0.74);
+    box-shadow: 0.15rem 0.15rem $black;
+    border: 2px solid $black;
+  }
+
+  .logUserBtn{
+    width: 95%;
+  }
+
+.highscore-container {
+  background-color: rgba(255, 255, 255, 0.74);
+  box-shadow: 0.15rem 0.15rem $black;
+  border: 2px solid $black;
 }
+
+.score-text {
+  font-size: 72px;
+  color: black;
+}
+
+.first-place, .second-place, .third-place {
+  color: $white;
+}
+
+
+
+}
+
+  // .rooms-container .btn {
+  //   background-color: $lightpinkColor;
+  // }

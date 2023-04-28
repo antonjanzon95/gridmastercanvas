@@ -194,7 +194,6 @@ function renderHowToPlay() {
   <p>Get ready to unleash your pixel powers, express your creativity, and immerse yourself in the world of pixel art and metal mayhem on <span>GridMaster Canvas<span>.</p><br>
   <h5>Let the competition begin!</h5>
   </div>
-
   `;
 
   main.appendChild(div);
