@@ -61,9 +61,15 @@ export const createGameLobbyPage = (room) => {
 };
 
 export function leaveRoom() {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+ 
+  if (user.roomId == null) {
+    return;
+  }
+
   socket.off('joinRoom');
   socket.off('leaveRoom');
-  const user = JSON.parse(sessionStorage.getItem('user'));
+
   const messages = JSON.parse(sessionStorage.getItem('globalMessages'));
   let globalChatBtn = document.querySelector('#global-chat');
   let roomChatBtn = document.querySelector('#room-chat');

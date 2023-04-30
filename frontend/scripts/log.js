@@ -1,5 +1,6 @@
 import { socket } from '../main';
 import { renderChatHtml } from './chatcomp';
+import { leaveRoom } from './gameLobby';
 import { renderRoomsSection } from './gameRooms';
 import { showHighScorePage } from './gameover';
 import { initGlobalChatSockets, removeGlobalSockets } from './globalSockets';
@@ -212,6 +213,7 @@ function renderLogoutButton() {
 
   logOutButton.addEventListener('click', () => {
     // let user = JSON.parse(sessionStorage.getItem('user'));
+    leaveRoom();
 
     socket.emit('removeUser', JSON.parse(sessionStorage.getItem('user')));
     sessionStorage.removeItem('user');
