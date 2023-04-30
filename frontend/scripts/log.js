@@ -215,15 +215,16 @@ function renderLogoutButton() {
     // let user = JSON.parse(sessionStorage.getItem('user'));
     leaveRoom();
 
+    mainContainer.innerHTML = '';
+
+    chatDiv.innerHTML = '';
+    header.innerHTML = '';
+
     socket.emit('removeUser', JSON.parse(sessionStorage.getItem('user')));
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('color');
     sessionStorage.removeItem('globalMessages');
 
-    mainContainer.innerHTML = '';
-
-    chatDiv.innerHTML = '';
-    header.innerHTML = '';
     removeGlobalSockets();
     initLog();
   });
