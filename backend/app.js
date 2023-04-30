@@ -65,8 +65,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     let disconnectedUser = GLOBAL_USERS.find((user) => socket.id == user.id);
 
+    leaveRoomOnDc();
+
     let indexOfUser = GLOBAL_USERS.indexOf(disconnectedUser);
     GLOBAL_USERS.splice(indexOfUser, 1);
+    io.emit('monitorRooms');
     io.emit('userDisconnect', disconnectedUser);
     io.emit('monitorGlobalUsers', GLOBAL_USERS);
   });
@@ -156,6 +159,11 @@ io.on('connection', (socket) => {
     user.gameColor = assignedColor;
     user.lobbyColor = user.color;
 
+    const addRoomIdGlobalUsers = GLOBAL_USERS.find(
+      (userToFind) => userToFind.id == user.id
+    );
+    addRoomIdGlobalUsers.roomId = room.roomId;
+
     roomUsers.push(user);
 
     ROOMS.push(room);
@@ -177,6 +185,11 @@ io.on('connection', (socket) => {
     userAndRoomId.user.lobbyColor = userAndRoomId.user.color;
 
     roomToJoin.users.push(userAndRoomId.user);
+
+    const addRoomIdGlobalUser = GLOBAL_USERS.find(
+      (userToFind) => userToFind.id == userAndRoomId.user.id
+    );
+    addRoomIdGlobalUser.roomId = roomToJoin.roomId;
 
     if (roomToJoin.users.length == MAX_USERS) {
       roomToJoin.isFull = true;
@@ -290,6 +303,47 @@ io.on('connection', (socket) => {
       io.emit('monitorRooms');
     }
   });
+
+  function leaveRoomOnDc() {
+    const userWhoDc = GLOBAL_USERS.find((user) => user.id == socket.id);
+    const roomToLeave = ROOMS.find((room) => room.roomId == userWhoDc.roomId);
+
+    if (roomToLeave.users.length > 0) {
+      const user = roomToLeave.users.find((user) => user.id == userWhoDc.id);
+      const userIndex = roomToLeave.users.indexOf(user);
+
+      roomToLeave.colors.push(user.gameColor);
+      roomToLeave.users.splice(userIndex, 1);
+    }
+
+    if (roomToLeave.users.length == MAX_USERS - 1) {
+      roomToLeave.isFull = false;
+    }
+
+    if (roomToLeave.users.length == 0) {
+      const roomIndex = ROOMS.indexOf(roomToLeave);
+
+      ROOMS.splice(roomIndex, 1);
+
+      return io.emit('monitorRooms');
+    } else {
+      const message = {
+        user: { name: 'Gridmaster Bot' },
+        message: userWhoDc.name + ' has left the room.',
+        color: 'red',
+      };
+
+      roomToLeave.messages.unshift(message);
+
+      const usersInRoom = roomToLeave.users.map((user) => user);
+
+      usersInRoom.forEach((user) =>
+        io.to(user.id).emit('leaveRoom', roomToLeave)
+      );
+
+      io.emit('monitorRooms');
+    }
+  }
 });
 
 function startGame(room) {
