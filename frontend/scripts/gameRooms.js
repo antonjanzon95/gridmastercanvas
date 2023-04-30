@@ -22,6 +22,10 @@ function createNewRoom() {
 }
 
 export function renderRoomsSection() {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  if (user == null) {
+    return;
+  }
   socket.off('monitorRooms'); // ensures that it does not get applied multiple times
   socket.on('monitorRooms', () => {
     renderRoomsSection();
