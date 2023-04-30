@@ -24,7 +24,10 @@ export const createGameLobbyPage = (room) => {
   });
 
   socket.on('leaveRoom', (updatedRoom) => {
-    // usersInLobby = renderRoomUsers(updatedRoom.users);
+    const readyWrapper = document.querySelector('.user-ready-container');
+    readyWrapper.remove();
+    let usersInLobby = renderRoomUsers(updatedRoom.users);
+    mainContainer.appendChild(usersInLobby);
     renderChat(updatedRoom.messages);
   });
 
@@ -101,7 +104,7 @@ function createUserContainer(user) {
   // color indicator
   const colorCircle = document.createElement('div');
   colorCircle.classList.add('color-circle');
-  colorCircle.style.backgroundColor = user.color;
+  colorCircle.style.backgroundColor = user.gameColor;
 
   // name
   const nameHeading = document.createElement('h2');
