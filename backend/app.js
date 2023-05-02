@@ -358,6 +358,12 @@ function startGame(room) {
     );
 
     if (cd < 0) {
+      const roomExists = ROOMS.find((checkRoom) => room.roomId == checkRoom.roomId);
+      if (!roomExists) {
+        console.log('game already ended')
+        return clearInterval(gameInterval);
+      }
+
       clearInterval(gameInterval);
       const scoreInPercent = calculateScore(room);
       room.score = scoreInPercent;
